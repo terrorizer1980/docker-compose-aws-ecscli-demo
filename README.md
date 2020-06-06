@@ -23,7 +23,7 @@ To install `ecs-cli`, follow steps at
 ### Multi-factor authentication
 
 :thinking: **Optional:** If multi-factor authentication is used to access AWS,
-see [How to set AWS multi-factor authentication credentials](../../HOWTO/set-aws-mfa-credentials.md).
+see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.m).
 
 ### Clone repository
 

@@ -17,15 +17,10 @@ This is a copy/paste version of
     1. []()
     1. []()
     1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
 1. [Cleanup](#cleanup)
-    1. []()
-    1. []()
-    1. []()
+    1. [Bring down service](#bring-down-service)
+    1. [Bring down cluster](#bring-down-cluster)
+    1. [Verify cleanup in AWS console](#verify-cleanup-in-aws-console)
 1. [References](#references)
 
 ## Prerequisites
@@ -183,43 +178,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
 
-### Scale tasks
-
-:thinking: **Optional:** view the containers.
-
-1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-       [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-scale.html)
-
-1. View  containers.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
-      scale 2 \
-      --cluster-config ${AWS_PROJECT}-config-name
-    ```
-
-1. View  containers.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name
-    ```
-
-1. Verify in AWS Console:
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-
-### Bring down
+### Bring down task
 
 1. References:
     1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -329,7 +288,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --cluster-config ${AWS_PROJECT}-config-name
     ```
 
-### Verify in AWS console
+### Verify cleanup in AWS console
 
 1. Verify in AWS Console:
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)

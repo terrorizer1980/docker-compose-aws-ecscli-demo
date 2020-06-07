@@ -1,9 +1,11 @@
 version: 1
 task_definition:
+  ecs_network_mode: host
   services:
     rabbitmq:
       cpu_shares: 40
       mem_limit: 262144000
     mockdata:
       cpu_shares: 40
+      essential: false
       mem_limit: 262144000

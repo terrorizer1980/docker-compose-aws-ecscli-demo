@@ -113,7 +113,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --force \
       --instance-type t2.micro \
       --keypair ${AWS_KEYPAIR} \
-      --size 2
+      --size 1
     ```
 
 1. Verify in AWS Console:
@@ -129,36 +129,20 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Run tasks
 
-#### Run services task
+#### Run rabbitmq task
 
 This task runs services that should be replace by
 [backing services](https://12factor.net/backing-services)
 when productizing the deployment.
 
-1. Deploy `docker-compose-services.yaml` file.
+1. Deploy `docker-compose.yaml` file.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-services.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
-      up \
-      --create-log-groups \
-      --launch-type EC2
-    ```
-
-#### Run init task
-
-1. Deploy `docker-compose-services.yaml` file.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       up \
       --create-log-groups \
@@ -198,37 +182,14 @@ when productizing the deployment.
        [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
         1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+            1. [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
 
 
-### Bring down task
 
-1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-       down
-
-1. View  containers.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
-      down \
-      --cluster-config ${AWS_PROJECT}-config-name
-    ```
-
-1. Verify in AWS Console:
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
 
 ### Bring up service
 
@@ -277,6 +238,26 @@ when productizing the deployment.
    A "Simple PHP App" banner will be displayed.
 
 ## Cleanup
+
+### Bring down task
+
+1. References:
+    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+       down
+
+1. View  containers.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-rabbitmq.yaml \
+      --project-name ${AWS_PROJECT}-project-name \
+      down \
+      --cluster-config ${AWS_PROJECT}-config-name
+    ```
 
 ### Bring down service
 
@@ -333,16 +314,6 @@ when productizing the deployment.
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [Amazon ECS](https://docs.aws.amazon.com/ecs/index.html)
    &gt; [Developer Guide](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
-1. AWS console
-    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
-    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
-        1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
         1. [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
             1. [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
@@ -353,6 +324,16 @@ when productizing the deployment.
         1. [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
         1. [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+1. AWS console
+    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
+    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+        1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
 1. [Installing the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
 1. [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
 1. YAML file formats

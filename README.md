@@ -113,7 +113,7 @@ Run
       --size 1
     ```
 
-1. Review changes in AWS Console:
+1. Review: Changes seen in AWS Console.
 
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
@@ -148,11 +148,9 @@ Run
 
 ### View tasks
 
-Run
-[ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-[ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-
-1. View tasks on command line.
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html).
    Example:
 
     ```console
@@ -167,13 +165,12 @@ Run
         1. Click "Tasks" tab.
 1. View logs:
    [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-   [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-   [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
-
+   > [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+   > [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
 
 ### View services
 
-1. Open ports
+1. Open ports.
     1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. Choose "ECS instance" instance
     1. **Security groups:**, click on security group.
@@ -186,7 +183,15 @@ Run
             1. 9171 - phpPgAdmin
 
 
-1. To visit RabbitMQ, visit `http://ip-address:15672`
+1. To find IP addresses and ports, run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html).
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name
+    ```
 
 -------------------------------------------------------------
 

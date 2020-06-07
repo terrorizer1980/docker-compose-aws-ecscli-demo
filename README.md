@@ -73,9 +73,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Configure ECS CLI
 
-1. References:
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html)
+Run
+[ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+[configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html)
 
 1. Create an AWS configuration.
    Example:
@@ -96,9 +96,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Create cluster
 
-1. References:
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+Run
+[ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+[up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 
 1. Bring up an AWS Elastic Container Service (ECS) instance.
    Example:
@@ -127,7 +127,10 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Run tasks
 
-#### Run task
+Run
+[ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+[compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+[up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
 
 1. Deploy `docker-compose.yaml` file.
    Example:
@@ -145,15 +148,11 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### View tasks
 
-#### View tasks in command line
+Run
+[ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+[ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
 
-:thinking: **Optional:** view the containers.
-
-1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-
-1. View containers.
+1. View tasks on command line.
    Example:
 
     ```console
@@ -161,27 +160,15 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --cluster-config ${AWS_PROJECT}-config-name
     ```
 
-#### View tasks in AWS console
-
-:thinking: **Optional:** view the containers.
-
-1. Verify in AWS Console:
+1. View tasks in AWS Console:
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
-1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-       [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-            1. [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-
+1. View logs:
+   [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+   [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+   [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
 
 -------------------------------------------------------------
 

@@ -11,7 +11,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: rabbitmq
+        awslogs-stream-prefix: demo
     ports:
       - 15672:15672
       - 5672:5672
@@ -33,4 +33,4 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: mockdata
+        awslogs-stream-prefix: demo

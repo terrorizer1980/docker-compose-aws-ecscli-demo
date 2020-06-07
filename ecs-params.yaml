@@ -4,6 +4,7 @@ task_definition:
   services:
     rabbitmq:
       cpu_shares: 40
+      essential: true
       mem_limit: 262144000
     mockdata:
       cpu_shares: 40

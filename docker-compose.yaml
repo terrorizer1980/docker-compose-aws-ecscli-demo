@@ -13,7 +13,7 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: demo
     ports:
-      - 15672:15672
+      - 80:15672
       - 5672:5672
 
   mockdata:
@@ -28,6 +28,8 @@ services:
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
     image: senzing/mock-data-generator
+    links:
+      - rabbitmq:rabbitmq
     logging:
       driver: awslogs
       options:

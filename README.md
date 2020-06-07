@@ -14,9 +14,6 @@ This is a copy/paste version of
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
     1. []()
-    1. []()
-    1. []()
-    1. []()
 1. [Cleanup](#cleanup)
     1. [Bring down service](#bring-down-service)
     1. [Bring down cluster](#bring-down-cluster)
@@ -116,12 +113,13 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --size 1
     ```
 
-1. Review: Verify in AWS Console:
+1. Review changes in AWS Console:
+
+    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
-    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
@@ -129,11 +127,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Run tasks
 
-#### Run rabbitmq task
-
-This task runs services that should be replace by
-[backing services](https://12factor.net/backing-services)
-when productizing the deployment.
+#### Run task
 
 1. Deploy `docker-compose.yaml` file.
    Example:
@@ -189,7 +183,7 @@ when productizing the deployment.
         1. Click "Tasks" tab.
 
 
-
+-------------------------------------------------------------
 
 ### Bring up service
 
@@ -242,9 +236,9 @@ when productizing the deployment.
 ### Bring down task
 
 1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-       down
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   down
 
 1. View  containers.
    Example:
@@ -253,7 +247,7 @@ when productizing the deployment.
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-rabbitmq.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       down \
       --cluster-config ${AWS_PROJECT}-config-name

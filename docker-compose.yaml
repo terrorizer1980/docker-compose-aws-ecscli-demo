@@ -13,7 +13,7 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: demo
     ports:
-      - 80:15672
+      - 15672:15672
       - 5672:5672
 
   mockdata:

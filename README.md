@@ -162,8 +162,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. Click "Tasks" tab.
 1. View logs:
    [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-   > [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-   > [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
+   &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+   &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
 
 ### View services
 

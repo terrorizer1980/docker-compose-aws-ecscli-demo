@@ -129,17 +129,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Run tasks
 
-1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-       [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-
 #### Run services task
 
 This task runs services that should be replace by
@@ -178,6 +167,8 @@ when productizing the deployment.
 
 ### View tasks
 
+#### View tasks in command line
+
 :thinking: **Optional:** view the containers.
 
 1. References:
@@ -192,11 +183,26 @@ when productizing the deployment.
       --cluster-config ${AWS_PROJECT}-config-name
     ```
 
+#### View tasks in AWS console
+
+:thinking: **Optional:** view the containers.
+
 1. Verify in AWS Console:
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
+1. References:
+    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+       [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+       [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${AWS_PROJECT}-cluster
+        1. Click "Update Cluster" to update information.
+        1. Click "Tasks" tab.
+
 
 ### Bring down task
 
@@ -337,9 +343,6 @@ when productizing the deployment.
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "ECS instances" tab.
     1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
         1. [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
             1. [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)

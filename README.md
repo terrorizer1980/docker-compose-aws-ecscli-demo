@@ -76,9 +76,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Configure ECS CLI
 
-1. References
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html)
+1. References:
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html)
 
 1. Create an AWS configuration.
    Example:
@@ -91,7 +91,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
        --region ${AWS_REGION}
     ```
 
-1. Configuration values are stored in `~/.ecs/config`.
+1. Review: Configuration values are stored in `~/.ecs/config`.
 
     ```console
     cat ~/.ecs/config
@@ -100,8 +100,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 ### Create cluster
 
 1. References:
-    1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-       [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 
 1. Bring up an AWS Elastic Container Service (ECS) instance.
    Example:
@@ -116,7 +116,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --size 1
     ```
 
-1. Verify in AWS Console:
+1. Review: Verify in AWS Console:
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)

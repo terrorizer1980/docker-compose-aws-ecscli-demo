@@ -1,6 +1,9 @@
 version: 1
 task_definition:
   services:
-    web:
-      cpu_shares: 100
-      mem_limit: 524288000
+    rabbitmq:
+      cpu_shares: 40
+      mem_limit: 262144000
+    mockdata:
+      cpu_shares: 40
+      mem_limit: 262144000

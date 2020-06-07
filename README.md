@@ -8,9 +8,24 @@ This is a copy/paste version of
 1. [Prerequisites](#prerequisites)
     1. [Install ECS CLI](#install-ecs-cli)
     1. [Multi-factor authentication](#multi-factor-authentication)
+    1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Identify metadata](#identify-metadata)
+    1. [Configure ECS CLI](#configure-ecs-cli)
+    1. [Create cluster](#create-cluster)
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
 1. [Cleanup](#cleanup)
+    1. []()
+    1. []()
+    1. []()
 1. [References](#references)
 
 ## Prerequisites
@@ -117,7 +132,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. Click "Update Cluster" to update information.
         1. Click "ECS instances" tab.
 
-### Create hello-world task
+### Create task
 
 1. References:
     1. [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -139,6 +154,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```
 
 1. Verify in AWS Console:
+    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
@@ -321,6 +338,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
+    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
 
 ## References
@@ -330,3 +349,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [Amazon ECS](https://docs.aws.amazon.com/ecs/index.html)
    &gt; [Developer Guide](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
+1. [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
+1. YAML file formats
+    1. [Using Docker Compose File Syntax](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-parameters.html)
+    1. [Using Amazon ECS Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-ecsparams.html)

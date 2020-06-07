@@ -170,6 +170,24 @@ Run
    [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
    [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
 
+
+### View services
+
+1. Open ports
+    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. Choose "ECS instance" instance
+    1. **Security groups:**, click on security group.
+    1. In "Security Groups" dialog, edit "Inbound rules"
+    1. Open following ports:
+        1. HTTP
+        1. SSH
+        1. Custom TCP
+            1. 15672 - RabbitMQ
+            1. 9171 - phpPgAdmin
+
+
+1. To visit RabbitMQ, visit `http://ip-address:15672`
+
 -------------------------------------------------------------
 
 ### Bring up service
@@ -275,6 +293,14 @@ Run
       --force \
       --cluster-config ${AWS_PROJECT}-config-name
     ```
+
+### Clean logs
+
+1. Logs:
+   [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+   [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+   [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
+
 
 ### Verify cleanup in AWS console
 

@@ -9,9 +9,9 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-group: senzing-docker-compose-aws-ecscli-demo-rabbitmq
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: web
+        awslogs-stream-prefix: rabbitmq
     ports:
       - 80:15672
       - 5672:5672
@@ -30,3 +30,9 @@ services:
     image: senzing/mock-data-generator
     links:
       - rabbitmq:rabbitmq
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: mockdata

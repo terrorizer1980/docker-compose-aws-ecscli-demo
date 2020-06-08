@@ -1,6 +1,23 @@
 version: 1
 task_definition:
   services:
-    web:
-      cpu_shares: 100
-      mem_limit: 524288000
+    rabbitmq:
+      cpu_shares: 20
+      essential: true
+      mem_limit: 200000000
+    mockdata:
+      cpu_shares: 10
+      essential: false
+      mem_limit: 100000000
+    postgres:
+      cpu_shares: 30
+      essential: true
+      mem_limit: 300000000
+    phppgadmin:
+      cpu_shares: 10
+      essential: true
+      mem_limit: 100000000
+    xterm:
+      cpu_shares: 10
+      essential: true
+      mem_limit: 100000000

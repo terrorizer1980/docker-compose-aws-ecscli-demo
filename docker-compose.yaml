@@ -102,3 +102,8 @@ services:
       - rabbitmq:rabbitmq
     ports:
       - 8254:5000
+    volumes:
+      - senzing-data-version-dir:/opt/senzing/data
+      - senzing-etc-dir:/etc/opt/senzing
+      - senzing-g2-dir:/opt/senzing/g2
+      - senzing-var-dir:/var/opt/senzing

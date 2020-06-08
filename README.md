@@ -123,6 +123,25 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. Click "Update Cluster" to update information.
         1. Click "ECS instances" tab.
 
+### Create EFS
+
+1. Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/)
+   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
+   [create-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html).
+   Example:
+
+    ```console
+    aws efs create-file-system \
+      --creation-token ${AWS_PROJECT}-efs \
+      --region ${AWS_REGION}
+    ```
+
+1. Review changes.
+    1. [efs](https://console.aws.amazon.com/efs/home)
+
+1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
+
 ### Run tasks
 
 1. Run

@@ -99,7 +99,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
        --region ${AWS_REGION}
     ```
 
-1. Review: Configuration values are stored in `~/.ecs/config`.
+1. :thinking: **Optional:** To view configuration values, see `~/.ecs/config`.
 
     ```console
     cat ~/.ecs/config
@@ -122,7 +122,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --size 1
     ```
 
-1. Review changes.
+1. :thinking: **Optional:** View changes.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
@@ -154,7 +154,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --region ${AWS_REGION}
     ```
 
-1. Review changes.
+1. :thinking: **Optional:** View changes.
     1. [efs](https://console.aws.amazon.com/efs/home)
 
 1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
@@ -178,7 +178,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --launch-type EC2
     ```
 
-1. Review changes.
+1. :thinking: **Optional:** View changes.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. [ecs](https://console.aws.amazon.com/ecs/home)

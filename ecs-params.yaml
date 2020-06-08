@@ -1,6 +1,14 @@
 version: 1
 task_definition:
   services:
+    initcontainer:
+      cpu_shares: 10
+      essential: false
+      mem_limit: 100000000
+    loader:
+      cpu_shares: 10
+      essential: true
+      mem_limit: 100000000
     rabbitmq:
       cpu_shares: 20
       essential: true
@@ -10,14 +18,14 @@ task_definition:
       essential: false
       mem_limit: 100000000
     postgres:
-      cpu_shares: 30
+      cpu_shares: 20
       essential: true
-      mem_limit: 300000000
-    phppgadmin:
+      mem_limit: 200000000
+    postgresinit:
       cpu_shares: 10
-      essential: true
+      essential: false
       mem_limit: 100000000
-    yum:
+    phppgadmin:
       cpu_shares: 10
       essential: true
       mem_limit: 100000000

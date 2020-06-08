@@ -84,13 +84,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_ACCEPT_EULA_PARAMETER="--env SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA}"
-    ```
-
 ### Configure ECS CLI
 
 1. Run
@@ -166,7 +159,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
 
-
 ### Run init tasks
 
 1. Run
@@ -178,13 +170,21 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       up \
       --create-log-groups \
       --launch-type EC2
     ```
+
+1. Review changes.
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${AWS_PROJECT}-cluster
+        1. Click "Update Cluster" to update information.
+        1. Click "ECS instances" tab.
 
 ### Run tasks
 

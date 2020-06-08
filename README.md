@@ -125,6 +125,13 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Create EFS
 
+1. :pencil2: Choose a name for the AWS EFS.
+   Example:
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=${AWS_PROJECT}-efs
+    ```
+
 1. Run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/)
    [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
@@ -133,7 +140,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
     ```console
     aws efs create-file-system \
-      --creation-token ${AWS_PROJECT}-efs \
+      --creation-token ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --region ${AWS_REGION}
     ```
 

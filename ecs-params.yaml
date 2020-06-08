@@ -17,6 +17,10 @@ task_definition:
       cpu_shares: 10
       essential: true
       mem_limit: 100000000
+    yum:
+      cpu_shares: 10
+      essential: true
+      mem_limit: 100000000
     xterm:
       cpu_shares: 10
       essential: true

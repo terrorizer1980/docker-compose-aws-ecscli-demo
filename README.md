@@ -74,6 +74,23 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export AWS_PROJECT=project01
     ```
 
+#### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   Example:
+
+    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
+
+1. Construct parameter for `docker run`.
+   Example:
+
+    ```console
+    export SENZING_ACCEPT_EULA_PARAMETER="--env SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA}"
+    ```
+
 ### Configure ECS CLI
 
 1. Run
@@ -148,6 +165,26 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     1. [efs](https://console.aws.amazon.com/efs/home)
 
 1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
+
+
+### Run init tasks
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --project-name ${AWS_PROJECT}-project-name \
+      up \
+      --create-log-groups \
+      --launch-type EC2
+    ```
 
 ### Run tasks
 

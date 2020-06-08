@@ -174,8 +174,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       up \
-      --create-log-groups \
-      --launch-type EC2
+        --create-log-groups \
+        --launch-type EC2
     ```
 
 1. :thinking: **Optional:** View changes.
@@ -201,8 +201,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       up \
-      --create-log-groups \
-      --launch-type EC2
+        --create-log-groups \
+        --launch-type EC2
     ```
 
 ### View tasks
@@ -269,7 +269,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name \
       down \
-      --cluster-config ${AWS_PROJECT}-config-name
+        --cluster-config ${AWS_PROJECT}-config-name
     ```
 
 ### Bring down cluster

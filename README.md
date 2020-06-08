@@ -113,7 +113,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```
 
 1. Review changes.
-
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
@@ -177,6 +176,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. SSH
         1. Custom TCP
             1. 15672 - RabbitMQ
+            1. 8254 - Senzing x-term
             1. 9171 - phpPgAdmin
 
 1. To find IP addresses and ports, run

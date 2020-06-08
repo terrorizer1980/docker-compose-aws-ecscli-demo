@@ -94,3 +94,11 @@ services:
     ports:
       - 9171:80
       - 9172:443
+
+  xterm:
+    image: senzing/xterm
+    links:
+      - postgres:postgres
+      - rabbitmq:rabbitmq
+    ports:
+      - 8254:5000

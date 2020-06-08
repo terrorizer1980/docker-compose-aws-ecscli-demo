@@ -7,7 +7,7 @@ task_definition:
       mem_limit: 100000000
     loader:
       cpu_shares: 10
-      essential: true
+      essential: false
       mem_limit: 100000000
     rabbitmq:
       cpu_shares: 20
@@ -27,9 +27,9 @@ task_definition:
       mem_limit: 100000000
     phppgadmin:
       cpu_shares: 10
-      essential: true
+      essential: false
       mem_limit: 100000000
     xterm:
       cpu_shares: 10
-      essential: true
+      essential: false
       mem_limit: 100000000

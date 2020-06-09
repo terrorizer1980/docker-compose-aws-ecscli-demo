@@ -192,7 +192,7 @@ FIXME: This section is incomplete.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-init \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -227,7 +227,7 @@ FIXME: This section is incomplete.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-main \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -302,7 +302,7 @@ FIXME: This section is incomplete.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-init \
       down \
         --cluster-config ${AWS_PROJECT}-config-name
     ```
@@ -320,7 +320,7 @@ FIXME: This section is incomplete.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-main \
       down \
         --cluster-config ${AWS_PROJECT}-config-name
     ```

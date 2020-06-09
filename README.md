@@ -117,7 +117,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --capability-iam \
       --cluster-config ${AWS_PROJECT}-config-name \
       --force \
-      --instance-type t2.micro \
+      --instance-type t2.medium \
       --keypair ${AWS_KEYPAIR} \
       --size 1
     ```
@@ -253,6 +253,24 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```
 
 ## Cleanup
+
+### Bring down init task
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   down.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --project-name ${AWS_PROJECT}-project-name \
+      down \
+        --cluster-config ${AWS_PROJECT}-config-name
+    ```
 
 ### Bring down task
 

@@ -1,24 +1,24 @@
 version: 1
 task_definition:
   efs_volumes:
-      - name: senzing-g2-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing/g2
-      - name: senzing-data-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing/data
-      - name: senzing-data-version-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing/data/1.0.0
-      - name: senzing-etc-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing/etc
-      - name: senzing-opt-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing
-      - name: senzing-var-dir
-        filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-        root_directory: /senzing/var
+    - name: senzing-g2-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing/g2
+    - name: senzing-data-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing/data
+    - name: senzing-data-version-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing/data/1.0.0
+    - name: senzing-etc-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing/etc
+    - name: senzing-opt-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing
+    - name: senzing-var-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /senzing/var
   services:
     rabbitmq:
       cpu_shares: 20

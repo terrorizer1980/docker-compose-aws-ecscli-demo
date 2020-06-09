@@ -6,11 +6,11 @@ task_definition:
       essential: false
       mem_limit: 100000000
     loader:
-      cpu_shares: 10
-      essential: false
-      mem_limit: 100000000
-    rabbitmq:
       cpu_shares: 20
+      essential: false
+      mem_limit: 3000000000
+    rabbitmq:
+      cpu_shares: 10
       essential: true
       mem_limit: 200000000
     mockdata:

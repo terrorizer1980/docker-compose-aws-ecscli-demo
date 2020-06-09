@@ -161,6 +161,24 @@ FIXME: This section is incomplete.
 
 1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
 
+### Open ports
+
+1. Open ports.
+    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. Choose "ECS instance" instance
+    1. **Security groups:**, click on security group.
+    1. In "Security Groups" dialog, edit "Inbound rules"
+    1. Open following ports:
+        1. HTTP
+        1. SSH
+        1. Custom TCP
+            1. 8250 - API server
+            1. 8251 - Web app
+            1. 8254 - Senzing X-Term
+            1. 9171 - phpPgAdmin
+            1. 9178 - Jupyter notebooks
+            1. 15672 - RabbitMQ
+
 ### Run init tasks
 
 1. Run

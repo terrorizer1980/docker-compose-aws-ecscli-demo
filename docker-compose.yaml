@@ -124,7 +124,7 @@ services:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
         awslogs-stream-prefix: demo
-    user: "0"
+    user: "1000:1000"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -171,7 +171,7 @@ services:
       - "*"
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
+    image: senzing/senzing-api-server
     links:
       - postgres:postgres
     logging:
@@ -182,6 +182,7 @@ services:
         awslogs-stream-prefix: demo
     ports:
       - 8250:8250
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing

@@ -188,6 +188,14 @@ FIXME: This section is incomplete.
         1. Click "Update Cluster" to update information.
         1. Click "ECS instances" tab.
 
+1. **FIXME:** `ssh` into ec2 instance, then.
+
+    ```console
+    sudo chown -R ec2-user:ec2-user /opt/senzing
+    sudo chown -R ec2-user:ec2-user /etc/opt/senzing
+    sudo chown -R ec2-user:ec2-user /var/opt/senzing
+    ```
+
 ### Run tasks
 
 1. Run

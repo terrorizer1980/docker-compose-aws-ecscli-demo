@@ -170,8 +170,8 @@ services:
       - -allowedOrigins
       - "*"
     environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
     links:
       - postgres:postgres
     logging:
@@ -182,7 +182,8 @@ services:
         awslogs-stream-prefix: demo
     ports:
       - 8250:8250
-    user: "0"
+    privileged: true
+    user: "0:0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -211,7 +212,7 @@ services:
       - notebook
       - "--NotebookApp.token=''"
     environment:
-      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     links:
       - postgres:postgres

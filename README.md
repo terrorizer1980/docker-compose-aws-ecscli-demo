@@ -135,6 +135,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Create EFS
 
+FIXME: This section is incomplete.
+
 1. :pencil2: Choose a name for the AWS EFS.
    Example:
 
@@ -238,9 +240,12 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. HTTP
         1. SSH
         1. Custom TCP
-            1. 15672 - RabbitMQ
-            1. 8254 - Senzing x-term
+            1. 8250 - API server
+            1. 8251 - Web app
+            1. 8254 - Senzing X-Term
             1. 9171 - phpPgAdmin
+            1. 9178 - Jupyter notebooks
+            1. 15672 - RabbitMQ
 
 1. To find IP addresses and ports, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -251,6 +256,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ecs-cli ps \
       --cluster-config ${AWS_PROJECT}-config-name
     ```
+
+   Open a web browser to the various `http://ip-address:port` locations.
+
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml)
 
 ## Cleanup
 

@@ -227,7 +227,7 @@ FIXME: This section is incomplete.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-services.yaml \
-      --project-name ${AWS_PROJECT}-project-name-services \
+      --project-name ${AWS_PROJECT}-project-name \
       up \
         --create-log-groups \
         --launch-type EC2

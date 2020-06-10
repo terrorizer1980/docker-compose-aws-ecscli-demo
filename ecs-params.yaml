@@ -1,6 +1,10 @@
 version: 1
 task_definition:
   services:
+    yum:
+      cpu_shares: 20
+      essential: true
+      mem_limit: 200000000  
     postgres:
       cpu_shares: 20
       essential: true

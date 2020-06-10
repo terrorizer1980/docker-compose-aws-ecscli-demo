@@ -216,6 +216,8 @@ FIXME: This section is incomplete.
 
 ### Run tasks
 
+Deprecated.
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -229,6 +231,28 @@ FIXME: This section is incomplete.
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name-main \
       up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+
+### Run service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
+      --project-name ${AWS_PROJECT}-project-name-main \
+      service up \
         --create-log-groups \
         --launch-type EC2
     ```

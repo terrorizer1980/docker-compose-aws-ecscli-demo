@@ -160,16 +160,15 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   api:
-    command: infinity
-#      - -httpPort
-#      - "8250"
-#      - -bindAddr
-#      - all
-#      - -iniFile
-#      - /etc/opt/senzing/G2Module.ini
-#      - -allowedOrigins
-#      - "*"
-    entrypoint: sleep
+    command:
+      - -httpPort
+      - "8250"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}

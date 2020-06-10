@@ -214,7 +214,7 @@ FIXME: This section is incomplete.
     sudo chown -R ec2-user:ec2-user /var/opt/senzing
     ```
 
-### Run tasks
+### Run services tasks
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -233,6 +233,24 @@ FIXME: This section is incomplete.
         --launch-type EC2
     ```
 
+### Run stream producer tasks
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-stream-producer.yaml \
+      --project-name ${AWS_PROJECT}-project-name-stream-producer \
+      up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
 
 ### View tasks
 

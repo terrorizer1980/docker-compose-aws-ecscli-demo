@@ -74,6 +74,16 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export AWS_PROJECT=project01
     ```
 
+#### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   Example:
+
+    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
+
 ### Configure ECS CLI
 
 1. Run
@@ -89,7 +99,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
        --region ${AWS_REGION}
     ```
 
-1. Review: Configuration values are stored in `~/.ecs/config`.
+1. :thinking: **Optional:** To view configuration values, see `~/.ecs/config`.
 
     ```console
     cat ~/.ecs/config
@@ -107,12 +117,12 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --capability-iam \
       --cluster-config ${AWS_PROJECT}-config-name \
       --force \
-      --instance-type t2.micro \
+      --instance-type t2.large \
       --keypair ${AWS_KEYPAIR} \
       --size 1
     ```
 
-1. Review changes.
+1. :thinking: **Optional:** View changes.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
@@ -122,6 +132,87 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
         1. Click "ECS instances" tab.
+
+### Create EFS
+
+FIXME: This section is incomplete.
+
+1. :pencil2: Choose a name for the AWS EFS.
+   Example:
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=${AWS_PROJECT}-efs
+    ```
+
+1. Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/)
+   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
+   [create-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html).
+   Example:
+
+    ```console
+    aws efs create-file-system \
+      --creation-token ${SENZING_AWS_EFS_FILESYSTEM_ID} \
+      --region ${AWS_REGION}
+    ```
+
+1. :thinking: **Optional:** View changes.
+    1. [efs](https://console.aws.amazon.com/efs/home)
+
+1. FIXME: Update [ecs-params.yaml](ecs-params.yaml) `efs_volumes`.`filesystem_id`.
+
+### Open ports
+
+1. Open ports.
+    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. Choose "ECS instance" instance
+    1. **Security groups:**, click on security group.
+    1. In "Security Groups" dialog, edit "Inbound rules"
+    1. Open following ports:
+        1. HTTP
+        1. SSH
+        1. Custom TCP
+            1. 8250 - API server
+            1. 8251 - Web app
+            1. 8254 - Senzing X-Term
+            1. 9171 - phpPgAdmin
+            1. 9178 - Jupyter notebooks
+            1. 15672 - RabbitMQ
+
+### Run init tasks
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --project-name ${AWS_PROJECT}-project-name-init \
+      up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View changes.
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${AWS_PROJECT}-cluster
+        1. Click "Update Cluster" to update information.
+        1. Click "ECS instances" tab.
+
+1. **FIXME:** `ssh` into ec2 instance, then.
+
+    ```console
+    sudo chown -R ec2-user:ec2-user /opt/senzing
+    sudo chown -R ec2-user:ec2-user /etc/opt/senzing
+    sudo chown -R ec2-user:ec2-user /var/opt/senzing
+    ```
 
 ### Run tasks
 
@@ -136,10 +227,10 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-main \
       up \
-      --create-log-groups \
-      --launch-type EC2
+        --create-log-groups \
+        --launch-type EC2
     ```
 
 ### View tasks
@@ -175,9 +266,12 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
         1. HTTP
         1. SSH
         1. Custom TCP
-            1. 15672 - RabbitMQ
-            1. 8254 - Senzing x-term
+            1. 8250 - API server
+            1. 8251 - Web app
+            1. 8254 - Senzing X-Term
             1. 9171 - phpPgAdmin
+            1. 9178 - Jupyter notebooks
+            1. 15672 - RabbitMQ
 
 1. To find IP addresses and ports, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -189,7 +283,29 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --cluster-config ${AWS_PROJECT}-config-name
     ```
 
+   Open a web browser to the various `http://ip-address:port` locations.
+
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml)
+
 ## Cleanup
+
+### Bring down init task
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   down.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --project-name ${AWS_PROJECT}-project-name-init \
+      down \
+        --cluster-config ${AWS_PROJECT}-config-name
+    ```
 
 ### Bring down task
 
@@ -204,9 +320,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name \
+      --project-name ${AWS_PROJECT}-project-name-main \
       down \
-      --cluster-config ${AWS_PROJECT}-config-name
+        --cluster-config ${AWS_PROJECT}-config-name
     ```
 
 ### Bring down cluster

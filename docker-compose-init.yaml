@@ -1,0 +1,19 @@
+version: '3'
+services:
+
+  yum:
+    environment:
+      SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
+    image: senzing/yum:${SENZING_YUM_VERSION:-1.1.3}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: init
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_DIR:-/opt/senzing/data}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing

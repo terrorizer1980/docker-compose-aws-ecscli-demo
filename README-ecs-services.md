@@ -276,6 +276,9 @@ Install Senzing onto `/opt/senzing`.
         --cluster-config ${AWS_PROJECT}-config-name
     ```
 
+1. Task is a "job".
+   When the task state is `STOPPED`, the job has finished.
+
 ### Bring down task
 
 1. Run
@@ -343,6 +346,12 @@ Install Senzing onto `/opt/senzing`.
         1. [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
         1. [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+1. [AWS](https://aws.amazon.com/)
+   &gt; [Documentation](https://docs.aws.amazon.com/index.html)
+   &gt; [AWS Command Line Interface Documentation](https://docs.aws.amazon.com/cli/)
+    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html#cli-aws)
+        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+            1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)

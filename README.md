@@ -225,7 +225,7 @@ FIXME: This section is incomplete.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params-services.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-services.yaml \
       --project-name ${AWS_PROJECT}-project-name-services \
       up \

@@ -195,10 +195,31 @@ Install Senzing onto `/opt/senzing`.
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
       --file ${GIT_REPOSITORY_DIR}/docker-compose-postgres.yaml \
-      --project-name ${AWS_PROJECT}-project-name-main \
+      --project-name ${AWS_PROJECT}-project-name-postgres \
       service up \
         --create-log-groups \
         --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${AWS_PROJECT}-cluster \
+      --services ${AWS_PROJECT}-project-name-postgres
+    ```
+
+1. Find task definition.
+   Example:
+
+    ```console
+    export SENZING_TASK_DEFINITION_POSTGRES=$( \
+      aws ecs describe-services \
+        --cluster ${AWS_PROJECT}-cluster \
+        --services ${AWS_PROJECT}-project-name-postgres \
+      | jq --raw-output ".services[0].taskDefinition"
+    )
     ```
 
 ### View tasks
@@ -348,9 +369,9 @@ Install Senzing onto `/opt/senzing`.
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
-   &gt; [AWS Command Line Interface Documentation](https://docs.aws.amazon.com/cli/)
-    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html#cli-aws)
-        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+   &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
+    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
             1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)

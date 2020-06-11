@@ -373,7 +373,7 @@ Install Senzing onto `/opt/senzing`.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to create Senzing database schema.
+   to send messages to RabbitMQ.
    Example:
 
     ```console

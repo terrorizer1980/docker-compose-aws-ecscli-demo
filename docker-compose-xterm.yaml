@@ -1,0 +1,12 @@
+version: '3'
+services:
+  xterm:
+    image: senzing/xterm
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: demo
+    ports:
+      - 8254:5000

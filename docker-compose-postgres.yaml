@@ -16,6 +16,6 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: postgres
+        awslogs-stream-prefix: demo
     ports:
       - 5432:5432

@@ -616,6 +616,49 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     | grep jupyter
     ```
 
+### Create Senzing X-Term service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing X-Term service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-xterm.yaml \
+      --project-name ${AWS_PROJECT}-project-name-xterm \
+      service up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${AWS_PROJECT}-cluster \
+      --services ${AWS_PROJECT}-project-name-xterm
+    ```
+
+1. View X-Term.
+   Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name \
+    | grep xterm
+    ```
+
 ### View tasks
 
 1. Run

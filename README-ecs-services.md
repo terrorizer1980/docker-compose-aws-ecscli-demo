@@ -218,8 +218,7 @@ Install Senzing onto `/opt/senzing`.
       aws ecs describe-services \
         --cluster ${AWS_PROJECT}-cluster \
         --services ${AWS_PROJECT}-project-name-postgres \
-      | jq --raw-output '.services[] \
-        | select(.serviceName == "${AWS_PROJECT}-project-name-postgres" ).taskDefinition' \
+      | jq --raw-output ".services[]  | select(.serviceName == \"${AWS_PROJECT}-project-name-postgres\").taskDefinition" \
     )
     ```
 

@@ -232,7 +232,7 @@ Install Senzing onto `/opt/senzing`.
 1. Verify `SENZING_IP_ADDRESS_POSTGRES`.
    Example:
 
-       ```console
+    ```console
     echo ${SENZING_IP_ADDRESS_POSTGRES}
     ```
 

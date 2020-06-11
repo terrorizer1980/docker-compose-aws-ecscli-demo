@@ -266,7 +266,7 @@ Install Senzing onto `/opt/senzing`.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
-### Provision phpPgAdmin
+### Create phpPgAdmin service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -300,7 +300,7 @@ Install Senzing onto `/opt/senzing`.
     | grep phppgadmin
     ```
 
-### Provision RabbitMQ
+### Create RabbitMQ service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -331,6 +331,19 @@ Install Senzing onto `/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-rabbitmq
     ```
 
+1. View RabbitMQ.
+   Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name \
+    | grep rabbitmq
+    ```
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -354,7 +367,7 @@ Install Senzing onto `/opt/senzing`.
     echo $SENZING_IP_ADDRESS_RABBITMQ
     ```
 
-### Mock data generator
+### Create Mock data generator task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -373,6 +386,11 @@ Install Senzing onto `/opt/senzing`.
         --create-log-groups \
         --launch-type EC2
     ```
+
+1. This task is a "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+   However, this is a long-running job.
+   There is no need to wait for its completion.
 
 ### View tasks
 

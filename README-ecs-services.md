@@ -439,8 +439,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-stream-loaderrabbitmq.yaml \
-      --project-name ${AWS_PROJECT}-project-name-rabbitmq \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-stream-loader.yaml \
+      --project-name ${AWS_PROJECT}-project-name-stream-loader \
       service up \
         --create-log-groups \
         --launch-type EC2

@@ -307,7 +307,8 @@ Install Senzing onto `/opt/senzing`.
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Postgres database service.
+   to provision RabbitMQ service.
+   This information will be used in subsequent steps.
    Example:
 
     ```console
@@ -344,6 +345,13 @@ Install Senzing onto `/opt/senzing`.
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
     )
+    ```
+
+1. Verify `SENZING_IP_ADDRESS_RABBITMQ`.
+   Example:
+
+    ```console
+    echo $SENZING_IP_ADDRESS_RABBITMQ
     ```
 
 ### Mock data generator

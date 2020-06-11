@@ -226,6 +226,26 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
+### Create Senzing database schema
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to create Senzing database schema.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-postgresinit.yaml \
+      --project-name ${AWS_PROJECT}-project-name-postgresinit \
+      service up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
 ### Provision phpPgAdmin
 
 1. Run
@@ -247,29 +267,17 @@ Install Senzing onto `/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
-      --services ${AWS_PROJECT}-project-name-postgres
-    ```
-
-1. Run
+1. View phpPgAdmin.
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
+   to find IP address and port.
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_POSTGRES=$( \
-      ecs-cli ps \
-        --cluster-config ${AWS_PROJECT}-config-name \
-      | grep  postgres \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name \
+    | grep phppgadmin
     ```
 
 ### View tasks
@@ -281,7 +289,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name --json
+      --cluster-config ${AWS_PROJECT}-config-name
     ```
 
 1. View tasks in AWS Console:

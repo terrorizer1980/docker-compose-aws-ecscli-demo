@@ -4,7 +4,7 @@ task_definition:
     yum:
       cpu_shares: 20
       essential: true
-      mem_limit: 200000000  
+      mem_limit: 200000000
     postgres:
       cpu_shares: 20
       essential: true
@@ -15,11 +15,11 @@ task_definition:
       mem_limit: 200000000
     phppgadmin:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     postgresinit:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     mockdata:
       cpu_shares: 5

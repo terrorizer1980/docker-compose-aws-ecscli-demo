@@ -699,6 +699,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
 ## Cleanup
 
+FIXME: Not complete.
+
 ### Bring down init task
 
 1. Run

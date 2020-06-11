@@ -121,16 +121,13 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --size 1
     ```
 
-1. :thinking: **Optional:** View changes.
+1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
-        1. Click "Update Cluster" to update information.
-        1. Click "ECS instances" tab.
 
 ### Open ports
 
@@ -152,7 +149,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
             1. 9178 - Jupyter notebooks
             1. 15672 - RabbitMQ user interface
 
-### Install Senzing
+### Install Senzing task
 
 Install Senzing onto `/opt/senzing`.
 
@@ -173,15 +170,19 @@ Install Senzing onto `/opt/senzing`.
         --launch-type EC2
     ```
 
+1. This task is a "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+
 1. :thinking: **Optional:** View changes.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
-        1. Click "ECS instances" tab.
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Provision Postgres
+### Create Postgres service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -215,6 +216,7 @@ Install Senzing onto `/opt/senzing`.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
+   This information will be used in subsequent steps.
    Example:
 
     ```console
@@ -227,7 +229,14 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
-### Create Senzing database schema
+1. Verify `SENZING_IP_ADDRESS_POSTGRES`.
+   Example:
+
+       ```console
+    echo ${SENZING_IP_ADDRESS_POSTGRES}
+    ```
+
+### Create Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -405,7 +414,7 @@ Install Senzing onto `/opt/senzing`.
         --cluster-config ${AWS_PROJECT}-config-name
     ```
 
-1. Task is a "job".
+1. This task is a "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
 ### Bring down task

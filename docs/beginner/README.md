@@ -104,6 +104,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cat ~/.ecs/config
     ```
 
+### Create VPC
+
+FIXME: To improve isolation, create a VPC and use for the cluster.
+
 ### Create cluster
 
 1. Run
@@ -130,6 +134,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
 
 ### Open ports
+
+FIXME: This is clunky and requires the AWS Console.
+It should be a CLI invocation.
+Also, the
 
 1. Open ports.
     1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
@@ -162,8 +170,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-init \
       up \
         --create-log-groups \
@@ -195,8 +203,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-postgres.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
       --project-name ${AWS_PROJECT}-project-name-postgres \
       service up \
         --create-log-groups \
@@ -248,8 +256,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-postgres-init.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-postgres-init \
       up \
         --create-log-groups \
@@ -279,8 +287,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-phppgadmin.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
       --project-name ${AWS_PROJECT}-project-name-phppgadmin \
       service up \
         --create-log-groups \
@@ -313,8 +321,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-rabbitmq.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
       --project-name ${AWS_PROJECT}-project-name-rabbitmq \
       service up \
         --create-log-groups \
@@ -379,8 +387,8 @@ Install Senzing onto `/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-mock-data-generator.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
       --project-name ${AWS_PROJECT}-project-name-mock-data-generator \
       up \
         --create-log-groups \
@@ -405,8 +413,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-init-container.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
       --project-name ${AWS_PROJECT}-project-name-init-container \
       up \
         --create-log-groups \
@@ -438,8 +446,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-stream-loader.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
       --project-name ${AWS_PROJECT}-project-name-stream-loader \
       service up \
         --create-log-groups \
@@ -468,8 +476,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-apiserver.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
       --project-name ${AWS_PROJECT}-project-name-apiserver \
       service up \
         --create-log-groups \
@@ -543,8 +551,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-webapp.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
       --project-name ${AWS_PROJECT}-project-name-webapp \
       service up \
         --create-log-groups \
@@ -586,8 +594,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-jupyter.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
       --project-name ${AWS_PROJECT}-project-name-jupyter \
       service up \
         --create-log-groups \
@@ -629,8 +637,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-xterm.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
       --project-name ${AWS_PROJECT}-project-name-xterm \
       service up \
         --create-log-groups \
@@ -712,8 +720,8 @@ FIXME: Not complete.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-init.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-init \
       down \
         --cluster-config ${AWS_PROJECT}-config-name
@@ -733,8 +741,8 @@ FIXME: Not complete.
     ```console
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name-main \
       down \
         --cluster-config ${AWS_PROJECT}-config-name

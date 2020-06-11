@@ -37,7 +37,7 @@ task_definition:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000
-    api:
+    apiserver:
       cpu_shares: 15
       essential: true
       mem_limit: 3000000000

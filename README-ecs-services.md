@@ -506,7 +506,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_API_SERVER=$( \
+    export SENZING_IP_ADDRESS_APISERVER=$( \
       ecs-cli ps \
         --cluster-config ${AWS_PROJECT}-config-name \
       | grep  apiserver \
@@ -515,11 +515,62 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     )
     ```
 
-1. Verify `SENZING_IP_ADDRESS_API_SERVER`.
+1. Verify `SENZING_IP_ADDRESS_APISERVER`.
    Example:
 
     ```console
-    echo $SENZING_IP_ADDRESS_API_SERVER
+    echo $SENZING_IP_ADDRESS_APISERVER
+    ```
+
+1. :thinking: **Optional:** Verify Senzing API server is running.
+   A JSON response should be given to the following `curl` request.
+   Example:
+
+    ```console
+    curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
+    ```
+
+### Create Web App service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing Web App service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-webapp.yaml \
+      --project-name ${AWS_PROJECT}-project-name-webapp \
+      service up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${AWS_PROJECT}-cluster \
+      --services ${AWS_PROJECT}-project-name-webapp
+    ```
+
+1. View Web app.
+   Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name \
+    | grep webapp
     ```
 
 ### View tasks

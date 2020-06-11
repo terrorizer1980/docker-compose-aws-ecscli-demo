@@ -23,7 +23,7 @@ task_definition:
       mem_limit: 100000000
     mockdata:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     initcontainer:
       cpu_shares: 5

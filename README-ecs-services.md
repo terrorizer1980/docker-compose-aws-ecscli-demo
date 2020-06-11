@@ -13,7 +13,6 @@ This is a copy/paste version of
     1. [Identify metadata](#identify-metadata)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
-    1. [Run tasks](#run-tasks)
     1. [View tasks](#view-tasks)
     1. [View services](#view-services)
 1. [Cleanup](#cleanup)
@@ -144,12 +143,14 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. HTTP
         1. SSH
         1. Custom TCP
+            1. 5432 - Postgres
+            1. 5672 - RabbitMQ service
             1. 8250 - API server
             1. 8251 - Web app
             1. 8254 - Senzing X-Term
             1. 9171 - phpPgAdmin
             1. 9178 - Jupyter notebooks
-            1. 15672 - RabbitMQ
+            1. 15672 - RabbitMQ user interface
 
 ### Install Senzing
 
@@ -239,9 +240,9 @@ Install Senzing onto `/opt/senzing`.
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-postgresinit.yaml \
-      --project-name ${AWS_PROJECT}-project-name-postgresinit \
-      service up \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-postgres-init.yaml \
+      --project-name ${AWS_PROJECT}-project-name-postgres-init \
+      up \
         --create-log-groups \
         --launch-type EC2
     ```
@@ -326,6 +327,26 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
+### Mock data generator
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to create Senzing database schema.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-mock-data-generator.yaml \
+      --project-name ${AWS_PROJECT}-project-name-mock-data-generator \
+      up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
 ### View tasks
 
 1. Run
@@ -348,24 +369,7 @@ Install Senzing onto `/opt/senzing`.
    &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
    &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
 
-
 ### View services
-
-1. Open ports.
-    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-    1. Choose "ECS instance" instance
-    1. **Security groups:**, click on security group.
-    1. In "Security Groups" dialog, edit "Inbound rules"
-    1. Open following ports:
-        1. HTTP
-        1. SSH
-        1. Custom TCP
-            1. 8250 - API server
-            1. 8251 - Web app
-            1. 8254 - Senzing X-Term
-            1. 9171 - phpPgAdmin
-            1. 9178 - Jupyter notebooks
-            1. 15672 - RabbitMQ
 
 1. To find IP addresses and ports, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

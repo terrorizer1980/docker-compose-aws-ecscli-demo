@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   rabbitmq:
     environment:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}

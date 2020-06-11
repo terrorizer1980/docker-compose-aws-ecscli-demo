@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   initcontainer:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${SENZING_IP_ADDRESS_POSTGRES}:5432/${POSTGRES_DB:-G2}"

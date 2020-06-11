@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   yum:
     environment:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"

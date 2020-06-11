@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   phppgadmin:
     environment:
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL

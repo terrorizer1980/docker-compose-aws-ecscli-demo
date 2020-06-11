@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   loader:
     environment:
       LC_CTYPE: en_US.utf8

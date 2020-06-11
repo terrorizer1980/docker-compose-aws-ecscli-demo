@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   mockdata:
     environment:
       SENZING_DELAY_IN_SECONDS: 60

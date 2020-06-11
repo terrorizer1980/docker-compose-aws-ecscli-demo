@@ -187,7 +187,7 @@ Install Senzing onto `/opt/senzing`.
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-
+   to provision Postgres database service.
    Example:
 
     ```console
@@ -210,15 +210,65 @@ Install Senzing onto `/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-postgres
     ```
 
-1. Find task definition.
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address definition.
    Example:
 
     ```console
-    export SENZING_TASK_DEFINITION_POSTGRES=$( \
-      aws ecs describe-services \
-        --cluster ${AWS_PROJECT}-cluster \
-        --services ${AWS_PROJECT}-project-name-postgres \
-      | jq --raw-output ".services[]  | select(.serviceName == \"${AWS_PROJECT}-project-name-postgres\").taskDefinition" \
+    export SENZING_IP_ADDRESS_POSTGRES=$( \
+      ecs-cli ps \
+        --cluster-config ${AWS_PROJECT}-config-name \
+      | grep  postgres \
+      | awk '{print $3}' \
+      | awk -F \: {'print $1'} \
+    )
+    ```
+
+### Provision phpPgAdmin
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision phpPgAdmin database client service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-phppgadmin.yaml \
+      --project-name ${AWS_PROJECT}-project-name-phppgadmin \
+      service up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${AWS_PROJECT}-cluster \
+      --services ${AWS_PROJECT}-project-name-postgres
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address definition.
+   Example:
+
+    ```console
+    export SENZING_IP_ADDRESS_POSTGRES=$( \
+      ecs-cli ps \
+        --cluster-config ${AWS_PROJECT}-config-name \
+      | grep  postgres \
+      | awk '{print $3}' \
+      | awk -F \: {'print $1'} \
     )
     ```
 
@@ -231,7 +281,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name
+      --cluster-config ${AWS_PROJECT}-config-name --json
     ```
 
 1. View tasks in AWS Console:

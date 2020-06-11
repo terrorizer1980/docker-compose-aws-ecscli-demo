@@ -228,7 +228,7 @@ Install Senzing onto `/opt/senzing`.
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_POSTGRES=$( \
+    export SENZING_POSTGRES_HOST=$( \
       ecs-cli ps \
         --cluster-config ${AWS_PROJECT}-config-name \
       | grep  postgres \
@@ -237,11 +237,11 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
-1. Verify `SENZING_IP_ADDRESS_POSTGRES`.
+1. Verify `SENZING_POSTGRES_HOST`.
    Example:
 
     ```console
-    echo $SENZING_IP_ADDRESS_POSTGRES
+    echo $SENZING_POSTGRES_HOST
     ```
 
 ### Create Senzing database schema task
@@ -359,7 +359,7 @@ Install Senzing onto `/opt/senzing`.
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_RABBITMQ=$( \
+    export SENZING_RABBITMQ_HOST=$( \
       ecs-cli ps \
         --cluster-config ${AWS_PROJECT}-config-name \
       | grep  rabbitmq \
@@ -368,11 +368,11 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
-1. Verify `SENZING_IP_ADDRESS_RABBITMQ`.
+1. Verify `SENZING_RABBITMQ_HOST`.
    Example:
 
     ```console
-    echo $SENZING_IP_ADDRESS_RABBITMQ
+    echo $SENZING_RABBITMQ_HOST
     ```
 
 ### Create Mock data generator task

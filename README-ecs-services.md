@@ -469,8 +469,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ecs-cli compose \
       --cluster-config ${AWS_PROJECT}-config-name \
       --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
-      --file ${GIT_REPOSITORY_DIR}/docker-compose-api-server.yaml \
-      --project-name ${AWS_PROJECT}-project-name-api-server \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-apiserver.yaml \
+      --project-name ${AWS_PROJECT}-project-name-apiserver \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -482,7 +482,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     aws ecs describe-services \
       --cluster ${AWS_PROJECT}-cluster \
-      --services ${AWS_PROJECT}-project-name-rabbitmq
+      --services ${AWS_PROJECT}-project-name-apiserver
     ```
 
 1. View API server.
@@ -496,7 +496,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     ecs-cli ps \
       --cluster-config ${AWS_PROJECT}-config-name \
-    | grep api-server
+    | grep apiserver
     ```
 
 1. Run
@@ -509,7 +509,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     export SENZING_IP_ADDRESS_API_SERVER=$( \
       ecs-cli ps \
         --cluster-config ${AWS_PROJECT}-config-name \
-      | grep  api-server \
+      | grep  apiserver \
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
     )

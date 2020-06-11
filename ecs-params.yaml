@@ -27,7 +27,7 @@ task_definition:
       mem_limit: 100000000
     initcontainer:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     loader:
       cpu_shares: 15
@@ -47,5 +47,5 @@ task_definition:
       mem_limit: 100000000
     xterm:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000

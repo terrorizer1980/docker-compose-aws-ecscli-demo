@@ -173,7 +173,7 @@ Install Senzing onto `/opt/senzing`.
 1. This task is a "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View changes.
+1. :thinking: **Optional:** View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${AWS_PROJECT}-cluster
         1. Click "Update Cluster" to update information.
@@ -233,7 +233,7 @@ Install Senzing onto `/opt/senzing`.
    Example:
 
     ```console
-    echo ${SENZING_IP_ADDRESS_POSTGRES}
+    echo $SENZING_IP_ADDRESS_POSTGRES
     ```
 
 ### Create Senzing database schema task
@@ -255,6 +255,16 @@ Install Senzing onto `/opt/senzing`.
         --create-log-groups \
         --launch-type EC2
     ```
+
+1. This task is a "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+
+1. :thinking: **Optional:** View progress.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${AWS_PROJECT}-cluster
+        1. Click "Update Cluster" to update information.
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
 ### Provision phpPgAdmin
 

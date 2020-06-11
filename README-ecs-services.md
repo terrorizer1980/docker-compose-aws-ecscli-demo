@@ -455,6 +455,73 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-rabbitmq
     ```
 
+### Create API server service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing API server service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${AWS_PROJECT}-config-name \
+      --ecs-params ${GIT_REPOSITORY_DIR}/ecs-params.yaml \
+      --file ${GIT_REPOSITORY_DIR}/docker-compose-api-server.yaml \
+      --project-name ${AWS_PROJECT}-project-name-api-server \
+      service up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** View service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${AWS_PROJECT}-cluster \
+      --services ${AWS_PROJECT}-project-name-rabbitmq
+    ```
+
+1. View API server.
+   Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   This information will be used in subsequent steps.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${AWS_PROJECT}-config-name \
+    | grep api-server
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address definition.
+   Example:
+
+    ```console
+    export SENZING_IP_ADDRESS_API_SERVER=$( \
+      ecs-cli ps \
+        --cluster-config ${AWS_PROJECT}-config-name \
+      | grep  api-server \
+      | awk '{print $3}' \
+      | awk -F \: {'print $1'} \
+    )
+    ```
+
+1. Verify `SENZING_IP_ADDRESS_API_SERVER`.
+   Example:
+
+    ```console
+    echo $SENZING_IP_ADDRESS_API_SERVER
+    ```
+
 ### View tasks
 
 1. Run

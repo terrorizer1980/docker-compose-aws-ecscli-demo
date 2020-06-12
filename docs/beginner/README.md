@@ -1,7 +1,10 @@
 # docker-compose-aws-ecscli-demo
 
-This is a copy/paste version of
-[Tutorial: Creating a Cluster with an EC2 Task Using the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-ec2.html)
+
+## TODO
+
+1. Simplify opening ports
+1. Add instructions for VPC for isolation and make sure down-stream Services/Tasks are in the VPC
 
 ## Contents
 
@@ -818,3 +821,4 @@ FIXME: Not complete.
 1. YAML file formats
     1. [Using Docker Compose File Syntax](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-parameters.html)
     1. [Using Amazon ECS Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-ecsparams.html)
+1. [Tutorial: Creating a Cluster with an EC2 Task Using the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-ec2.html)

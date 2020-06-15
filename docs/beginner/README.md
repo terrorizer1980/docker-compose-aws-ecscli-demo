@@ -1,11 +1,5 @@
 # docker-compose-aws-ecscli-demo
 
-
-## TODO
-
-1. Simplify opening ports
-1. Add instructions for VPC for isolation and make sure down-stream Services/Tasks are in the VPC
-
 ## Contents
 
 1. [Prerequisites](#prerequisites)

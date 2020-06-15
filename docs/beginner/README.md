@@ -110,6 +110,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 ### Create Security Group for EC2s
 
 1. Create security group and store security group ID in `SENZING_AWS_EC2_SECURITY_GROUP`.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html).
    Example:
 
     ```console
@@ -122,6 +126,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```
 
 1. :thinking: **Optional:** View Security Group.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
    Example:
 
     ```console
@@ -179,60 +187,80 @@ Also, the
             1. 9178 - Jupyter notebooks
             1. 15672 - RabbitMQ user interface
 
-
-1. XXX
+1. Open ports.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html).
    Example:
 
     ```console
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 5432 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 5672 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 8250 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 8251 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 8254 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 9171 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 9178 \
       --cidr 0.0.0.0/0
 
-    aws ec2 authorize-security-group-ingress
+    aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --protocol tcp \
       --port 15672 \
       --cidr 0.0.0.0/0
     ```
 
+
+1. :thinking: **Optional:** View Security Group.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
+   Example:
+
+    ```console
+    aws ec2 describe-security-groups \
+      --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
+    ```
+
+1. :thinking: **Optional:** View Security Group in AWS console.
+    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. Choose "ECS instance" instance
+    1. **Security groups:**, click on security group for ${SENZING_AWS_EC2_SECURITY_GROUP}.
 
 ### Install Senzing task
 
@@ -314,7 +342,7 @@ Install Senzing onto `/opt/senzing`.
     )
     ```
 
-1. Verify `SENZING_POSTGRES_HOST`.
+1. :thinking: **Optional:** View `SENZING_POSTGRES_HOST` value.
    Example:
 
     ```console
@@ -881,6 +909,7 @@ FIXME: Not complete.
         1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
             1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
             1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
+            1. [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
         1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
             1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
 1. AWS console

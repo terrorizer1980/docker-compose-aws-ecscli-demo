@@ -584,7 +584,10 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -593,12 +596,10 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-apiserver
     ```
 
-1. View API server.
-   Run
+1. :thinking: **Optional:** To view API server, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
-   This information will be used in subsequent steps.
    Example:
 
     ```console
@@ -611,6 +612,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
+   This information will be used in subsequent steps.
    Example:
 
     ```console
@@ -623,7 +625,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     )
     ```
 
-1. Verify `SENZING_IP_ADDRESS_APISERVER`.
+1. :thinking: **Optional:** View `SENZING_IP_ADDRESS_APISERVER` value.
    Example:
 
     ```console
@@ -659,7 +661,10 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -668,8 +673,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-webapp
     ```
 
-1. View Web app.
-   Run
+1. :thinking: **Optional:** To view Senzing web app, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.

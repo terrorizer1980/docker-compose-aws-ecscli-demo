@@ -70,6 +70,20 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export AWS_PROJECT=project01
     ```
 
+#### Synthesize variables
+
+1. :pencil2: Choose a prefix used in AWS object names.
+   Example:
+
+    ```console
+    export SENZING_AWS_ECS_CLUSTER=${AWS_PROJECT}-cluster
+    export SENZING_AWS_ECS_CLUSTER_CONFIG=${AWS_PROJECT}-config-name
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+
+    ```
+
 #### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
@@ -89,8 +103,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     ecs-cli configure \
-       --cluster ${AWS_PROJECT}-cluster \
-       --config-name ${AWS_PROJECT}-config-name \
+       --cluster ${SENZING_AWS_ECS_CLUSTER} \
+       --config-name ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
        --default-launch-type EC2 \
        --region ${AWS_REGION}
     ```
@@ -141,7 +155,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     ecs-cli up \
       --capability-iam \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
       --instance-type t2.large \
       --keypair ${AWS_KEYPAIR} \
@@ -242,8 +256,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-init \
       up \
@@ -256,7 +270,7 @@ Install Senzing onto `/opt/senzing`.
 
 1. :thinking: **Optional:** View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
@@ -275,8 +289,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
       --project-name ${AWS_PROJECT}-project-name-postgres \
       service up \
@@ -289,7 +303,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-postgres
     ```
 
@@ -303,7 +317,7 @@ Install Senzing onto `/opt/senzing`.
     ```console
     export SENZING_POSTGRES_HOST=$( \
       ecs-cli ps \
-        --cluster-config ${AWS_PROJECT}-config-name \
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       | grep  postgres \
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
@@ -328,8 +342,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-postgres-init \
       up \
@@ -342,7 +356,7 @@ Install Senzing onto `/opt/senzing`.
 
 1. :thinking: **Optional:** View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
@@ -359,8 +373,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
       --project-name ${AWS_PROJECT}-project-name-phppgadmin \
       service up \
@@ -377,7 +391,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep phppgadmin
     ```
 
@@ -393,8 +407,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
       --project-name ${AWS_PROJECT}-project-name-rabbitmq \
       service up \
@@ -407,7 +421,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-rabbitmq
     ```
 
@@ -421,7 +435,7 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep rabbitmq
     ```
 
@@ -434,7 +448,7 @@ Install Senzing onto `/opt/senzing`.
     ```console
     export SENZING_RABBITMQ_HOST=$( \
       ecs-cli ps \
-        --cluster-config ${AWS_PROJECT}-config-name \
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       | grep  rabbitmq \
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
@@ -459,8 +473,8 @@ Install Senzing onto `/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
       --project-name ${AWS_PROJECT}-project-name-mock-data-generator \
       up \
@@ -485,8 +499,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
       --project-name ${AWS_PROJECT}-project-name-init-container \
       up \
@@ -499,7 +513,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
 1. :thinking: **Optional:** View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
@@ -518,8 +532,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
       --project-name ${AWS_PROJECT}-project-name-stream-loader \
       service up \
@@ -532,7 +546,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-rabbitmq
     ```
 
@@ -548,8 +562,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
       --project-name ${AWS_PROJECT}-project-name-apiserver \
       service up \
@@ -562,7 +576,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-apiserver
     ```
 
@@ -576,7 +590,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep apiserver
     ```
 
@@ -589,7 +603,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```console
     export SENZING_IP_ADDRESS_APISERVER=$( \
       ecs-cli ps \
-        --cluster-config ${AWS_PROJECT}-config-name \
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       | grep  apiserver \
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
@@ -623,8 +637,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
       --project-name ${AWS_PROJECT}-project-name-webapp \
       service up \
@@ -637,7 +651,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-webapp
     ```
 
@@ -650,7 +664,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep webapp
     ```
 
@@ -666,8 +680,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
       --project-name ${AWS_PROJECT}-project-name-jupyter \
       service up \
@@ -680,7 +694,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-jupyter
     ```
 
@@ -693,7 +707,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep jupyter
     ```
 
@@ -709,8 +723,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
       --project-name ${AWS_PROJECT}-project-name-xterm \
       service up \
@@ -723,7 +737,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     aws ecs describe-services \
-      --cluster ${AWS_PROJECT}-cluster \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${AWS_PROJECT}-project-name-xterm
     ```
 
@@ -736,7 +750,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep xterm
     ```
 
@@ -749,12 +763,12 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 1. View tasks in AWS Console:
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${AWS_PROJECT}-cluster
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
 1. View logs:
@@ -771,7 +785,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
     ```console
     ecs-cli ps \
-      --cluster-config ${AWS_PROJECT}-config-name
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
    Open a web browser to the various `http://ip-address:port` locations.
@@ -792,12 +806,12 @@ FIXME: Not complete.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-init \
       down \
-        --cluster-config ${AWS_PROJECT}-config-name
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 1. This task is a "job", not a long-running service.
@@ -813,12 +827,12 @@ FIXME: Not complete.
 
     ```console
     ecs-cli compose \
-      --cluster-config ${AWS_PROJECT}-config-name \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose.yaml \
       --project-name ${AWS_PROJECT}-project-name-main \
       down \
-        --cluster-config ${AWS_PROJECT}-config-name
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 ### Bring down cluster
@@ -831,7 +845,7 @@ FIXME: Not complete.
     ```console
     ecs-cli down \
       --force \
-      --cluster-config ${AWS_PROJECT}-config-name
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 ### Delete security group

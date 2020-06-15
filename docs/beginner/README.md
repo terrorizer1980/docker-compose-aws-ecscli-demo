@@ -107,9 +107,27 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cat ~/.ecs/config
     ```
 
-### Create VPC
+### Create Security Group for EC2s
 
-FIXME: To improve isolation, create a VPC and use for the cluster.
+1. Create security group and store security group ID in `SENZING_AWS_EC2_SECURITY_GROUP`.
+   Example:
+
+    ```console
+    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
+      aws ec2 create-security-group \
+        --description ${AWS_PROJECT}-security-group \
+        --group-name ${AWS_PROJECT}-security-group \
+      | jq --raw-output ".GroupId" \
+    )
+    ```
+
+1. :thinking: **Optional:** View Security Group.
+   Example:
+
+    ```console
+    aws ec2 describe-security-groups \
+      --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
+    ```
 
 ### Create cluster
 
@@ -125,6 +143,7 @@ FIXME: To improve isolation, create a VPC and use for the cluster.
       --force \
       --instance-type t2.large \
       --keypair ${AWS_KEYPAIR} \
+      --security-group ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --size 1
     ```
 
@@ -159,6 +178,61 @@ Also, the
             1. 9171 - phpPgAdmin
             1. 9178 - Jupyter notebooks
             1. 15672 - RabbitMQ user interface
+
+
+1. XXX
+   Example:
+
+    ```console
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 5432 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 5672 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 8250 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 8251 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 8254 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 9171 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 9178 \
+      --cidr 0.0.0.0/0
+
+    aws ec2 authorize-security-group-ingress
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol tcp \
+      --port 15672 \
+      --cidr 0.0.0.0/0
+    ```
+
 
 ### Install Senzing task
 
@@ -804,6 +878,9 @@ FIXME: Not complete.
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
     1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+        1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+            1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
+            1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
         1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
             1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
 1. AWS console

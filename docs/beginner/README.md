@@ -70,20 +70,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export AWS_PROJECT=project01
     ```
 
-#### Synthesize variables
-
-1. :pencil2: Choose a prefix used in AWS object names.
-   Example:
-
-    ```console
-    export SENZING_AWS_ECS_CLUSTER=${AWS_PROJECT}-cluster
-    export SENZING_AWS_ECS_CLUSTER_CONFIG=${AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
-
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml \
-
-    ```
-
 #### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
@@ -93,6 +79,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
+
+#### Synthesize variables
+
+1. Create additional environment variables.
+   Example:
+
+    ```console
+    export SENZING_AWS_ECS_CLUSTER=${AWS_PROJECT}-cluster
+    export SENZING_AWS_ECS_CLUSTER_CONFIG=${AWS_PROJECT}-config-name
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
+    ```
 
 ### Configure ECS CLI
 

@@ -419,7 +419,10 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -428,12 +431,11 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --services ${AWS_PROJECT}-project-name-rabbitmq
     ```
 
-1. View RabbitMQ.
-   Run
+1. :thinking: **Optional:** To view RabbitMQ,
+   run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
-   This information will be used in subsequent steps.
    Example:
 
     ```console
@@ -442,10 +444,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     | grep rabbitmq
     ```
 
+   **Username:** user
+   **Password:** bitnami
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
+   This information will be used in subsequent steps.
    Example:
 
     ```console

@@ -112,36 +112,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cat ~/.ecs/config
     ```
 
-### Create Security Group for EC2s
-
-1. Create security group and store security group ID in `SENZING_AWS_EC2_SECURITY_GROUP`.
-   Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html).
-   Example:
-
-    ```console
-    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws ec2 create-security-group \
-        --description ${AWS_PROJECT}-security-group \
-        --group-name ${AWS_PROJECT}-security-group \
-      | jq --raw-output ".GroupId" \
-    )
-    ```
-
-1. :thinking: **Optional:** View Security Group.
-   Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
-   Example:
-
-    ```console
-    aws ec2 describe-security-groups \
-      --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
-    ```
-
 ### Create cluster
 
 1. Run
@@ -167,6 +137,31 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+
+### Find security group ID
+
+1. Find the AWS security group for the EC2 instance used in ECS.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   Example:
+
+    ```console
+    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
+      aws cloudformation list-stack-resources \
+        --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
+      | jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" \
+    )
+    ```
+
+1.
+1. :thinking: **Optional:** View security group ID.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_EC2_SECURITY_GROUP}
+    ```
 
 ### Open inbound ports
 

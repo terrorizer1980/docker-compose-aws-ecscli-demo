@@ -706,7 +706,10 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -715,8 +718,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-jupyter
     ```
 
-1. View Jupyter.
-   Run
+1. :thinking: **Optional:** To view Jupyter, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -749,7 +751,10 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -758,8 +763,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
       --services ${AWS_PROJECT}-project-name-xterm
     ```
 
-1. View X-Term.
-   Run
+1. :thinking: **Optional:** To view Senzing X-Term, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.

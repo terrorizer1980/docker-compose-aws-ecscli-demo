@@ -834,6 +834,20 @@ FIXME: Not complete.
       --cluster-config ${AWS_PROJECT}-config-name
     ```
 
+### Delete security group
+
+1. Delete security group identified by `SENZING_AWS_EC2_SECURITY_GROUP`.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [delete-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/delete-security-group.html).
+   Example:
+
+    ```console
+    aws ec2 delete-security-group \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP}
+    ```
+
 ### Clean logs
 
 1. Logs:
@@ -849,6 +863,7 @@ FIXME: Not complete.
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
+        1. [security groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups)
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
         1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)

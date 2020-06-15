@@ -10,6 +10,15 @@
     1. [Identify metadata](#identify-metadata)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
+    1. []()
     1. [View tasks](#view-tasks)
     1. [View services](#view-services)
 1. [Cleanup](#cleanup)
@@ -130,8 +139,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```
 
 1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
@@ -154,7 +163,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     )
     ```
 
-1.
 1. :thinking: **Optional:** View security group ID.
    Example:
 
@@ -232,12 +240,13 @@ For production purposes it is not fine.
 
 1. :thinking: **Optional:** View Security Group in AWS console.
     1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-    1. Choose "ECS instance" instance
-    1. **Security groups:**, click on security group for ${SENZING_AWS_EC2_SECURITY_GROUP}.
+    1. Choose "ECS instance" for the cluster.
+    1. **Security groups:**, click on security group.
+    1. In "Security Groups", click on appropriate Security group ID link.
 
 ### Install Senzing task
 
-Install Senzing onto `/opt/senzing`.
+Install Senzing into `/opt/senzing` on the EC2 instance.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -373,8 +382,8 @@ Install Senzing onto `/opt/senzing`.
         --launch-type EC2
     ```
 
-1. View phpPgAdmin.
-   Run
+1. :thinking: **Optional:** To view phpPgAdmin,
+   run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -385,6 +394,9 @@ Install Senzing onto `/opt/senzing`.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep phppgadmin
     ```
+
+   **Username:** postgres
+   **Password:** postgres
 
 ### Create RabbitMQ service
 

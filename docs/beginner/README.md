@@ -163,7 +163,12 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
 
-### Open ports
+### Open inbound ports
+
+:warning: **Warning:** The following inbound port specifications are **wide open**.
+Meaning they can be accessed from anywhere.
+For demonstration purposes, this is fine.
+For production purposes it is not fine.
 
 1. Open inbound ports.
    Run
@@ -212,22 +217,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
         IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
-    ```
-
-1. Open outbound ports.
-   FIXME: This may not be needed. It shows an error.
-   Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [authorize-security-group-egress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-egress.html).
-   Example:
-
-    ```console
-    aws ec2 authorize-security-group-egress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol all \
-      --port -1 \
-      --cidr 0.0.0.0/0
     ```
 
 1. :thinking: **Optional:** View Security Group.

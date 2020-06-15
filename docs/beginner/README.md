@@ -165,28 +165,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Open ports
 
-FIXME: This is clunky and requires the AWS Console.
-It should be a CLI invocation.
-Also, the
-
-1. Open ports.
-    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-    1. Choose "ECS instance" instance
-    1. **Security groups:**, click on security group.
-    1. In "Security Groups" dialog, edit "Inbound rules"
-    1. Open following ports:
-        1. HTTP
-        1. SSH
-        1. Custom TCP
-            1. 5432 - Postgres
-            1. 5672 - RabbitMQ service
-            1. 8250 - API server
-            1. 8251 - Web app
-            1. 8254 - Senzing X-Term
-            1. 9171 - phpPgAdmin
-            1. 9178 - Jupyter notebooks
-            1. 15672 - RabbitMQ user interface
-
 1. Open inbound ports.
    Run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)

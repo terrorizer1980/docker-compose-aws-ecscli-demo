@@ -126,7 +126,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --force \
       --instance-type t2.large \
       --keypair ${AWS_KEYPAIR} \
-      --security-group ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --size 1
     ```
 

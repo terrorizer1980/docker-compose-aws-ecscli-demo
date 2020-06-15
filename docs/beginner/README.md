@@ -436,6 +436,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
+   Use port 15672.
    Example:
 
     ```console
@@ -464,7 +465,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     )
     ```
 
-1. Verify `SENZING_RABBITMQ_HOST`.
+1. :thinking: **Optional:** View `SENZING_RABBITMQ_HOST` value.
    Example:
 
     ```console
@@ -550,13 +551,16 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-rabbitmq
+      --services ${AWS_PROJECT}-project-name-stream-loader
     ```
 
 ### Create API server service

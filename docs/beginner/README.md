@@ -840,19 +840,10 @@ FIXME: Not complete.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
-### Delete security group
+### Remove tasks
 
-1. Delete security group identified by `SENZING_AWS_EC2_SECURITY_GROUP`.
-   Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [delete-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/delete-security-group.html).
-   Example:
 
-    ```console
-    aws ec2 delete-security-group \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP}
-    ```
+https://console.aws.amazon.com/ecs/home?region=us-east-1#/taskDefinitions
 
 ### Clean logs
 
@@ -860,6 +851,8 @@ FIXME: Not complete.
    [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
    &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
    &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
+
+
 
 ### Verify cleanup in AWS console
 
@@ -874,6 +867,8 @@ FIXME: Not complete.
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
         1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
+        1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
 
 ## References
 
@@ -895,6 +890,8 @@ FIXME: Not complete.
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
     1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+        1. [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+            1. [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
         1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
             1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
             1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)

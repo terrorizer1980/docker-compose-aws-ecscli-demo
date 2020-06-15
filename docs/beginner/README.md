@@ -187,7 +187,7 @@ Also, the
             1. 9178 - Jupyter notebooks
             1. 15672 - RabbitMQ user interface
 
-1. Open ports.
+1. Open inbound ports.
    Run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
    [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
@@ -197,53 +197,60 @@ Also, the
     ```console
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 5432 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 5672 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=5672,ToPort=5672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ service"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 8250 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=8250,ToPort=8250,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing API server"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 8251 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=8251,ToPort=8251,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Web App"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 8254 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=8254,ToPort=8254,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing X-Term"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 9171 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=9171,ToPort=9171,IpRanges='[{CidrIp=0.0.0.0/0,Description="phpPgAdmin"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 9178 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=9178,ToPort=9178,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 15672 \
-      --cidr 0.0.0.0/0
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
 
+1. Open outbound ports.
+   FIXME: This may not be needed. It shows an error.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [authorize-security-group-egress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-egress.html).
+   Example:
+
+    ```console
+    aws ec2 authorize-security-group-egress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --protocol all \
+      --port -1 \
+      --cidr 0.0.0.0/0
+    ```
 
 1. :thinking: **Optional:** View Security Group.
    Run

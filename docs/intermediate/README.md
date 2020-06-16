@@ -152,12 +152,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     ecs-cli up \
-      --capability-iam \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --force \
-      --instance-type t2.large \
-      --keypair ${AWS_KEYPAIR} \
-      --size 1
+      --force
     ```
 
 1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
@@ -167,6 +163,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+    1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
 
 ### Find security group ID
 

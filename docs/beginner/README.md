@@ -66,8 +66,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 #### AWS metadata
 
 1. :pencil2: Set AWS metadata:
-   [regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
-   [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+   [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
+   [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
    Example:
 
     ```console

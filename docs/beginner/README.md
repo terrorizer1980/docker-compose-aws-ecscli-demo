@@ -649,13 +649,6 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     )
     ```
 
-1. :thinking: **Optional:** View `SENZING_IP_ADDRESS_APISERVER` value.
-   Example:
-
-    ```console
-    echo $SENZING_IP_ADDRESS_APISERVER
-    ```
-
 1. :thinking: **Optional:** Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
@@ -665,6 +658,10 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```
 
 1. :thinking: **Optional:** [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml). In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
+
+    ```console
+    echo $SENZING_IP_ADDRESS_APISERVER
+    ```
 
 ### Create Senzing Web App service
 

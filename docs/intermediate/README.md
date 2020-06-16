@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo
+# docker-compose-aws-ecscli-demo-intermediate
 
 ## Contents
 
@@ -105,6 +105,23 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
     ```
 
+### Provision Elastic File system
+
+1. Create EFS file system.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
+   [create-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html).
+   Example:
+
+    ```console
+    aws efs create-file-system \
+       --creation-token ${SENZING_AWS_PROJECT}-efs \
+       --tags Key=Name,Value=${SENZING_AWS_PROJECT}
+    ```
+
+    {SENZING_AWS_EFS_FILESYSTEM_ID}
+
 ### Configure ECS CLI
 
 1. Run
@@ -116,7 +133,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ecs-cli configure \
        --cluster ${SENZING_AWS_ECS_CLUSTER} \
        --config-name ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-       --default-launch-type EC2 \
+       --default-launch-type FARGATE \
        --region ${AWS_REGION}
     ```
 

@@ -14,7 +14,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 9178:8888
     volumes:

@@ -10,6 +10,14 @@
     1. [Identify metadata](#identify-metadata)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
+    1. [Find security group ID](#find-security-group-id)
+    1. [Open inbound ports](#open-inbound-ports)
+    1. [Install Senzing task](#install-senzing-task)
+    1. [Create Postgres service](#create-postgres-service)
+    1. [Create Senzing database schema task](#create-senzing-database-schema-task)
+    1. [Create phpPgAdmin service](#create-phppgadmin-service)
+    1. [Create RabbitMQ service](#create-rabbitmq-service)
+    1. [Create Mock data generator task](#create-mock-data-generator-task)
     1. []()
     1. []()
     1. []()
@@ -22,7 +30,6 @@
     1. [View tasks](#view-tasks)
     1. [View services](#view-services)
 1. [Cleanup](#cleanup)
-    1. [Bring down task](#bring-down-task)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Clean logs](#clean-logs)
     1. [Verify cleanup in AWS console](#verify-cleanup-in-aws-console)
@@ -188,6 +195,11 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
+        IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges='[{CidrIp=0.0.0.0/0,Description="SSH"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
         IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -259,6 +271,39 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${AWS_PROJECT}-project-name-init \
+      up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. This task is a short-lived "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+
+1. :thinking: **Optional:** View progress.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Update Cluster" to update information.
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+
+### Run init-container task
+
+Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
+      --project-name ${AWS_PROJECT}-project-name-init-container \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -502,38 +547,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
    However, this is a long-running job.
    There is no need to wait for its completion.
 
-### Run init-container task
 
-Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
-      --project-name ${AWS_PROJECT}-project-name-init-container \
-      up \
-        --create-log-groups \
-        --launch-type EC2
-    ```
-
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
-
-1. :thinking: **Optional:** View progress.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 ### Create Stream loader service
 
@@ -649,6 +663,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
     ```
+
+1. :thinking: **Optional:** [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml). In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
 
 ### Create Senzing Web App service
 
@@ -823,7 +839,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    Open a web browser to the various `http://ip-address:port` locations.
 
-1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml)
 
 ## Cleanup
 

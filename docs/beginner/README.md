@@ -13,24 +13,20 @@
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
     1. [Install Senzing task](#install-senzing-task)
+    1. [Run init-container task](#run-init-container-task)
     1. [Create Postgres service](#create-postgres-service)
     1. [Create Senzing database schema task](#create-senzing-database-schema-task)
     1. [Create phpPgAdmin service](#create-phppgadmin-service)
     1. [Create RabbitMQ service](#create-rabbitmq-service)
     1. [Create Mock data generator task](#create-mock-data-generator-task)
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. []()
-    1. [View tasks](#view-tasks)
-    1. [View services](#view-services)
+    1. [Create Stream loader service](#create-stream-loader-service)
+    1. [Create Senzing API server service](#create-senzing-api-server-service)
+    1. [Create Senzing Web App service](#create-senzing-web-app-service)
+    1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+    1. [Create Senzing X-Term service](#create-senzing-x-term-service)
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
+    1. [Delete tasks definitions](#delete-tasks-definitions)
     1. [Clean logs](#clean-logs)
     1. [Verify cleanup in AWS console](#verify-cleanup-in-aws-console)
 1. [References](#references)
@@ -582,7 +578,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
       --services ${AWS_PROJECT}-project-name-stream-loader
     ```
 
-### Create API server service
+### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).

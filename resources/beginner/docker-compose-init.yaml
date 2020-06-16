@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   yum:
     environment:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
@@ -10,7 +9,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: init
+        awslogs-stream-prefix: demo
     user: "0"
     volumes:
       - ${SENZING_DATA_DIR:-/opt/senzing/data}:/opt/senzing/data

@@ -1,6 +1,10 @@
 version: 1
 task_definition:
   services:
+    yum:
+      cpu_shares: 20
+      essential: true
+      mem_limit: 200000000
     postgres:
       cpu_shares: 20
       essential: true
@@ -11,37 +15,37 @@ task_definition:
       mem_limit: 200000000
     phppgadmin:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     postgresinit:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     mockdata:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     initcontainer:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     loader:
       cpu_shares: 15
-      essential: false
+      essential: true
       mem_limit: 3000000000
     jupyter:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
-    api:
+    apiserver:
       cpu_shares: 15
-      essential: false
+      essential: true
       mem_limit: 3000000000
     webapp:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000
     xterm:
       cpu_shares: 5
-      essential: false
+      essential: true
       mem_limit: 100000000

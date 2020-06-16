@@ -226,8 +226,7 @@ For production purposes it is not fine.
         IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
 
-1. :thinking: **Optional:** View Security Group.
-   Run
+1. :thinking: **Optional:** To view Security Group, run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
    [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
    [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
@@ -265,7 +264,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         --launch-type EC2
     ```
 
-1. This task is a "job", not a long-running service.
+1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:** View progress.
@@ -298,7 +297,10 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** View service definition.
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -351,7 +353,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         --launch-type EC2
     ```
 
-1. This task is a "job", not a long-running service.
+1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:** View progress.
@@ -436,7 +438,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
-   Use port 15672.
    Example:
 
     ```console
@@ -444,6 +445,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep rabbitmq
     ```
+
+   Use the value having port 15672 which is the RabbitMQ web application.
 
    **Username:** user
    **Password:** bitnami
@@ -474,6 +477,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 
 ### Create Mock data generator task
 
+Read JSON lines from a URL-addressable file and send to RabbitMQ.
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -492,14 +497,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         --launch-type EC2
     ```
 
-1. This task is a "job", not a long-running service.
+1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
    However, this is a long-running job.
    There is no need to wait for its completion.
 
 ### Run init-container task
 
-Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
+Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -518,7 +523,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         --launch-type EC2
     ```
 
-1. This task is a "job", not a long-running service.
+1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:** View progress.
@@ -531,6 +536,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 ### Create Stream loader service
+
+The stream loader service reads messages from RabbitMQ and inserts them into the Senzing Model.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -564,6 +571,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     ```
 
 ### Create API server service
+
+The Senzing API server communicates with the Senzing Engine to provide an HTTP
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -640,7 +650,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
     curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
     ```
 
-### Create Web App service
+### Create Senzing Web App service
+
+The Senzing Web App provides a user interface to Senzing functionality.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -815,47 +827,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing`.
 
 ## Cleanup
 
-FIXME: Not complete.
-
-### Bring down init task
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   down.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
-      --project-name ${AWS_PROJECT}-project-name-init \
-      down \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
-
-1. This task is a "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
-
-### Bring down task
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   down.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose.yaml \
-      --project-name ${AWS_PROJECT}-project-name-main \
-      down \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
-
 ### Bring down cluster
 
 1. Run
@@ -869,10 +840,46 @@ FIXME: Not complete.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
-### Remove tasks
+### Delete tasks definitions
 
+1. Identify suffixes for `${AWS_PROJECT}-project-name-`.
+   Example:
 
-https://console.aws.amazon.com/ecs/home?region=us-east-1#/taskDefinitions
+    ```console
+    export SENZING_ECS_TASK_DEFINITIONS=( \
+      "apiserver" \
+      "init" \
+      "init-container" \
+      "jupyter" \
+      "mock-data-generator" \
+      "phppgadmin" \
+      "postgres" \
+      "postgres-init" \
+      "rabbitmq" \
+      "stream-loader" \
+      "webapp" \
+      "xterm" \
+    )
+    ```
+
+1. Delete task definitions. Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [deregister-task-definition](https://docs.aws.amazon.com/cli/latest/reference/ecs/deregister-task-definition.html)
+   in a loop over `SENZING_ECS_TASK_DEFINITIONS` values.
+   Example:
+
+    ```console
+    for SENZING_ECS_TASK_DEFINITION in ${SENZING_ECS_TASK_DEFINITIONS[@]};\
+    do \
+      aws ecs deregister-task-definition \
+        --task-definition $( \
+          aws ecs list-task-definitions \
+            --family-prefix "${AWS_PROJECT}-project-name-${SENZING_ECS_TASK_DEFINITION}" \
+          | jq --raw-output .taskDefinitionArns[0] \
+        ) > /dev/null; \
+    done
+    ```
 
 ### Clean logs
 
@@ -880,8 +887,6 @@ https://console.aws.amazon.com/ecs/home?region=us-east-1#/taskDefinitions
    [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
    &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
    &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
-
-
 
 ### Verify cleanup in AWS console
 

@@ -547,8 +547,6 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
    However, this is a long-running job.
    There is no need to wait for its completion.
 
-
-
 ### Create Stream loader service
 
 The stream loader service reads messages from RabbitMQ and inserts them into the Senzing Model.
@@ -657,7 +655,10 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
     ```
 
-1. :thinking: **Optional:** [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml). In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
+1. :thinking: **Optional:** Play with
+   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+   In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
+   To find the value, run
 
     ```console
     echo $SENZING_IP_ADDRESS_APISERVER
@@ -799,43 +800,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep xterm
     ```
-
-### View tasks
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html).
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
-
-1. View tasks in AWS Console:
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-1. View logs:
-   [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-   &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-   &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
-
-### View services
-
-1. To find IP addresses and ports, run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html).
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
-
-   Open a web browser to the various `http://ip-address:port` locations.
-
 
 ## Cleanup
 

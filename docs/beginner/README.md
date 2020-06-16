@@ -65,7 +65,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 #### AWS metadata
 
-1. :pencil2: Set AWS metadata.
+1. :pencil2: Set AWS metadata:
+   [regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
+   [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
    Example:
 
     ```console
@@ -79,7 +81,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export AWS_PROJECT=project01
+    export SENZING_AWS_PROJECT=project01
     ```
 
 #### EULA
@@ -98,8 +100,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_AWS_ECS_CLUSTER=${AWS_PROJECT}-cluster
-    export SENZING_AWS_ECS_CLUSTER_CONFIG=${AWS_PROJECT}-config-name
+    export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
+    export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
     ```
 
@@ -266,7 +268,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
-      --project-name ${AWS_PROJECT}-project-name-init \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -299,7 +301,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
-      --project-name ${AWS_PROJECT}-project-name-init-container \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -332,7 +334,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
-      --project-name ${AWS_PROJECT}-project-name-postgres \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -347,7 +349,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-postgres
+      --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
 
 1. Run
@@ -388,7 +390,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
-      --project-name ${AWS_PROJECT}-project-name-postgres-init \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -419,7 +421,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
-      --project-name ${AWS_PROJECT}-project-name-phppgadmin \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -456,7 +458,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
-      --project-name ${AWS_PROJECT}-project-name-rabbitmq \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -471,7 +473,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-rabbitmq
+      --services ${SENZING_AWS_PROJECT}-project-name-rabbitmq
     ```
 
 1. :thinking: **Optional:** To view RabbitMQ,
@@ -532,7 +534,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
-      --project-name ${AWS_PROJECT}-project-name-mock-data-generator \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
       up \
         --create-log-groups \
         --launch-type EC2
@@ -560,7 +562,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
-      --project-name ${AWS_PROJECT}-project-name-stream-loader \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -575,7 +577,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-stream-loader
+      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
 ### Create Senzing API server service
@@ -596,7 +598,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
-      --project-name ${AWS_PROJECT}-project-name-apiserver \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -611,7 +613,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-apiserver
+      --services ${SENZING_AWS_PROJECT}-project-name-apiserver
     ```
 
 1. :thinking: **Optional:** To view API server, run
@@ -677,7 +679,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
-      --project-name ${AWS_PROJECT}-project-name-webapp \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -692,7 +694,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-webapp
+      --services ${SENZING_AWS_PROJECT}-project-name-webapp
     ```
 
 1. :thinking: **Optional:** To view Senzing web app, run
@@ -722,7 +724,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
-      --project-name ${AWS_PROJECT}-project-name-jupyter \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -737,7 +739,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-jupyter
+      --services ${SENZING_AWS_PROJECT}-project-name-jupyter
     ```
 
 1. :thinking: **Optional:** To view Jupyter, run
@@ -767,7 +769,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
-      --project-name ${AWS_PROJECT}-project-name-xterm \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up \
         --create-log-groups \
         --launch-type EC2
@@ -782,7 +784,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${AWS_PROJECT}-project-name-xterm
+      --services ${SENZING_AWS_PROJECT}-project-name-xterm
     ```
 
 1. :thinking: **Optional:** To view Senzing X-Term, run
@@ -814,7 +816,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Delete tasks definitions
 
-1. Identify suffixes for `${AWS_PROJECT}-project-name-`.
+1. Identify suffixes for `${SENZING_AWS_PROJECT}-project-name-`.
    Example:
 
     ```console
@@ -847,7 +849,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       aws ecs deregister-task-definition \
         --task-definition $( \
           aws ecs list-task-definitions \
-            --family-prefix "${AWS_PROJECT}-project-name-${SENZING_ECS_TASK_DEFINITION}" \
+            --family-prefix "${SENZING_AWS_PROJECT}-project-name-${SENZING_ECS_TASK_DEFINITION}" \
           | jq --raw-output .taskDefinitionArns[0] \
         ) > /dev/null; \
     done

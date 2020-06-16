@@ -28,7 +28,7 @@
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
     1. [Clean logs](#clean-logs)
-    1. [Verify cleanup in AWS console](#verify-cleanup-in-aws-console)
+    1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
 
 ## Prerequisites
@@ -868,9 +868,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --log-group-name senzing-docker-compose-aws-ecscli-demo
     ```
 
-### Verify cleanup in AWS console
+### Review cleanup in AWS console
 
-1. Verify in AWS Console:
+1. In AWS Console:
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2/autoscaling/home?#AutoScalingGroups)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)

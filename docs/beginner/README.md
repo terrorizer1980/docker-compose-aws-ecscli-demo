@@ -13,10 +13,10 @@
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
     1. [Install Senzing task](#install-senzing-task)
-    1. [Run init-container task](#run-init-container-task)
     1. [Create Postgres service](#create-postgres-service)
     1. [Create Senzing database schema task](#create-senzing-database-schema-task)
     1. [Create phpPgAdmin service](#create-phppgadmin-service)
+    1. [Run init-container task](#run-init-container-task)
     1. [Create RabbitMQ service](#create-rabbitmq-service)
     1. [Create Mock data generator task](#create-mock-data-generator-task)
     1. [Create Stream loader service](#create-stream-loader-service)
@@ -286,39 +286,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Run init-container task
-
-Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
-      up \
-        --create-log-groups \
-        --launch-type EC2
-    ```
-
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
-
-1. :thinking: **Optional:** View progress.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-
 ### Create Postgres service
 
 1. Run
@@ -442,6 +409,39 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
    **Username:** postgres
    **Password:** postgres
+
+### Run init-container task
+
+Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
+      up \
+        --create-log-groups \
+        --launch-type EC2
+    ```
+
+1. This task is a short-lived "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+
+1. :thinking: **Optional:** View progress.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Update Cluster" to update information.
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
+    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 ### Create RabbitMQ service
 

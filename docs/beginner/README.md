@@ -883,10 +883,16 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Clean logs
 
-1. Logs:
-   [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-   &gt; [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-   &gt; [senzing-docker-compose-aws-ecscli-demo](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups/log-group/senzing-docker-compose-aws-ecscli-demo)
+1. Delete logs. Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html#cli-aws-logs)
+   [delete-log-group](https://docs.aws.amazon.com/cli/latest/reference/logs/delete-log-group.html)
+   Example:
+
+    ```console
+    aws logs delete-log-group \
+      --log-group-name senzing-docker-compose-aws-ecscli-demo
+    ```
 
 ### Verify cleanup in AWS console
 
@@ -926,12 +932,15 @@ The Senzing Web App provides a user interface to Senzing functionality.
     1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
         1. [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
             1. [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+        1. [cloudwatch](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/index.html)
         1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
             1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
             1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
             1. [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
         1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
             1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
+        1. [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html)
+
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)

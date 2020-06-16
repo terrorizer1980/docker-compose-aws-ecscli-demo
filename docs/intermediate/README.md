@@ -159,11 +159,13 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
-    1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
+    1. [vpc](https://console.aws.amazon.com/vpc/home)
+        1. [internet gateways](https://console.aws.amazon.com/vpc/home?#igws)
+        1. [network acls](https://console.aws.amazon.com/vpc/home?#acls)
+        1. [route tables](https://console.aws.amazon.com/vpc/home?#RouteTables)
+        1. [security groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups)
+        1. [subnets](https://console.aws.amazon.com/vpc/home?#subnets)
+        1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
 
 ### Find security group ID
 

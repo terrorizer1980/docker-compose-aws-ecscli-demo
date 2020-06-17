@@ -270,8 +270,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
-        --create-log-groups \
-        --launch-type EC2
+        --create-log-groups
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -302,9 +301,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -358,9 +355,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -389,9 +384,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view phpPgAdmin,
@@ -426,9 +419,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -459,9 +450,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -535,9 +524,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -563,9 +550,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -599,9 +584,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -680,9 +663,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -725,9 +706,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -770,9 +749,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  initcontainer:
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${SENZING_POSTGRES_HOST}:5432/${POSTGRES_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.3}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: intermediate
+    user: "0"
+    volumes:
+      - senzing-data-version-dir:/opt/senzing/data
+      - senzing-etc-dir:/etc/opt/senzing
+      - senzing-g2-dir:/opt/senzing/g2
+volumes:
+  senzing-data-version-dir:
+  senzing-etc-dir:
+  senzing-g2-dir:

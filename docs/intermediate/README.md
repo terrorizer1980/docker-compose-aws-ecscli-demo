@@ -102,10 +102,12 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
     ```
 
 ### Provision Elastic File system
+
+FIXME:
 
 1. Create EFS file system.
    Run
@@ -158,8 +160,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [security groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [vpc](https://console.aws.amazon.com/vpc/home)
         1. [internet gateways](https://console.aws.amazon.com/vpc/home?#igws)
@@ -169,20 +169,59 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [subnets](https://console.aws.amazon.com/vpc/home?#subnets)
         1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
 
+### Save Cluster metadata
+
+1. The `ecs-cli up` command that just completed prints metadata
+   that needs to be captured in environment variables for later use.
+   Example:
+
+    ```console
+    :
+    INFO[0001] Waiting for your cluster resources to be created...
+    INFO[0002] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
+    INFO[0063] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
+    VPC created: vpc-00000000000000000
+    Subnet created: subnet-11111111111111111
+    Subnet created: subnet-22222222222222222
+    Cluster creation succeeded.
+    ```
+
+1. :pencil2: Set environment variable with VPC ID.
+   Example:
+
+    ```console
+    export SENZING_AWS_VPC_ID=vpc-00000000000000000
+    ```
+
+1. :pencil2: Set environment variable with Subnet #1
+   Example:
+
+    ```console
+    export SENZING_AWS_SUBNET_ID_1=subnet-11111111111111111
+    ```
+
+1. :pencil2: Set environment variable with Subnet #2
+   Example:
+
+    ```console
+    export SENZING_AWS_SUBNET_ID_2=subnet-22222222222222222
+    ```
+
 ### Find security group ID
 
-1. Find the AWS security group for the EC2 instance used in ECS.
+1. Find the AWS security group.
    Run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
+   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
    Example:
 
     ```console
     export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws cloudformation list-stack-resources \
-        --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" \
+      aws ec2 describe-security-groups \
+        --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
+        --region ${AWS_REGION} \
+      | jq --raw-output ".SecurityGroups[0].GroupId"
     )
     ```
 
@@ -285,11 +324,10 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
-        --create-log-groups \
-        --launch-type EC2
+        --create-log-groups
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -318,11 +356,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -374,11 +410,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -405,11 +439,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view phpPgAdmin,
@@ -442,11 +474,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -475,11 +505,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-rabbitmq.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -551,11 +579,9 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-mock-data-generator.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
-      up \
-        --create-log-groups \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -579,11 +605,9 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -615,11 +639,9 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -696,11 +718,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -741,11 +761,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run
@@ -786,11 +804,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:** To view service definition, run

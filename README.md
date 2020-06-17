@@ -14,4 +14,5 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
         1. Uses `awsvpc`
     1. AWS Elastic File System (EFS)
     1. Connects to AWS Aurora PostgreSQL
+    1. RabbitMQ persistence
     1. Shows scale-up

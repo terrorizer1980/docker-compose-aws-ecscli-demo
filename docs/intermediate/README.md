@@ -15,13 +15,13 @@
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
     1. [Create tasks and services](#create-tasks-and-services)
-        1. [Install Senzing task](#install-senzing-task)
+        1. [Run install Senzing task](#run-install-senzing-task)
         1. [Create Postgres service](#create-postgres-service)
-        1. [Create Senzing database schema task](#create-senzing-database-schema-task)
+        1. [Run Senzing database schema task](#run-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
         1. [Create RabbitMQ service](#create-rabbitmq-service)
-        1. [Create Mock data generator task](#create-mock-data-generator-task)
+        1. [Run Mock data generator task](#run-mock-data-generator-task)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
@@ -333,7 +333,7 @@ For production purposes it is not fine.
 
 ### Create tasks and services
 
-#### Install Senzing task
+#### Run install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -420,7 +420,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     echo $SENZING_POSTGRES_HOST
     ```
 
-#### Create Senzing database schema task
+#### Run Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -587,7 +587,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     echo $SENZING_RABBITMQ_HOST
     ```
 
-#### Create Mock data generator task
+#### Run Mock data generator task
 
 Read JSON lines from a URL-addressable file and send to RabbitMQ.
 
@@ -697,7 +697,6 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    to find IP address definition.
    This information will be used in subsequent steps.
    Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
-
    Example:
 
     ```console

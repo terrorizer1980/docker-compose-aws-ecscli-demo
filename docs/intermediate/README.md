@@ -8,22 +8,25 @@
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Identify metadata](#identify-metadata)
+    1. [Create backing services](#create-backing-services)
+        1. [Provision Elastic File system](#provision-elastic-file-system)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
-    1. [Install Senzing task](#install-senzing-task)
-    1. [Create Postgres service](#create-postgres-service)
-    1. [Create Senzing database schema task](#create-senzing-database-schema-task)
-    1. [Create phpPgAdmin service](#create-phppgadmin-service)
-    1. [Run init-container task](#run-init-container-task)
-    1. [Create RabbitMQ service](#create-rabbitmq-service)
-    1. [Create Mock data generator task](#create-mock-data-generator-task)
-    1. [Create Stream loader service](#create-stream-loader-service)
-    1. [Create Senzing API server service](#create-senzing-api-server-service)
-    1. [Create Senzing Web App service](#create-senzing-web-app-service)
-    1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
-    1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+    1. [Create tasks and services](#create-tasks-and-services)
+        1. [Install Senzing task](#install-senzing-task)
+        1. [Create Postgres service](#create-postgres-service)
+        1. [Create Senzing database schema task](#create-senzing-database-schema-task)
+        1. [Create phpPgAdmin service](#create-phppgadmin-service)
+        1. [Run init-container task](#run-init-container-task)
+        1. [Create RabbitMQ service](#create-rabbitmq-service)
+        1. [Create Mock data generator task](#create-mock-data-generator-task)
+        1. [Create Stream loader service](#create-stream-loader-service)
+        1. [Create Senzing API server service](#create-senzing-api-server-service)
+        1. [Create Senzing Web App service](#create-senzing-web-app-service)
+        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+        1. [Create Senzing X-Term service](#create-senzing-x-term-service)
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
@@ -105,7 +108,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
     ```
 
-### Provision Elastic File system
+### Create backing services
+
+#### Provision Elastic File system
 
 FIXME:
 
@@ -117,12 +122,28 @@ FIXME:
    Example:
 
     ```console
-    aws efs create-file-system \
-       --creation-token ${SENZING_AWS_PROJECT}-efs \
-       --tags Key=Name,Value=${SENZING_AWS_PROJECT}
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
+      aws efs create-file-system \
+        --creation-token ${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-efs \
+      | jq --raw-output ".FileSystemId"
+    )
     ```
 
-    {SENZING_AWS_EFS_FILESYSTEM_ID}
+1. :thinking: **Optional:** View file system ID.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
+#### Provision Aurora PostgreSQL
+
+FIXME:
+
+#### Provision Amazon MQ
+
+FIXME:
 
 ### Configure ECS CLI
 
@@ -310,7 +331,9 @@ For production purposes it is not fine.
     1. **Security groups:**, click on security group.
     1. In "Security Groups", click on appropriate Security group ID link.
 
-### Install Senzing task
+### Create tasks and services
+
+#### Install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -342,7 +365,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Create Postgres service
+#### Create Postgres service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -397,7 +420,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     echo $SENZING_POSTGRES_HOST
     ```
 
-### Create Senzing database schema task
+#### Create Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -425,7 +448,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
-### Create phpPgAdmin service
+#### Create phpPgAdmin service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -460,7 +483,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    **Username:** postgres
    **Password:** postgres
 
-### Run init-container task
+#### Run init-container task
 
 Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
@@ -491,7 +514,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Create RabbitMQ service
+#### Create RabbitMQ service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -564,7 +587,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     echo $SENZING_RABBITMQ_HOST
     ```
 
-### Create Mock data generator task
+#### Create Mock data generator task
 
 Read JSON lines from a URL-addressable file and send to RabbitMQ.
 
@@ -589,7 +612,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
    However, this is a long-running job.
    There is no need to wait for its completion.
 
-### Create Stream loader service
+#### Create Stream loader service
 
 The stream loader service reads messages from RabbitMQ and inserts them into the Senzing Model.
 
@@ -622,7 +645,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
-### Create Senzing API server service
+#### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
@@ -702,7 +725,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     echo $SENZING_IP_ADDRESS_APISERVER
     ```
 
-### Create Senzing Web App service
+#### Create Senzing Web App service
 
 The Senzing Web App provides a user interface to Senzing functionality.
 
@@ -747,7 +770,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep webapp
     ```
 
-### Create Jupyter notebook service
+#### Create Jupyter notebook service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -790,7 +813,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep jupyter
     ```
 
-### Create Senzing X-Term service
+#### Create Senzing X-Term service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -889,6 +912,20 @@ The Senzing Web App provides a user interface to Senzing functionality.
     done
     ```
 
+### Delete elastic file system.
+
+1. Delete EFS file system.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
+   [delete-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/delete-file-system.html).
+   Example:
+
+    ```console
+    aws efs delete-file-system \
+      --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
 ### Clean logs
 
 1. Delete logs. Run
@@ -917,6 +954,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
         1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
+    1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
 
 ## References
 

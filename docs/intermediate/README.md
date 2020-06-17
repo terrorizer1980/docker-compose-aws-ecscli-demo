@@ -112,20 +112,19 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 #### Provision Elastic File system
 
-FIXME:
-
 1. Create EFS file system.
    Run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
    [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
    [create-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html).
+   Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
    Example:
 
     ```console
     export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
       aws efs create-file-system \
         --creation-token ${SENZING_AWS_PROJECT}-efs \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
       | jq --raw-output ".FileSystemId"
     )
     ```
@@ -235,6 +234,7 @@ FIXME:
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
    [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
    [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
+   Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
    Example:
 
     ```console
@@ -400,7 +400,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
-   This information will be used in subsequent steps.
+   Save host IP in `SENZING_POSTGRES_HOST` environment variable.
    Example:
 
     ```console
@@ -567,7 +567,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
-   This information will be used in subsequent steps.
+   Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
    Example:
 
     ```console
@@ -696,6 +696,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
    This information will be used in subsequent steps.
+   Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
+
    Example:
 
     ```console

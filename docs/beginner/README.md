@@ -156,9 +156,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Find the AWS security group for the EC2 instance used in ECS.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+   [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
    Example:
 
     ```console
@@ -185,9 +185,9 @@ For production purposes it is not fine.
 
 1. Open inbound ports.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html).
    Example:
 
     ```console
@@ -238,9 +238,9 @@ For production purposes it is not fine.
     ```
 
 1. :thinking: **Optional:** To view Security Group, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
    Example:
 
     ```console
@@ -308,9 +308,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -457,9 +457,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -557,9 +557,9 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -591,9 +591,9 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -671,9 +671,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -714,9 +714,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -757,9 +757,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -818,9 +818,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. Delete task definitions. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [deregister-task-definition](https://docs.aws.amazon.com/cli/latest/reference/ecs/deregister-task-definition.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [deregister-task-definition](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/deregister-task-definition.html)
    in a loop over `SENZING_ECS_TASK_DEFINITIONS` values.
    Example:
 
@@ -839,9 +839,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
 ### Clean logs
 
 1. Delete logs. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html#cli-aws-logs)
-   [delete-log-group](https://docs.aws.amazon.com/cli/latest/reference/logs/delete-log-group.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
+   [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
    Example:
 
     ```console
@@ -883,19 +883,17 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
-   &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
-    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-        1. [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-            1. [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
-        1. [cloudwatch](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/index.html)
-        1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-            1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
-            1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
-            1. [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
-        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-            1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
-        1. [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html)
-
+   &gt; [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
+    1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+        1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+            1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
+        1. [cloudwatch](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudwatch/index.html)
+        1. [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+            1. [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
+            1. [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+        1. [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+            1. [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+        1. [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)

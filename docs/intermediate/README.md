@@ -966,7 +966,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     done
     ```
 
-### Delete elastic file system.
+### Delete elastic file system
 
 1. Delete EFS file system.
    Run
@@ -1028,7 +1028,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
-   &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
+   &gt; [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
     1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
         1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
             1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)

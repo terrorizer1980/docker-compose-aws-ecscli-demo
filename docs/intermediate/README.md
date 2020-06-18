@@ -165,20 +165,7 @@ FIXME:
       > ~/aws-rds-create-db-instance.json
     ```
 
-    ```console
-    export SENZING_AWS_SQS_QUEUE_URL=$( \
-      aws efs create-file-system \
-        --creation-token ${SENZING_AWS_PROJECT}-efs \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
-      | jq --raw-output ".FileSystemId"
-    )
-    ```
-
-   {SENZING_AWS_SQS_QUEUE_URL}
-
 #### Provision Simple Queue Service
-
-FIXME:
 
 1. Create SQS queue.
    Run
@@ -189,21 +176,21 @@ FIXME:
    Example:
 
     ```console
+    export SENZING_AWS_SQS_QUEUE_URL=$( \
       aws sqs create-queue \
         --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue
-    ```
-
-    ```console
-    export SENZING_AWS_SQS_QUEUE_URL=$( \
-      aws efs create-file-system \
-        --creation-token ${SENZING_AWS_PROJECT}-efs \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
-      | jq --raw-output ".FileSystemId"
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+      | jq --raw-output ".QueueUrl"
     )
     ```
 
-   {SENZING_AWS_SQS_QUEUE_URL}
+1. :thinking: **Optional:**
+   View Simple Queue Service (SQS) URL.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_SQS_QUEUE_URL}
+    ```
 
 ### Configure ECS CLI
 

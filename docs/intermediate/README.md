@@ -114,9 +114,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Create EFS file system.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
-   [create-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/create-file-system.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
    Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
    Example:
 
@@ -129,12 +129,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     )
     ```
 
-1. :thinking: **Optional:** View file system ID.
+1. :thinking: **Optional:**
+   View file system ID.
    Example:
 
     ```console
     echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
     ```
+
+1. :thinking: **Optional:**
+   View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
+   in AWS console.
 
 #### Provision Aurora PostgreSQL
 
@@ -143,6 +148,29 @@ FIXME:
 #### Provision Amazon MQ
 
 FIXME:
+
+1. Create EFS file system.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+      aws sqs create-queue \
+        --creation-token ${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
+    ```
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
+      aws efs create-file-system \
+        --creation-token ${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
+      | jq --raw-output ".FileSystemId"
+    )
+    ```
 
 ### Configure ECS CLI
 
@@ -227,13 +255,21 @@ FIXME:
     export SENZING_AWS_SUBNET_ID_2=subnet-22222222222222222
     ```
 
+1. :thinking: **Optional:**
+   Review environment variables.
+   Example:
+
+    ```console
+    env | grep SENZING | sort
+    ```
+
 ### Find security group ID
 
 1. Find the AWS security group.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
    Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
    Example:
 
@@ -262,9 +298,9 @@ For production purposes it is not fine.
 
 1. Open inbound ports.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html).
    Example:
 
     ```console
@@ -315,9 +351,9 @@ For production purposes it is not fine.
     ```
 
 1. :thinking: **Optional:** To view Security Group, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
    Example:
 
     ```console
@@ -325,17 +361,16 @@ For production purposes it is not fine.
       --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
     ```
 
-1. :thinking: **Optional:** View Security Group in AWS console.
-    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-    1. Choose "ECS instance" for the cluster.
-    1. **Security groups:**, click on security group.
-    1. In "Security Groups", click on appropriate Security group ID link.
+1. :thinking: **Optional:**
+   View Security Group in AWS console.
+    1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
+    1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
 
 ### Create tasks and services
 
 #### Run install Senzing task
 
-Install Senzing into `/opt/senzing` on the EC2 instance.
+Install Senzing onto the Elastic File System.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -347,8 +382,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-init.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-init \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-yum.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-yum \
       up \
         --create-log-groups
     ```
@@ -385,9 +420,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -418,6 +453,24 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 
     ```console
     echo $SENZING_POSTGRES_HOST
+    ```
+
+#### XXX AWS example
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to create Senzing database schema.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-aws-example.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-aws-example \
+      up
     ```
 
 #### Run Senzing database schema task
@@ -534,9 +587,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -634,9 +687,9 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -668,9 +721,9 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -748,9 +801,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -791,9 +844,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -834,9 +887,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -895,9 +948,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. Delete task definitions. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [deregister-task-definition](https://docs.aws.amazon.com/cli/latest/reference/ecs/deregister-task-definition.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [deregister-task-definition](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/deregister-task-definition.html)
    in a loop over `SENZING_ECS_TASK_DEFINITIONS` values.
    Example:
 
@@ -917,9 +970,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 1. Delete EFS file system.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [efs](https://docs.aws.amazon.com/cli/latest/reference/efs/index.html)
-   [delete-file-system](https://docs.aws.amazon.com/cli/latest/reference/efs/delete-file-system.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [delete-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-file-system.html).
    Example:
 
     ```console
@@ -930,9 +983,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
 ### Clean logs
 
 1. Delete logs. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html#cli-aws-logs)
-   [delete-log-group](https://docs.aws.amazon.com/cli/latest/reference/logs/delete-log-group.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
+   [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
    Example:
 
     ```console
@@ -976,18 +1029,16 @@ The Senzing Web App provides a user interface to Senzing functionality.
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
-    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-        1. [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-            1. [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
-        1. [cloudwatch](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/index.html)
-        1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-            1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
-            1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
-            1. [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
-        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-            1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
-        1. [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html)
-
+    1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+        1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+            1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
+        1. [cloudwatch](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudwatch/index.html)
+        1. [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+            1. [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
+            1. [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+        1. [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+            1. [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+        1. [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)

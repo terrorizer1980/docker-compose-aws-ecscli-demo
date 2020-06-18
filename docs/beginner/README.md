@@ -41,7 +41,8 @@ To install `ecs-cli`, follow steps at
 
 ### Multi-factor authentication
 
-:thinking: **Optional:** If multi-factor authentication is used to access AWS,
+:thinking: **Optional:**
+If multi-factor authentication is used to access AWS,
 see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
 
 ### Clone repository
@@ -121,7 +122,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
        --region ${AWS_REGION}
     ```
 
-1. :thinking: **Optional:** To view configuration values, see `~/.ecs/config`.
+1. :thinking: **Optional:**
+   To view configuration values, see `~/.ecs/config`.
 
     ```console
     cat ~/.ecs/config
@@ -144,7 +146,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --size 1
     ```
 
-1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
+1. :thinking: **Optional:**
+   View aspects of AWS ECS cluster in AWS console.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
@@ -169,7 +172,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     )
     ```
 
-1. :thinking: **Optional:** View security group ID.
+1. :thinking: **Optional:**
+   View security group ID.
    Example:
 
     ```console
@@ -237,7 +241,8 @@ For production purposes it is not fine.
         IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
 
-1. :thinking: **Optional:** To view Security Group, run
+1. :thinking: **Optional:**
+   To view Security Group, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
    [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
@@ -248,7 +253,8 @@ For production purposes it is not fine.
       --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
     ```
 
-1. :thinking: **Optional:** View Security Group in AWS console.
+1. :thinking: **Optional:**
+   View Security Group in AWS console.
     1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. Choose "ECS instance" for the cluster.
     1. **Security groups:**, click on security group.
@@ -279,7 +285,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:**
+   View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
@@ -307,7 +314,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -336,7 +344,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     )
     ```
 
-1. :thinking: **Optional:** View `SENZING_POSTGRES_HOST` value.
+1. :thinking: **Optional:**
+   View `SENZING_POSTGRES_HOST` value.
    Example:
 
     ```console
@@ -364,7 +373,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:**
+   View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
@@ -390,7 +400,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       service up
     ```
 
-1. :thinking: **Optional:** To view phpPgAdmin,
+1. :thinking: **Optional:**
+   To view phpPgAdmin,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -428,7 +439,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:**
+   View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
@@ -456,7 +468,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -468,7 +481,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --services ${SENZING_AWS_PROJECT}-project-name-rabbitmq
     ```
 
-1. :thinking: **Optional:** To view RabbitMQ,
+1. :thinking: **Optional:**
+   To view RabbitMQ,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -503,7 +517,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     )
     ```
 
-1. :thinking: **Optional:** View `SENZING_RABBITMQ_HOST` value.
+1. :thinking: **Optional:**
+   View `SENZING_RABBITMQ_HOST` value.
    Example:
 
     ```console
@@ -556,7 +571,8 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -590,7 +606,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -602,7 +619,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --services ${SENZING_AWS_PROJECT}-project-name-apiserver
     ```
 
-1. :thinking: **Optional:** To view API server, run
+1. :thinking: **Optional:**
+   To view API server, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -632,7 +650,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     )
     ```
 
-1. :thinking: **Optional:** Verify Senzing API server is running.
+1. :thinking: **Optional:**
+   Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
 
@@ -640,7 +659,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
     ```
 
-1. :thinking: **Optional:** Play with
+1. :thinking: **Optional:**
+   Play with
    [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
    In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
    To find the value, run
@@ -670,7 +690,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -682,7 +703,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-webapp
     ```
 
-1. :thinking: **Optional:** To view Senzing web app, run
+1. :thinking: **Optional:**
+   To view Senzing web app, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -713,7 +735,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -725,7 +748,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-jupyter
     ```
 
-1. :thinking: **Optional:** To view Jupyter, run
+1. :thinking: **Optional:**
+   To view Jupyter, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -756,7 +780,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
@@ -768,7 +793,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-xterm
     ```
 
-1. :thinking: **Optional:** To view Senzing X-Term, run
+1. :thinking: **Optional:**
+   To view Senzing X-Term, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.

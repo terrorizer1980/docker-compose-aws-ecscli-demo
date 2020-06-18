@@ -109,88 +109,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
     ```
 
-### Create backing services
-
-#### Provision Elastic File system
-
-1. Create EFS file system.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
-   Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
-   Example:
-
-    ```console
-    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
-      aws efs create-file-system \
-        --creation-token ${SENZING_AWS_PROJECT}-efs \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
-      | jq --raw-output ".FileSystemId"
-    )
-    ```
-
-1. :thinking: **Optional:**
-   View file system ID.
-   Example:
-
-    ```console
-    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
-    ```
-
-1. :thinking: **Optional:**
-   View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
-   in AWS console.
-
-#### Provision Aurora PostgreSQL
-
-FIXME:
-
-1. Create Aurora PostgreSQL database.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
-   Example:
-
-    ```console
-      aws rds create-db-instance \
-        --db-name G2 \
-        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-        --db-instance-class db.t2.medium \
-        --engine aurora-postgresql \
-        --publicly-accessible \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurrora-postgresql \
-      > ~/aws-rds-create-db-instance.json
-    ```
-
-#### Provision Simple Queue Service
-
-1. Create SQS queue.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
-   Example:
-
-    ```console
-    export SENZING_AWS_SQS_QUEUE_URL=$( \
-      aws sqs create-queue \
-        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
-      | jq --raw-output ".QueueUrl"
-    )
-    ```
-
-1. :thinking: **Optional:**
-   View Simple Queue Service (SQS) URL.
-   Example:
-
-    ```console
-    echo ${SENZING_AWS_SQS_QUEUE_URL}
-    ```
 
 ### Configure ECS CLI
 
@@ -390,6 +308,91 @@ For production purposes it is not fine.
     1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
 
+
+### Create backing services
+
+FIXME: Provision in same VPC and Subnets.
+
+#### Provision Elastic File system
+
+1. Create EFS file system.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
+   Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
+      aws efs create-file-system \
+        --creation-token ${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
+      | jq --raw-output ".FileSystemId"
+    )
+    ```
+
+1. :thinking: **Optional:**
+   View file system ID.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
+1. :thinking: **Optional:**
+   View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
+   in AWS console.
+
+#### Provision Aurora PostgreSQL
+
+FIXME:
+
+1. Create Aurora PostgreSQL database.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+      aws rds create-db-instance \
+        --db-name G2 \
+        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+        --db-instance-class db.t2.medium \
+        --engine aurora-postgresql \
+        --publicly-accessible \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurrora-postgresql \
+      > ~/aws-rds-create-db-instance.json
+    ```
+
+#### Provision Simple Queue Service
+
+1. Create SQS queue.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_SQS_QUEUE_URL=$( \
+      aws sqs create-queue \
+        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+      | jq --raw-output ".QueueUrl"
+    )
+    ```
+
+1. :thinking: **Optional:**
+   View Simple Queue Service (SQS) URL.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_SQS_QUEUE_URL}
+    ```
 ### Create tasks and services
 
 #### Run install Senzing task

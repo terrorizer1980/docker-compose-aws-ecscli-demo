@@ -1,0 +1,15 @@
+version: '3'
+services:
+  webapp:
+    environment:
+      SENZING_API_SERVER_URL: "http://${SENZING_IP_ADDRESS_APISERVER}:8250"
+      SENZING_WEB_SERVER_PORT: 8251
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.4}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 8251:8251

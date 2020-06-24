@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  zookeeper:
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:3.5.6
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 2181:2181
+
+  kafka:
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: bitnami/kafka:2.4.0
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 9092:9092
+
+  kafdrop:
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    image: obsidiandynamics/kafdrop:3.23.0
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 9179:9000

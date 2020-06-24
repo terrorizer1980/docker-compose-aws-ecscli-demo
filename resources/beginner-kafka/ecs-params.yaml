@@ -9,10 +9,18 @@ task_definition:
       cpu_shares: 20
       essential: true
       mem_limit: 200000000
-    rabbitmq:
+    zookeeper:
+      cpu_shares: 5
+      essential: true
+      mem_limit: 100000000
+    kafka:
       cpu_shares: 10
       essential: true
       mem_limit: 200000000
+    kafdrop:
+      cpu_shares: 5
+      essential: true
+      mem_limit: 100000000
     phppgadmin:
       cpu_shares: 5
       essential: true

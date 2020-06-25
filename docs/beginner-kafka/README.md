@@ -448,10 +448,9 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-
 ### Create Zookeeper service
 
-Kafka requires Zookeeper
+Kafka requires Zookeeper.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

@@ -14,12 +14,12 @@ task_definition:
       essential: true
       mem_limit: 100000000
     kafka:
-      cpu_shares: 20
+      cpu_shares: 40
       essential: true
-      mem_limit: 200000000
+      mem_limit: 400000000
     kafdrop:
       cpu_shares: 5
-      essential: true
+      essential: false
       mem_limit: 100000000
     phppgadmin:
       cpu_shares: 5

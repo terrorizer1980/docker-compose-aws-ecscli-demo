@@ -448,65 +448,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Create Zookeeper service
-
-Kafka requires Zookeeper.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Zookeeper service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-zookeeper.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-zookeeper \
-      service up \
-        --create-log-groups \
-        --launch-type EC2
-    ```
-
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-zookeepeer
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   This information will be used in subsequent steps.
-   Example:
-
-    ```console
-    export SENZING_ZOOKEEPER_HOST=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  zookeeper \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
-1. :thinking: **Optional:** View `SENZING_ZOOKEEPER_HOST` value.
-   Example:
-
-    ```console
-    echo $SENZING_ZOOKEEPER_HOST
-    ```
-
 ### Create Kafka service
 
 1. Run

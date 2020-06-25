@@ -1,0 +1,15 @@
+version: '3'
+services:
+
+  zookeeper:
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:3.5.6
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 2181:2181

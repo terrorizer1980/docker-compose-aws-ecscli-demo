@@ -833,7 +833,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       "stream-loader" \
       "webapp" \
       "xterm" \
-      "zookeeper" \
     )
     ```
 

@@ -534,7 +534,7 @@ Read JSON lines from a URL-addressable file and send to Kafka.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-producer.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up \
         --create-log-groups \
         --launch-type EC2

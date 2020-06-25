@@ -2,9 +2,9 @@ version: 1
 task_definition:
   services:
     yum:
-      cpu_shares: 20
+      cpu_shares: 10
       essential: true
-      mem_limit: 200000000
+      mem_limit: 100000000
     postgres:
       cpu_shares: 20
       essential: true
@@ -29,7 +29,7 @@ task_definition:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000
-    mockdata:
+    producer:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000
@@ -40,7 +40,7 @@ task_definition:
     loader:
       cpu_shares: 15
       essential: true
-      mem_limit: 3000000000
+      mem_limit: 300000000
     jupyter:
       cpu_shares: 5
       essential: true
@@ -48,7 +48,7 @@ task_definition:
     apiserver:
       cpu_shares: 15
       essential: true
-      mem_limit: 3000000000
+      mem_limit: 200000000
     webapp:
       cpu_shares: 5
       essential: true

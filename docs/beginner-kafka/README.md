@@ -151,6 +151,61 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
 
+### Find EC2 host address
+
+1. Find the Amazon Resource Name (ARN) of the EC2 instance used in ECS.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+   [list-container-instances](https://docs.aws.amazon.com/cli/latest/reference/ecs/list-container-instances.html)
+   Example:
+
+    ```console
+    export SENZING_CONTAINER_INSTANCE_ARN=$( \
+      aws ecs list-container-instances \
+        --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      | jq --raw-output ".containerInstanceArns[0]" \
+    )
+    ```
+
+1. From the ARN, find the AWS EC2 Instance ID.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+   [describe-container-instances](https://docs.aws.amazon.com/cli/latest/reference/ecs/list-container-instances.html)
+   Example:
+
+    ```console
+    export SENZING_EC2_INSTANCE_ID=$( \
+      aws ecs describe-container-instances \
+        --cluster ${SENZING_AWS_ECS_CLUSTER} \
+        --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
+      | jq --raw-output ".containerInstances[0].ec2InstanceId" \
+    )
+    ```
+
+1. From the AWS EC2 Instance ID, find the instance host address.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html#cli-aws-ec2)
+   [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
+   Example:
+
+    ```console
+    export SENZING_EC2_HOST=$( \
+      aws ec2 describe-instances \
+        --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
+      | jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" \
+    )
+    ```
+
+1. :thinking: **Optional:** View EC2 IP address.
+   Example:
+
+    ```console
+    echo ${SENZING_EC2_HOST}
+    ```
+
 ### Find security group ID
 
 1. Find the AWS security group for the EC2 instance used in ECS.
@@ -324,30 +379,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   This information will be used in subsequent steps.
-   Example:
-
-    ```console
-    export SENZING_EC2_HOST=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  postgres \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
-1. :thinking: **Optional:** View `SENZING_EC2_HOST` value.
-   Example:
-
-    ```console
-    echo $SENZING_EC2_HOST
-    ```
-
 ### Create Senzing database schema task
 
 1. Run
@@ -412,6 +443,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     | grep phppgadmin
     ```
 
+   **URL:** http://${SENZING_EC2_HOST}:9171
    **Username:** postgres
    **Password:** postgres
 
@@ -493,6 +525,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep kafka
     ```
+
+   **URL:** http://${SENZING_EC2_HOST}:9179
 
 ### Create Stream producer task
 
@@ -668,6 +702,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep webapp
     ```
 
+   **URL:** http://${SENZING_EC2_HOST}:8251
+
 ### Create Jupyter notebook service
 
 1. Run
@@ -713,6 +749,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep jupyter
     ```
 
+   **URL:** http://${SENZING_EC2_HOST}:9178
+
 ### Create Senzing X-Term service
 
 1. Run
@@ -757,6 +795,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep xterm
     ```
+
+   **URL:** http://${SENZING_EC2_HOST}:8254
 
 ## Cleanup
 

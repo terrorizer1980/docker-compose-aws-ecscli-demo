@@ -327,7 +327,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    Example:
 
     ```console
-    export SENZING_EC2_HOST=$( \
+    export SENZING_POSTGRES_HOST=$( \
       ecs-cli ps \
         --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       | grep  postgres \
@@ -336,11 +336,11 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     )
     ```
 
-1. :thinking: **Optional:** View `SENZING_EC2_HOST` value.
+1. :thinking: **Optional:** View `SENZING_POSTGRES_HOST` value.
    Example:
 
     ```console
-    echo $SENZING_EC2_HOST
+    echo $SENZING_POSTGRES_HOST
     ```
 
 ### Create Senzing database schema task
@@ -494,6 +494,30 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
    **Username:** user
    **Password:** bitnami
 
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address definition.
+   This information will be used in subsequent steps.
+   Example:
+
+    ```console
+    export SENZING_RABBITMQ_HOST=$( \
+      ecs-cli ps \
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      | grep  rabbitmq \
+      | awk '{print $3}' \
+      | awk -F \: {'print $1'} \
+    )
+    ```
+
+1. :thinking: **Optional:** View `SENZING_RABBITMQ_HOST` value.
+   Example:
+
+    ```console
+    echo $SENZING_RABBITMQ_HOST
+    ```
+
 ### Create Mock data generator task
 
 Read JSON lines from a URL-addressable file and send to RabbitMQ.
@@ -604,21 +628,38 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     | grep apiserver
     ```
 
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address definition.
+   This information will be used in subsequent steps.
+   Example:
+
+    ```console
+    export SENZING_IP_ADDRESS_APISERVER=$( \
+      ecs-cli ps \
+        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      | grep  apiserver \
+      | awk '{print $3}' \
+      | awk -F \: {'print $1'} \
+    )
+    ```
+
 1. :thinking: **Optional:** Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
 
     ```console
-    curl -X GET "http://${SENZING_EC2_HOST}:8250/heartbeat"
+    curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
     ```
 
 1. :thinking: **Optional:** Play with
    [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
-   In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
+   In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
    To find the value, run
 
     ```console
-    echo $SENZING_EC2_HOST
+    echo $SENZING_IP_ADDRESS_APISERVER
     ```
 
 ### Create Senzing Web App service

@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo
+# docker-compose-aws-ecscli-demo-beginner-kafka
 
 ## Contents
 

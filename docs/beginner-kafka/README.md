@@ -203,6 +203,16 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
+        IpProtocol=tcp,FromPort=2888,ToPort=2888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Zookeeper followers"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=3888,ToPort=3888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Zookeeper inter-node connections"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
         IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
 
     aws ec2 authorize-security-group-ingress \

@@ -203,16 +203,6 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=2888,ToPort=2888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Zookeeper followers"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=3888,ToPort=3888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Zookeeper inter-node connections"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
         IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -342,7 +332,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    Example:
 
     ```console
-    export SENZING_POSTGRES_HOST=$( \
+    export SENZING_EC2_HOST=$( \
       ecs-cli ps \
         --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       | grep  postgres \
@@ -351,11 +341,11 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     )
     ```
 
-1. :thinking: **Optional:** View `SENZING_POSTGRES_HOST` value.
+1. :thinking: **Optional:** View `SENZING_EC2_HOST` value.
    Example:
 
     ```console
-    echo $SENZING_POSTGRES_HOST
+    echo $SENZING_EC2_HOST
     ```
 
 ### Create Senzing database schema task
@@ -504,30 +494,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     | grep kafka
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   This information will be used in subsequent steps.
-   Example:
-
-    ```console
-    export SENZING_KAFKA_HOST=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  kafka \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
-1. :thinking: **Optional:** View `SENZING_KAFKA_HOST` value.
-   Example:
-
-    ```console
-    echo $SENZING_KAFKA_HOST
-    ```
-
 ### Create Stream producer task
 
 Read JSON lines from a URL-addressable file and send to Kafka.
@@ -638,38 +604,21 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     | grep apiserver
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   This information will be used in subsequent steps.
-   Example:
-
-    ```console
-    export SENZING_IP_ADDRESS_APISERVER=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  apiserver \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
 1. :thinking: **Optional:** Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
 
     ```console
-    curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
+    curl -X GET "http://${SENZING_EC2_HOST}:8250/heartbeat"
     ```
 
 1. :thinking: **Optional:** Play with
    [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
-   In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
+   In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
 
     ```console
-    echo $SENZING_IP_ADDRESS_APISERVER
+    echo $SENZING_EC2_HOST
     ```
 
 ### Create Senzing Web App service
@@ -836,11 +785,11 @@ The Senzing Web App provides a user interface to Senzing functionality.
       "init-container" \
       "jupyter" \
       "kafka" \
-      "mock-data-generator" \
       "phppgadmin" \
       "postgres" \
       "postgres-init" \
       "stream-loader" \
+      "stream-producer" \
       "webapp" \
       "xterm" \
     )

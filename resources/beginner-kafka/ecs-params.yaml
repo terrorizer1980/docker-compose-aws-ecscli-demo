@@ -9,23 +9,7 @@ task_definition:
       cpu_shares: 20
       essential: true
       mem_limit: 200000000
-    zookeeper:
-      cpu_shares: 10
-      essential: true
-      mem_limit: 100000000
-    kafka:
-      cpu_shares: 20
-      essential: true
-      mem_limit: 300000000
-    kafdrop:
-      cpu_shares: 5
-      essential: false
-      mem_limit: 100000000
     phppgadmin:
-      cpu_shares: 5
-      essential: true
-      mem_limit: 100000000
-    postgresinit:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000
@@ -33,7 +17,19 @@ task_definition:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000
-    mockdata:
+    postgresinit:
+      cpu_shares: 5
+      essential: true
+      mem_limit: 100000000
+    zookeeper:
+      cpu_shares: 5
+      essential: true
+      mem_limit: 100000000
+    kafka:
+      cpu_shares: 20
+      essential: true
+      mem_limit: 1000000000
+    kafdrop:
       cpu_shares: 5
       essential: true
       mem_limit: 100000000

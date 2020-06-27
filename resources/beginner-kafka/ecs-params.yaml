@@ -2,7 +2,7 @@ version: 1
 task_definition:
   services:
     yum:
-      cpu_shares: 10
+      cpu_shares: 5
       essential: true
       mem_limit: 100000000
     postgres:
@@ -14,9 +14,9 @@ task_definition:
       essential: true
       mem_limit: 100000000
     kafka:
-      cpu_shares: 40
+      cpu_shares: 20
       essential: true
-      mem_limit: 400000000
+      mem_limit: 300000000
     kafdrop:
       cpu_shares: 5
       essential: false

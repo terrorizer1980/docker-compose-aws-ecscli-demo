@@ -374,7 +374,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -412,7 +411,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -442,7 +440,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -480,7 +477,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -510,7 +506,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -559,7 +554,6 @@ Read JSON lines from a URL-addressable file and send to Kafka.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -587,7 +581,6 @@ The stream loader service reads messages from Kafka and inserts them into the Se
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -623,7 +616,6 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -687,7 +679,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -734,7 +725,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 
@@ -781,7 +771,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up \
-        --create-log-groups \
         --launch-type EC2
     ```
 

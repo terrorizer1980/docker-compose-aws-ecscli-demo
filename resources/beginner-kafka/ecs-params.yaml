@@ -28,7 +28,7 @@ task_definition:
     loader:
       cpu_shares: 0
       essential: true
-      mem_limit: 300000000
+      mem_limit: 2000000000
     jupyter:
       cpu_shares: 0
       essential: true

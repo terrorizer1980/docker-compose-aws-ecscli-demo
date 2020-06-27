@@ -502,7 +502,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/ecs-params-kafka.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
       service up \

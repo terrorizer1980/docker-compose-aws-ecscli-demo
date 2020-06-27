@@ -21,18 +21,6 @@ task_definition:
       cpu_shares: 0
       essential: true
       mem_limit: 100000000
-    zookeeper:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 100000000
-    kafka:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 4000000000
-    kafdrop:
-      cpu_shares: 0
-      essential: false
-      mem_limit: 100000000
     initcontainer:
       cpu_shares: 0
       essential: true

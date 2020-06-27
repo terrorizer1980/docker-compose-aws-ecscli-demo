@@ -1,0 +1,15 @@
+version: 1
+task_definition:
+  services:
+    zookeeper:
+      cpu_shares: 0
+      essential: true
+      mem_limit:  200000000
+    kafka:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 4000000000
+    kafdrop:
+      cpu_shares: 0
+      essential: true
+      mem_limit:  200000000

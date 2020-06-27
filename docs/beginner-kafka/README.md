@@ -349,7 +349,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:** View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
@@ -390,7 +390,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
 
-1. :thinking: **Optional:** View service.
+1. :thinking: **Optional:** View service in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Services" tab.
@@ -419,7 +419,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:** View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.
@@ -488,7 +488,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress.
+1. :thinking: **Optional:** View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Update Cluster" to update information.

@@ -422,7 +422,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. :thinking: **Optional:** View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
@@ -491,7 +490,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 1. :thinking: **Optional:** View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)

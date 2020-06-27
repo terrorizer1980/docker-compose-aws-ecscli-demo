@@ -151,6 +151,18 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
 
+1. :thinking: **Optional:** List AWS resources created.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   Example:
+
+    ```console
+    aws cloudformation list-stack-resources \
+      --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER}
+    ```
+
 ### Find EC2 host address
 
 1. Find the Amazon Resource Name (ARN) of the EC2 instance used in ECS.
@@ -443,7 +455,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     | grep phppgadmin
     ```
 
-   **URL:** http://${SENZING_EC2_HOST}:9171
+   **URL:** [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171)
    **Username:** postgres
    **Password:** postgres
 
@@ -526,7 +538,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     | grep kafka
     ```
 
-   **URL:** http://${SENZING_EC2_HOST}:9179
+   **URL:** [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179)
 
 ### Create Stream producer task
 
@@ -702,7 +714,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep webapp
     ```
 
-   **URL:** http://${SENZING_EC2_HOST}:8251
+   **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
 
 ### Create Jupyter notebook service
 
@@ -749,7 +761,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep jupyter
     ```
 
-   **URL:** http://${SENZING_EC2_HOST}:9178
+   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
 
 ### Create Senzing X-Term service
 
@@ -796,7 +808,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep xterm
     ```
 
-   **URL:** http://${SENZING_EC2_HOST}:8254
+   **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
 
 ## Cleanup
 

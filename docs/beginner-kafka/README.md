@@ -352,7 +352,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 1. :thinking: **Optional:** View progress.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
@@ -390,6 +389,12 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
+
+1. :thinking: **Optional:** View service.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Services" tab.
+        1. Click on link in "Service Name" column.
 
 ### Create Senzing database schema task
 

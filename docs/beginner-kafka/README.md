@@ -492,8 +492,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 ### Create Kafka service
 

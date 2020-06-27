@@ -16,7 +16,7 @@ task_definition:
     kafka:
       cpu_shares: 40
       essential: true
-      mem_limit: 4000000000
+      mem_limit: 400000000
     kafdrop:
       cpu_shares: 5
       essential: false

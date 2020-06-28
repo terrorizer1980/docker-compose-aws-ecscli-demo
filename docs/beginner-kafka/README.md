@@ -138,7 +138,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --capability-iam \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
-      --instance-type t2.large \
+      --instance-type t3a.xlarge \
       --keypair ${AWS_KEYPAIR} \
       --size 1
     ```

@@ -31,6 +31,8 @@ services:
         awslogs-stream-prefix: beginner-kafka
     ports:
       - 9092:9092
+    volumes:
+      - /tmp:/bitnami/kafka
 
   kafdrop:
     environment:

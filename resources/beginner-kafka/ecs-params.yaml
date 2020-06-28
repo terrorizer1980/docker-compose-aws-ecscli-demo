@@ -4,44 +4,44 @@ task_definition:
     yum:
       cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 100M
     postgres:
       cpu_shares: 0
       essential: true
-      mem_limit: 200000000
-    phppgadmin:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 100000000
-    producer:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 100000000
+      mem_limit: 256M
     postgresinit:
       cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
+    phppgadmin:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
     initcontainer:
       cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
+    producer:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
     loader:
       cpu_shares: 0
       essential: true
-      mem_limit: 2000000000
-    jupyter:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 100000000
+      mem_limit: 4G
     apiserver:
       cpu_shares: 0
       essential: true
-      mem_limit: 200000000
+      mem_limit: 4G
     webapp:
       cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
+    jupyter:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
     xterm:
       cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M

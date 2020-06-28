@@ -4,12 +4,12 @@ task_definition:
     zookeeper:
       cpu_shares: 0
       essential: true
-      mem_limit:  400000000
+      mem_limit: 400M
     kafka:
       cpu_shares: 0
       essential: true
-      mem_limit: 4000000000
+      mem_limit: 4G
     kafdrop:
       cpu_shares: 0
-      essential: true
-      mem_limit:  400000000
+      essential: false
+      mem_limit: 200M

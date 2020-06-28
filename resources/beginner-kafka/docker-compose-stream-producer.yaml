@@ -1,0 +1,18 @@
+version: '3'
+services:
+  producer:
+    environment:
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: ${SENZING_EC2_HOST}:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RECORD_MAX: 5000
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: json-to-kafka
+    image: senzing/stream-producer
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: postgres:11.6
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data

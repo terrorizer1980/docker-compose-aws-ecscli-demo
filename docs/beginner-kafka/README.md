@@ -858,6 +858,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
       "init" \
       "init-container" \
       "jupyter" \
+      "kafdrop" \
       "kafka" \
       "phppgadmin" \
       "postgres" \

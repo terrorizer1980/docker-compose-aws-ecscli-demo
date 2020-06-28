@@ -8,11 +8,3 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
     1. Storage on the EC2.  The AWS Elastic File System (EFS) is not used.
     1. Minimal security.
     1. Not designed for scaling up AWS ECS Services.
-1. [Intermediate](docs/intermediate) - In addition to
-   [beginner](docs/beginner), it features:
-    1. Use of AWS Fargate
-        1. Uses `awsvpc`
-    1. AWS Elastic File System (EFS)
-    1. Connects to AWS Aurora PostgreSQL
-    1. RabbitMQ persistence
-    1. Shows scale-up

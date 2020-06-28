@@ -1,0 +1,59 @@
+version: 1
+task_definition:
+  services:
+    yum:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
+    postgres:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 256M
+    postgresinit:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
+    phppgadmin:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
+    initcontainer:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
+    zookeeper:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 400M
+    kafka:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 4G
+    kafdrop:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 300M
+    producer:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
+    loader:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 4G
+    apiserver:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 4G
+    webapp:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 50M
+    jupyter:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
+    xterm:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 2G

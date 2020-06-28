@@ -1,0 +1,19 @@
+version: '3'
+services:
+
+  kafdrop:
+    environment:
+      KAFKA_BROKERCONNECT: "${SENZING_EC2_HOST}:9092"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    image: obsidiandynamics/kafdrop:3.23.0
+    links:
+      - kafka:kafka
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: beginner-kafka
+    ports:
+      - 9179:9000

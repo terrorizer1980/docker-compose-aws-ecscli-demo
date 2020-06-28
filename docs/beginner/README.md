@@ -329,7 +329,7 @@ For production purposes it is not fine.
 
 ### Create tasks and services
 
-#### Run install Senzing task
+#### Install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -542,6 +542,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
    Use the value having port 15672 which is the RabbitMQ web application.
 
+   **URL:** [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672)
    **Username:** user
    **Password:** bitnami
 

@@ -335,7 +335,7 @@ For production purposes it is not fine.
 
 ### Create tasks and services
 
-#### Run install Senzing task
+#### Install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 

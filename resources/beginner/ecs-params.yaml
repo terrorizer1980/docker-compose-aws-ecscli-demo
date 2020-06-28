@@ -2,50 +2,50 @@ version: 1
 task_definition:
   services:
     yum:
-      cpu_shares: 20
+      cpu_shares: 0
       essential: true
-      mem_limit: 200000000
+      mem_limit: 100M
     postgres:
-      cpu_shares: 20
+      cpu_shares: 0
       essential: true
-      mem_limit: 200000000
-    rabbitmq:
-      cpu_shares: 10
-      essential: true
-      mem_limit: 200000000
-    phppgadmin:
-      cpu_shares: 5
-      essential: true
-      mem_limit: 100000000
+      mem_limit: 256M
     postgresinit:
-      cpu_shares: 5
+      cpu_shares: 0
       essential: true
-      mem_limit: 100000000
-    mockdata:
-      cpu_shares: 5
+      mem_limit: 50M
+    phppgadmin:
+      cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
     initcontainer:
-      cpu_shares: 5
+      cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
+    rabbitmq:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 256M
+    producer:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
     loader:
-      cpu_shares: 15
+      cpu_shares: 0
       essential: true
-      mem_limit: 3000000000
-    jupyter:
-      cpu_shares: 5
-      essential: true
-      mem_limit: 100000000
+      mem_limit: 4G
     apiserver:
-      cpu_shares: 15
+      cpu_shares: 0
       essential: true
-      mem_limit: 3000000000
+      mem_limit: 4G
     webapp:
-      cpu_shares: 5
+      cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 50M
+    jupyter:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 100M
     xterm:
-      cpu_shares: 5
+      cpu_shares: 0
       essential: true
-      mem_limit: 100000000
+      mem_limit: 2G

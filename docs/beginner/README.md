@@ -10,16 +10,17 @@
     1. [Identify metadata](#identify-metadata)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
+    1. [Find EC2 host address](#find-ec2-host-address)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
     1. [Create tasks and services](#create-tasks-and-services)
-        1. [Run install Senzing task](#run-install-senzing-task)
+        1. [Install Senzing task](#install-senzing-task)
         1. [Create Postgres service](#create-postgres-service)
-        1. [Run Senzing database schema task](#run-senzing-database-schema-task)
+        1. [Create Senzing database schema task](#create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
         1. [Create RabbitMQ service](#create-rabbitmq-service)
-        1. [Run Mock data generator task](#run-mock-data-generator-task)
+        1. [Create Stream producer task](#create-stream-producer-task)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
@@ -141,7 +142,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --capability-iam \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
-      --instance-type t2.large \
+      --instance-type t3a.xlarge \
       --keypair ${AWS_KEYPAIR} \
       --size 1
     ```
@@ -154,6 +155,73 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
         1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+
+1. :thinking: **Optional:** List AWS resources created.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
+   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   Example:
+
+    ```console
+    aws cloudformation list-stack-resources \
+      --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER}
+    ```
+
+### Find EC2 host address
+
+1. Find the Amazon Resource Name (ARN) of the EC2 instance used in ECS.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+   [list-container-instances](https://docs.aws.amazon.com/cli/latest/reference/ecs/list-container-instances.html)
+   Example:
+
+    ```console
+    export SENZING_CONTAINER_INSTANCE_ARN=$( \
+      aws ecs list-container-instances \
+        --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      | jq --raw-output ".containerInstanceArns[0]" \
+    )
+    ```
+
+1. From the ARN, find the AWS EC2 Instance ID.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html#cli-aws-ecs)
+   [describe-container-instances](https://docs.aws.amazon.com/cli/latest/reference/ecs/list-container-instances.html)
+   Example:
+
+    ```console
+    export SENZING_EC2_INSTANCE_ID=$( \
+      aws ecs describe-container-instances \
+        --cluster ${SENZING_AWS_ECS_CLUSTER} \
+        --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
+      | jq --raw-output ".containerInstances[0].ec2InstanceId" \
+    )
+    ```
+
+1. From the AWS EC2 Instance ID, find the instance host address.
+   Run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html#cli-aws-ec2)
+   [describe-instances](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
+   Example:
+
+    ```console
+    export SENZING_EC2_HOST=$( \
+      aws ec2 describe-instances \
+        --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
+      | jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" \
+    )
+    ```
+
+1. :thinking: **Optional:** View EC2 IP address.
+   Example:
+
+    ```console
+    echo ${SENZING_EC2_HOST}
+    ```
 
 ### Find security group ID
 
@@ -172,8 +240,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     )
     ```
 
-1. :thinking: **Optional:**
-   View security group ID.
+1. :thinking: **Optional:** View security group ID.
    Example:
 
     ```console
@@ -262,7 +329,7 @@ For production purposes it is not fine.
 
 ### Create tasks and services
 
-#### Run install Senzing task
+#### Install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -286,10 +353,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:**
-   View progress.
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
@@ -327,32 +393,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   Save host IP in `SENZING_POSTGRES_HOST` environment variable.
-   Example:
-
-    ```console
-    export SENZING_POSTGRES_HOST=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  postgres \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
 1. :thinking: **Optional:**
-   View `SENZING_POSTGRES_HOST` value.
-   Example:
+   View service in AWS Console.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Services" tab.
+        1. Click on link in "Service Name" column.
 
-    ```console
-    echo $SENZING_POSTGRES_HOST
-    ```
-
-#### Run Senzing database schema task
+#### Create Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -374,10 +422,9 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:**
-   View progress.
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
@@ -414,6 +461,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     | grep phppgadmin
     ```
 
+   **URL:** [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171)
    **Username:** postgres
    **Password:** postgres
 
@@ -440,14 +488,11 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
    When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:**
-   View progress.
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 #### Create RabbitMQ service
 
@@ -497,35 +542,11 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
    Use the value having port 15672 which is the RabbitMQ web application.
 
+   **URL:** [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672)
    **Username:** user
    **Password:** bitnami
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
-   Example:
-
-    ```console
-    export SENZING_RABBITMQ_HOST=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  rabbitmq \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
-1. :thinking: **Optional:**
-   View `SENZING_RABBITMQ_HOST` value.
-   Example:
-
-    ```console
-    echo $SENZING_RABBITMQ_HOST
-    ```
-
-#### Run Mock data generator task
+#### Create Stream producer task
 
 Read JSON lines from a URL-addressable file and send to RabbitMQ.
 
@@ -540,8 +561,8 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-producer.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up
     ```
 
@@ -632,41 +653,23 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     | grep apiserver
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
-   This information will be used in subsequent steps.
-   Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
-   Example:
-
-    ```console
-    export SENZING_IP_ADDRESS_APISERVER=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep  apiserver \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
-    ```
-
 1. :thinking: **Optional:**
    Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
 
     ```console
-    curl -X GET "http://${SENZING_IP_ADDRESS_APISERVER}:8250/heartbeat"
+    curl -X GET "http://${SENZING_EC2_HOST}:8250/heartbeat"
     ```
 
 1. :thinking: **Optional:**
    Play with
    [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
-   In **Server variables** > **host** text field, enter value of `SENZING_IP_ADDRESS_APISERVER`.
+   In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
 
     ```console
-    echo $SENZING_IP_ADDRESS_APISERVER
+    echo $SENZING_EC2_HOST
     ```
 
 #### Create Senzing Web App service
@@ -716,6 +719,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep webapp
     ```
 
+   **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
+
 #### Create Jupyter notebook service
 
 1. Run
@@ -760,6 +765,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
     | grep jupyter
     ```
+
+   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
 
 #### Create Senzing X-Term service
 
@@ -806,6 +813,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
     | grep xterm
     ```
 
+   **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
+
 ## Cleanup
 
 ### Bring down cluster
@@ -832,12 +841,12 @@ The Senzing Web App provides a user interface to Senzing functionality.
       "init" \
       "init-container" \
       "jupyter" \
-      "mock-data-generator" \
       "phppgadmin" \
       "postgres" \
       "postgres-init" \
       "rabbitmq" \
       "stream-loader" \
+      "stream-producer" \
       "webapp" \
       "xterm" \
     )

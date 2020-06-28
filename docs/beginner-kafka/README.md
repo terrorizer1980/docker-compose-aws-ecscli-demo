@@ -13,19 +13,20 @@
     1. [Find EC2 host address](#find-ec2-host-address)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
-    1. [Install Senzing task](#install-senzing-task)
-    1. [Create Postgres service](#create-postgres-service)
-    1. [Create Senzing database schema task](#create-senzing-database-schema-task)
-    1. [Create phpPgAdmin service](#create-phppgadmin-service)
-    1. [Run init-container task](#run-init-container-task)
-    1. [Create Kafka service](#create-kafka-service)
-    1. [Create Kafdrop service](#create-kafdrop-service)
-    1. [Create Stream producer task](#create-stream-producer-task)
-    1. [Create Stream loader service](#create-stream-loader-service)
-    1. [Create Senzing API server service](#create-senzing-api-server-service)
-    1. [Create Senzing Web App service](#create-senzing-web-app-service)
-    1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
-    1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+    1. [Create tasks and services](#create-tasks-and-services)
+        1. [Install Senzing task](#install-senzing-task)
+        1. [Create Postgres service](#create-postgres-service)
+        1. [Create Senzing database schema task](#create-senzing-database-schema-task)
+        1. [Create phpPgAdmin service](#create-phppgadmin-service)
+        1. [Run init-container task](#run-init-container-task)
+        1. [Create Kafka service](#create-kafka-service)
+        1. [Create Kafdrop service](#create-kafdrop-service)
+        1. [Create Stream producer task](#create-stream-producer-task)
+        1. [Create Stream loader service](#create-stream-loader-service)
+        1. [Create Senzing API server service](#create-senzing-api-server-service)
+        1. [Create Senzing Web App service](#create-senzing-web-app-service)
+        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+        1. [Create Senzing X-Term service](#create-senzing-x-term-service)
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
@@ -42,7 +43,8 @@ To install `ecs-cli`, follow steps at
 
 ### Multi-factor authentication
 
-:thinking: **Optional:** If multi-factor authentication is used to access AWS,
+:thinking: **Optional:**
+If multi-factor authentication is used to access AWS,
 see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
 
 ### Clone repository
@@ -122,7 +124,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
        --region ${AWS_REGION}
     ```
 
-1. :thinking: **Optional:** To view configuration values, see `~/.ecs/config`.
+1. :thinking: **Optional:**
+   To view configuration values, see `~/.ecs/config`.
 
     ```console
     cat ~/.ecs/config
@@ -145,7 +148,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --size 1
     ```
 
-1. :thinking: **Optional:** View aspects of AWS ECS cluster in AWS console.
+1. :thinking: **Optional:**
+   View aspects of AWS ECS cluster in AWS console.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
@@ -224,9 +228,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Find the AWS security group for the EC2 instance used in ECS.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-   [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+   [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
    Example:
 
     ```console
@@ -253,9 +257,9 @@ For production purposes it is not fine.
 
 1. Open inbound ports.
    Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html).
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html).
    Example:
 
     ```console
@@ -310,10 +314,11 @@ For production purposes it is not fine.
         IpProtocol=tcp,FromPort=9179,ToPort=9179,IpRanges='[{CidrIp=0.0.0.0/0,Description="Kafdrop"}]'
     ```
 
-1. :thinking: **Optional:** To view Security Group, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-   [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html).
+1. :thinking: **Optional:**
+   To view Security Group, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
    Example:
 
     ```console
@@ -321,13 +326,16 @@ For production purposes it is not fine.
       --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
     ```
 
-1. :thinking: **Optional:** View Security Group in AWS console.
+1. :thinking: **Optional:**
+   View Security Group in AWS console.
     1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. Choose "ECS instance" for the cluster.
     1. **Security groups:**, click on security group.
     1. In "Security Groups", click on appropriate Security group ID link.
 
-### Install Senzing task
+### Create tasks and services
+
+#### Install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -344,14 +352,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
-        --create-log-groups \
-        --launch-type EC2
+        --create-log-groups
     ```
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress in AWS Console.
+1. :thinking: **Optional:**
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
@@ -359,7 +367,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
-### Create Postgres service
+#### Create Postgres service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -375,14 +383,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -391,13 +399,14 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --services ${SENZING_AWS_PROJECT}-project-name-postgres
     ```
 
-1. :thinking: **Optional:** View service in AWS Console.
+1. :thinking: **Optional:**
+   View service in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Services" tab.
         1. Click on link in "Service Name" column.
 
-### Create Senzing database schema task
+#### Create Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -412,20 +421,20 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
-      up \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress in AWS Console.
+1. :thinking: **Optional:**
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
-### Create phpPgAdmin service
+#### Create phpPgAdmin service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -441,11 +450,11 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view phpPgAdmin,
+1. :thinking: **Optional:**
+   To view phpPgAdmin,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -462,7 +471,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
    **Username:** postgres
    **Password:** postgres
 
-### Run init-container task
+#### Run init-container task
 
 Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
@@ -478,20 +487,20 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
-      up \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
 
-1. :thinking: **Optional:** View progress in AWS Console.
+1. :thinking: **Optional:**
+   View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
-### Create Kafka service
+#### Create Kafka service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -507,14 +516,14 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -523,7 +532,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --services ${SENZING_AWS_PROJECT}-project-name-kafka
     ```
 
-### Create Kafdrop service
+#### Create Kafdrop service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -543,7 +552,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
         --launch-type EC2
     ```
 
-1. :thinking: **Optional:** To view service definition, run
+1. :thinking: **Optional:**
+   To view service definition, run
    [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
    [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
    [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
@@ -555,7 +565,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --services ${SENZING_AWS_PROJECT}-project-name-kafdrop
     ```
 
-1. :thinking: **Optional:** To view Kafdrop,
+1. :thinking: **Optional:**
+   To view Kafdrop,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -570,7 +581,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
    **URL:** [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179)
 
-### Create Stream producer task
+#### Create Stream producer task
 
 Read JSON lines from a URL-addressable file and send to Kafka.
 
@@ -587,8 +598,7 @@ Read JSON lines from a URL-addressable file and send to Kafka.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
-      up \
-        --launch-type EC2
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.
@@ -596,7 +606,7 @@ Read JSON lines from a URL-addressable file and send to Kafka.
    However, this is a long-running job.
    There is no need to wait for its completion.
 
-### Create Stream loader service
+#### Create Stream loader service
 
 The stream loader service reads messages from Kafka and inserts them into the Senzing Model.
 
@@ -614,14 +624,14 @@ The stream loader service reads messages from Kafka and inserts them into the Se
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -630,7 +640,7 @@ The stream loader service reads messages from Kafka and inserts them into the Se
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
-### Create Senzing API server service
+#### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
@@ -649,14 +659,14 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -665,7 +675,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --services ${SENZING_AWS_PROJECT}-project-name-apiserver
     ```
 
-1. :thinking: **Optional:** To view API server, run
+1. :thinking: **Optional:**
+   To view API server, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -677,7 +688,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     | grep apiserver
     ```
 
-1. :thinking: **Optional:** Verify Senzing API server is running.
+1. :thinking: **Optional:**
+   Verify Senzing API server is running.
    A JSON response should be given to the following `curl` request.
    Example:
 
@@ -685,7 +697,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     curl -X GET "http://${SENZING_EC2_HOST}:8250/heartbeat"
     ```
 
-1. :thinking: **Optional:** Play with
+1. :thinking: **Optional:**
+   Play with
    [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
    In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
@@ -694,7 +707,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     echo $SENZING_EC2_HOST
     ```
 
-### Create Senzing Web App service
+#### Create Senzing Web App service
 
 The Senzing Web App provides a user interface to Senzing functionality.
 
@@ -712,14 +725,14 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -728,7 +741,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-webapp
     ```
 
-1. :thinking: **Optional:** To view Senzing web app, run
+1. :thinking: **Optional:**
+   To view Senzing web app, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -742,7 +756,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
 
-### Create Jupyter notebook service
+#### Create Jupyter notebook service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -758,14 +772,14 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -774,7 +788,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-jupyter
     ```
 
-1. :thinking: **Optional:** To view Jupyter, run
+1. :thinking: **Optional:**
+   To view Jupyter, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -788,7 +803,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
 
-### Create Senzing X-Term service
+#### Create Senzing X-Term service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -804,14 +819,14 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
-1. :thinking: **Optional:** To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
    Example:
 
     ```console
@@ -820,7 +835,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --services ${SENZING_AWS_PROJECT}-project-name-xterm
     ```
 
-1. :thinking: **Optional:** To view Senzing X-Term, run
+1. :thinking: **Optional:**
+   To view Senzing X-Term, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port.
@@ -873,9 +889,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. Delete task definitions. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [deregister-task-definition](https://docs.aws.amazon.com/cli/latest/reference/ecs/deregister-task-definition.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [deregister-task-definition](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/deregister-task-definition.html)
    in a loop over `SENZING_ECS_TASK_DEFINITIONS` values.
    Example:
 
@@ -894,9 +910,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
 ### Clean logs
 
 1. Delete logs. Run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html#cli-aws-logs)
-   [delete-log-group](https://docs.aws.amazon.com/cli/latest/reference/logs/delete-log-group.html)
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
+   [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
    Example:
 
     ```console
@@ -938,19 +954,17 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
-   &gt; [AWS CLI](https://docs.aws.amazon.com/cli/)
-    1. [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-        1. [cloudformation](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html)
-            1. [list-stack-resources](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-stack-resources.html)
-        1. [cloudwatch](https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/index.html)
-        1. [ec2](https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html)
-            1. [authorize-security-group-ingress](https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html)
-            1. [create-security-group](https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html)
-            1. [describe-security-groups](https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html)
-        1. [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-            1. [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html)
-        1. [logs](https://docs.aws.amazon.com/cli/latest/reference/logs/index.html)
-
+   &gt; [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
+    1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+        1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+            1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
+        1. [cloudwatch](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudwatch/index.html)
+        1. [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+            1. [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
+            1. [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+        1. [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+            1. [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+        1. [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
 1. AWS console
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)

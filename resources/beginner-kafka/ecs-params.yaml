@@ -56,4 +56,4 @@ task_definition:
     xterm:
       cpu_shares: 0
       essential: true
-      mem_limit: 50M
+      mem_limit: 2G

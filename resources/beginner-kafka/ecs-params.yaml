@@ -21,10 +21,22 @@ task_definition:
       cpu_shares: 0
       essential: true
       mem_limit: 50M
+    zookeeper:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 400M
+    kafka:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 4G
+    kafdrop:
+      cpu_shares: 0
+      essential: true
+      mem_limit: 300M
     producer:
       cpu_shares: 0
       essential: true
-      mem_limit: 50M
+      mem_limit: 100M
     loader:
       cpu_shares: 0
       essential: true

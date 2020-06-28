@@ -502,7 +502,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/ecs-params-kafka.yaml \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
       service up \
@@ -521,7 +521,39 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --services ${SENZING_AWS_PROJECT}-project-name-kafka
     ```
 
-1. :thinking: **Optional:** To view Kafka,
+### Create Kafdrop service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Kafdrop service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafdrop.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-kafdrop \
+      service up \
+        --launch-type EC2
+    ```
+
+1. :thinking: **Optional:** To view service definition, run
+   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
+   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
+   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-kafdrop
+    ```
+
+1. :thinking: **Optional:** To view Kafdrop,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -531,7 +563,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep kafka
+    | grep kafdrop
     ```
 
    **URL:** [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179)

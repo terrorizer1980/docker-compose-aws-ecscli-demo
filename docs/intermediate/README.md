@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-beginner
+# docker-compose-aws-ecscli-demo-intermediate
 
 ## Contents
 
@@ -8,6 +8,8 @@
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Identify metadata](#identify-metadata)
+    1. [Create backing services](#create-backing-services)
+        1. [Provision Elastic File system](#provision-elastic-file-system)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
     1. [Find security group ID](#find-security-group-id)
@@ -104,8 +106,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
     ```
+
 
 ### Configure ECS CLI
 
@@ -118,7 +121,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ecs-cli configure \
        --cluster ${SENZING_AWS_ECS_CLUSTER} \
        --config-name ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-       --default-launch-type EC2 \
+       --default-launch-type FARGATE \
        --region ${AWS_REGION}
     ```
 
@@ -138,37 +141,84 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     ecs-cli up \
-      --capability-iam \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --force \
-      --instance-type t2.large \
-      --keypair ${AWS_KEYPAIR} \
-      --size 1
+      --force
     ```
 
 1. :thinking: **Optional:**
    View aspects of AWS ECS cluster in AWS console.
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. [ecs](https://console.aws.amazon.com/ecs/home)
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+    1. [vpc](https://console.aws.amazon.com/vpc/home)
+        1. [internet gateways](https://console.aws.amazon.com/vpc/home?#igws)
+        1. [network acls](https://console.aws.amazon.com/vpc/home?#acls)
+        1. [route tables](https://console.aws.amazon.com/vpc/home?#RouteTables)
+        1. [security groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups)
+        1. [subnets](https://console.aws.amazon.com/vpc/home?#subnets)
+        1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
+
+### Save Cluster metadata
+
+1. The `ecs-cli up` command that just completed prints metadata
+   that needs to be captured in environment variables for later use.
+   Example:
+
+    ```console
+    :
+    INFO[0001] Waiting for your cluster resources to be created...
+    INFO[0002] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
+    INFO[0063] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
+    VPC created: vpc-00000000000000000
+    Subnet created: subnet-11111111111111111
+    Subnet created: subnet-22222222222222222
+    Cluster creation succeeded.
+    ```
+
+1. :pencil2: Set environment variable with VPC ID.
+   Example:
+
+    ```console
+    export SENZING_AWS_VPC_ID=vpc-00000000000000000
+    ```
+
+1. :pencil2: Set environment variable with Subnet #1
+   Example:
+
+    ```console
+    export SENZING_AWS_SUBNET_ID_1=subnet-11111111111111111
+    ```
+
+1. :pencil2: Set environment variable with Subnet #2
+   Example:
+
+    ```console
+    export SENZING_AWS_SUBNET_ID_2=subnet-22222222222222222
+    ```
+
+1. :thinking: **Optional:**
+   Review environment variables.
+   Example:
+
+    ```console
+    env | grep SENZING | sort
+    ```
 
 ### Find security group ID
 
-1. Find the AWS security group for the EC2 instance used in ECS.
+1. Find the AWS security group.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
-   [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+   Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
    Example:
 
     ```console
     export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws cloudformation list-stack-resources \
-        --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" \
+      aws ec2 describe-security-groups \
+        --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
+        --region ${AWS_REGION} \
+      | jq --raw-output ".SecurityGroups[0].GroupId"
     )
     ```
 
@@ -255,16 +305,99 @@ For production purposes it is not fine.
 
 1. :thinking: **Optional:**
    View Security Group in AWS console.
-    1. View [ec2 instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-    1. Choose "ECS instance" for the cluster.
-    1. **Security groups:**, click on security group.
-    1. In "Security Groups", click on appropriate Security group ID link.
+    1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
+    1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
 
+
+### Create backing services
+
+FIXME: Provision in same VPC and Subnets.
+
+#### Provision Elastic File system
+
+1. Create EFS file system.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
+   Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
+      aws efs create-file-system \
+        --creation-token ${SENZING_AWS_PROJECT}-efs \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
+      | jq --raw-output ".FileSystemId"
+    )
+    ```
+
+1. :thinking: **Optional:**
+   View file system ID.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
+1. :thinking: **Optional:**
+   View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
+   in AWS console.
+
+#### Provision Aurora PostgreSQL
+
+FIXME:
+
+1. Create Aurora PostgreSQL database.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+      aws rds create-db-instance \
+        --db-name G2 \
+        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+        --db-instance-class db.t2.medium \
+        --engine aurora-postgresql \
+        --publicly-accessible \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurrora-postgresql \
+      > ~/aws-rds-create-db-instance.json
+    ```
+
+#### Provision Simple Queue Service
+
+1. Create SQS queue.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_SQS_QUEUE_URL=$( \
+      aws sqs create-queue \
+        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+      | jq --raw-output ".QueueUrl"
+    )
+    ```
+
+1. :thinking: **Optional:**
+   View Simple Queue Service (SQS) URL.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_SQS_QUEUE_URL}
+    ```
 ### Create tasks and services
 
 #### Run install Senzing task
 
-Install Senzing into `/opt/senzing` on the EC2 instance.
+Install Senzing onto the Elastic File System.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -276,8 +409,8 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-init \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-yum.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-yum \
       up \
         --create-log-groups
     ```
@@ -309,7 +442,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service up
     ```
@@ -352,6 +485,24 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     echo $SENZING_POSTGRES_HOST
     ```
 
+#### XXX AWS example
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to create Senzing database schema.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-aws-example.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-aws-example \
+      up
+    ```
+
 #### Run Senzing database schema task
 
 1. Run
@@ -365,7 +516,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up
     ```
@@ -395,7 +546,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up
     ```
@@ -431,7 +582,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up
     ```
@@ -463,7 +614,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-rabbitmq.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service up
     ```
@@ -540,7 +691,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-mock-data-generator.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-mock-data-generator.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-mock-data-generator \
       up
     ```
@@ -566,7 +717,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
     ```
@@ -601,7 +752,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up
     ```
@@ -685,7 +836,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up
     ```
@@ -730,7 +881,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up
     ```
@@ -775,7 +926,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up
     ```
@@ -862,6 +1013,34 @@ The Senzing Web App provides a user interface to Senzing functionality.
     done
     ```
 
+### Delete simple queue service
+
+1. Delete EFS file system.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [delete-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/delete-queue.html).
+   Example:
+
+    ```console
+    aws sqs delete-queue \
+      --queue-url ${SENZING_AWS_SQS_QUEUE_URL}
+    ```
+
+### Delete elastic file system
+
+1. Delete EFS file system.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [delete-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-file-system.html).
+   Example:
+
+    ```console
+    aws efs delete-file-system \
+      --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
 ### Clean logs
 
 1. Delete logs. Run
@@ -890,6 +1069,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
         1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
+    1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
 
 ## References
 

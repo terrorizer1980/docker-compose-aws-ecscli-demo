@@ -14,11 +14,16 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: intermediate
     ports:
       - 9178:8888
     volumes:
-      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - senzing-var-dir:/notebooks/shared
+      - senzing-data-version-dir:/opt/senzing/data
+      - senzing-etc-dir:/etc/opt/senzing
+      - senzing-g2-dir:/opt/senzing/g2
+volumes:
+  senzing-data-version-dir:
+  senzing-etc-dir:
+  senzing-g2-dir:
+  senzing-var-dir:

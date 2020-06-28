@@ -11,7 +11,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 15672:15672
       - 5672:5672
@@ -35,7 +35,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
 
   postgres:
     environment:
@@ -53,7 +53,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 5432:5432
 
@@ -69,7 +69,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -106,7 +106,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 9171:80
       - 9172:443
@@ -123,7 +123,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
@@ -153,7 +153,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -179,7 +179,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 8250:8250
     privileged: true
@@ -201,7 +201,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 8251:8251
 
@@ -221,7 +221,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: demo
+        awslogs-stream-prefix: beginner
     ports:
       - 9178:8888
     volumes:

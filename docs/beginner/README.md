@@ -38,6 +38,7 @@ This docker formation brings up the following docker containers:
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
     1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
@@ -69,6 +70,11 @@ This docker formation brings up the following docker containers:
 1. [References](#references)
 
 ## Prerequisites
+
+### Install AWS CLI
+
+To install `aws`, follow steps at
+[Installing the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
 ### Install ECS CLI
 

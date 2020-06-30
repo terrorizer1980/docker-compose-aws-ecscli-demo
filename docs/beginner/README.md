@@ -1,5 +1,40 @@
 # docker-compose-aws-ecscli-demo-beginner
 
+## Overview
+
+This illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and
+PostgreSQL as the underlying database
+on the Amazon Elastic Container Service in EC2 mode.
+
+The instructions show how to set up a system that:
+
+1. Reads JSON lines from a file on the internet.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is RabbitMQ.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a PostgreSQL database.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+The following diagram shows the relationship of the docker containers in this docker composition.
+Arrows represent data flow.
+
+![Image of architecture](architecture.png)
+
+This docker formation brings up the following docker containers:
+
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[postgres](https://hub.docker.com/_/postgres)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+
 ## Contents
 
 1. [Prerequisites](#prerequisites)

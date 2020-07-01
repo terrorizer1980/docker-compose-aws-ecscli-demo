@@ -44,7 +44,7 @@ task_definition:
     jupyter:
       cpu_shares: 0
       essential: true
-      mem_limit: 100M
+      mem_limit: 2G
     xterm:
       cpu_shares: 0
       essential: true

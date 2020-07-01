@@ -1,8 +1,44 @@
 # docker-compose-aws-ecscli-demo-beginner
 
+## Overview
+
+This illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and
+PostgreSQL as the underlying database
+on the Amazon Elastic Container Service in EC2 mode.
+
+The instructions show how to set up a system that:
+
+1. Reads JSON lines from a file on the internet.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is RabbitMQ.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a PostgreSQL database.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+The following diagram shows the relationship of the docker containers in this docker composition.
+Arrows represent data flow.
+
+![Image of architecture](architecture.png)
+
+This docker formation brings up the following docker containers:
+
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[postgres](https://hub.docker.com/_/postgres)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
     1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
@@ -26,6 +62,7 @@
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+    1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
@@ -34,6 +71,11 @@
 1. [References](#references)
 
 ## Prerequisites
+
+### Install AWS CLI
+
+To install `aws`, follow steps at
+[Installing the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
 ### Install ECS CLI
 
@@ -814,6 +856,23 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
    **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
+
+### Service recap
+
+Once the formation is running, the following services can be found at `SENZING_EC2_HOST`.
+
+To find the value of `SENZING_EC2_HOST`, run
+
+```console
+echo $SENZING_EC2_HOST
+```
+
+1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
+1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
+1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
+1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
+1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 
 ## Cleanup
 

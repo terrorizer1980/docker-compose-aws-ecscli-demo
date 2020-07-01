@@ -38,6 +38,7 @@ This docker formation brings up the following docker containers:
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
     1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
@@ -61,6 +62,7 @@ This docker formation brings up the following docker containers:
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+    1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
@@ -69,6 +71,11 @@ This docker formation brings up the following docker containers:
 1. [References](#references)
 
 ## Prerequisites
+
+### Install AWS CLI
+
+To install `aws`, follow steps at
+[Installing the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
 ### Install ECS CLI
 
@@ -849,6 +856,23 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
    **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
+
+### Service recap
+
+Once the formation is running, the following services can be found at `SENZING_EC2_HOST`.
+
+To find the value of `SENZING_EC2_HOST`, run
+
+```console
+echo $SENZING_EC2_HOST
+```
+
+1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
+1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
+1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
+1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
+1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 
 ## Cleanup
 

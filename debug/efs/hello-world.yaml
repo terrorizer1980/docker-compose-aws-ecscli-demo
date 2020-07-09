@@ -7,6 +7,7 @@ services:
       options:
         awslogs-group: hello-world
         awslogs-region: us-east-1
+        awslogs-stream-prefix: test
     user: "0"
     volumes:
       - hello-world:/opt/hello-world

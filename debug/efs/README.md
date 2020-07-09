@@ -12,7 +12,7 @@
 
 ### Configure ECS CLI
 
-1. Configure `ecs-cli`
+1. Configure `ecs-cli`.
    Example:
 
     ```console
@@ -58,14 +58,14 @@
     export AWS_VPC_ID=vpc-00000000000000000
     ```
 
-1. :pencil2: Set environment variable with Subnet #1
+1. :pencil2: Set environment variable with Subnet #1.
    Example:
 
     ```console
     export AWS_SUBNET_ID_1=subnet-11111111111111111
     ```
 
-1. :pencil2: Set environment variable with Subnet #2
+1. :pencil2: Set environment variable with Subnet #2.
    Example:
 
     ```console

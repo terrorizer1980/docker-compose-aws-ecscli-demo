@@ -109,7 +109,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
     ```
 
-
 ### Configure ECS CLI
 
 1. Run
@@ -313,7 +312,6 @@ For production purposes it is not fine.
     1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
 
-
 ### Create backing services
 
 FIXME: Provision in same VPC and Subnets.
@@ -398,6 +396,11 @@ FIXME:
     ```console
     echo ${SENZING_AWS_SQS_QUEUE_URL}
     ```
+
+1. :thinking: **Optional:**
+   View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
+   in AWS console.
+
 ### Create tasks and services
 
 #### Run install Senzing task
@@ -1075,11 +1078,39 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
         1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
     1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
-    1. [rds](#)
+    1. [rds](https://console.aws.amazon.com/rds/home?#databases:)
     1. [sqs](https://console.aws.amazon.com/sqs/v2/home)
 
 ## References
 
+### AWS Console
+
+1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
+1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+    1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
+1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+    1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
+    1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+    1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
+    1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
+1. [ecs](https://console.aws.amazon.com/ecs/home)
+
+### AWS Documentation
+
+1. [AWS](https://aws.amazon.com/)
+   &gt; [Documentation](https://docs.aws.amazon.com/index.html)
+   &gt; [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
+    1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+        1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
+            1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
+        1. [cloudwatch](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudwatch/index.html)
+        1. [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+            1. [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
+            1. [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+        1. [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+            1. [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+        1. [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+        1. [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
 1. [AWS](https://aws.amazon.com/)
    &gt; [Documentation](https://docs.aws.amazon.com/index.html)
    &gt; [Amazon ECS](https://docs.aws.amazon.com/ecs/index.html)
@@ -1094,29 +1125,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
         1. [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
-1. [AWS](https://aws.amazon.com/)
-   &gt; [Documentation](https://docs.aws.amazon.com/index.html)
-   &gt; [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
-    1. [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-        1. [cloudformation](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html)
-            1. [list-stack-resources](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/list-stack-resources.html)
-        1. [cloudwatch](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudwatch/index.html)
-        1. [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
-            1. [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
-            1. [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
-        1. [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-            1. [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-        1. [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
-1. AWS console
-    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
-    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
-        1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
-        1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
+
+### Etc
+
 1. [Installing the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
 1. [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
 1. YAML file formats

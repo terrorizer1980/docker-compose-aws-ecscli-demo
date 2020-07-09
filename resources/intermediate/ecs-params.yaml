@@ -62,21 +62,33 @@ task_definition:
     - name: rabbitmq-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /rabbitmq
+      transit_encryption: DISABLED
+      iam: DISABLED
     - name: senzing-data-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /data
+      root_directory: /
+      transit_encryption: DISABLED
+      iam: DISABLED
     - name: senzing-data-version-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /data/1.0.0
+      transit_encryption: DISABLED
+      iam: DISABLED
     - name: senzing-etc-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /etc
+      transit_encryption: DISABLED
+      iam: DISABLED
     - name: senzing-g2-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /g2
+      root_directory: /
+      transit_encryption: DISABLED
+      iam: DISABLED
     - name: senzing-var-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /var
+      transit_encryption: DISABLED
+      iam: DISABLED
 run_params:
   network_configuration:
     awsvpc_configuration:

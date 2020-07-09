@@ -1,0 +1,14 @@
+version: '3'
+services:
+  helloworld:
+    image: hello-world
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: hello-world
+        awslogs-region: us-east-1
+    user: "0"
+    volumes:
+      - hello-world:/opt/hello-world
+volumes:
+  hello-world:

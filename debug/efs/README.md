@@ -81,7 +81,7 @@
     export AWS_EC2_SECURITY_GROUP=$( \
       aws ec2 describe-security-groups \
         --filters Name=vpc-id,Values=${AWS_VPC_ID} \
-        --region ${AWS_REGION} \
+        --region us-east-1 \
       | jq --raw-output ".SecurityGroups[0].GroupId"
     )
     ```

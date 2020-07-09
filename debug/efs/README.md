@@ -117,6 +117,18 @@
     )
     ```
 
+### Create EFS mount
+
+1. Create mount.
+   Example:
+
+    ```console
+    aws efs create-mount-target \
+      --file-system-id ${AWS_EFS_FILESYSTEM_ID} \
+      --subnet-id ${AWS_SUBNET_ID_1} \
+      --security-groups ${AWS_EC2_SECURITY_GROUP}
+    ```
+
 ### Run hello-world
 
 1. Run task.
@@ -130,4 +142,37 @@
       --project-name hello-world-project-name \
       up \
         --create-log-groups
+    ```
+
+## Cleanup
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   Example:
+
+    ```console
+    ecs-cli down \
+      --force \
+      --cluster-config hello-world-config-name
+
+    export SENZING_ECS_TASK_DEFINITIONS=( \
+      "hello-world" \
+    )
+
+    for SENZING_ECS_TASK_DEFINITION in ${SENZING_ECS_TASK_DEFINITIONS[@]};\
+    do \
+      aws ecs deregister-task-definition \
+        --task-definition $( \
+          aws ecs list-task-definitions \
+            --family-prefix "${SENZING_ECS_TASK_DEFINITION}-project-name" \
+          | jq --raw-output .taskDefinitionArns[0] \
+        ) > /dev/null; \
+    done
+
+    aws efs delete-file-system \
+      --file-system-id ${AWS_EFS_FILESYSTEM_ID}
+
+    aws logs delete-log-group \
+      --log-group-name hello-world
     ```

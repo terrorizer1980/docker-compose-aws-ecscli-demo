@@ -361,12 +361,15 @@ FIXME:
 
     ```console
       aws rds create-db-instance \
-        --db-name G2 \
+        --allocated-storage 20 \
+        --db-instance-class db.t3.medium \
         --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-        --db-instance-class db.t2.medium \
+        --db-name G2 \
         --engine aurora-postgresql \
+        --master-user-password g2password \
+        --master-username g2username \
         --publicly-accessible \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurrora-postgresql \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
       > ~/aws-rds-create-db-instance.json
     ```
 

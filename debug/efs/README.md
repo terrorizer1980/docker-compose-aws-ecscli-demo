@@ -152,9 +152,11 @@
    Example:
 
     ```console
-    ecs-cli down \
-      --force \
-      --cluster-config hello-world-config-name
+    aws efs delete-file-system \
+      --file-system-id ${AWS_EFS_FILESYSTEM_ID}
+
+    aws logs delete-log-group \
+      --log-group-name hello-world
 
     export SENZING_ECS_TASK_DEFINITIONS=( \
       "hello-world" \
@@ -170,9 +172,7 @@
         ) > /dev/null; \
     done
 
-    aws efs delete-file-system \
-      --file-system-id ${AWS_EFS_FILESYSTEM_ID}
-
-    aws logs delete-log-group \
-      --log-group-name hello-world
+    ecs-cli down \
+      --force \
+      --cluster-config hello-world-config-name
     ```

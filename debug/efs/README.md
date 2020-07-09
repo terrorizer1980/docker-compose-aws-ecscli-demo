@@ -1,5 +1,15 @@
 ## Demonstrate ECS-EFS bug
 
+### ecs-cli version
+
+1. Show version.
+   Example
+
+    ```console
+    $ ecs-cli --version
+    ecs-cli version 1.20.0 (7547c45)
+    ```
+
 ### Configure ECS CLI
 
 1. Configure `ecs-cli`

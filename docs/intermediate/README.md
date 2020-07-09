@@ -1094,6 +1094,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
     1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
 1. [ecs](https://console.aws.amazon.com/ecs/home)
+1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
+1. [rds](https://console.aws.amazon.com/rds/home?#databases:)
+1. [sqs](https://console.aws.amazon.com/sqs/v2/home)
 
 ### AWS Documentation
 

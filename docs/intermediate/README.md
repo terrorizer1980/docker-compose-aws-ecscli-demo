@@ -1075,6 +1075,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
         1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
         1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
     1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
+    1. [rds](#)
+    1. [sqs](https://console.aws.amazon.com/sqs/v2/home)
 
 ## References
 

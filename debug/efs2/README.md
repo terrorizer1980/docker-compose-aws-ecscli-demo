@@ -10,6 +10,23 @@
     ecs-cli version 1.20.0 (7547c45)
     ```
 
+### Variables
+
+1. :pencil2: Unique name for test.
+   Example:
+
+    ```console
+    export AWS_PROJECT=test01
+    ```
+
+1. Synthesize variables.
+   Example:
+
+    ```console
+    export AWS_CLUSTER=${AWS_PROJECT}-hello-world-cluster
+    export AWS_CONFIG_NAME=${AWS_PROJECT}-hello-world-config-name
+    ```
+
 ### Configure ECS CLI
 
 1. Configure `ecs-cli`.
@@ -17,8 +34,8 @@
 
     ```console
     ecs-cli configure \
-       --cluster hello-world-cluster \
-       --config-name hello-world-config-name \
+       --cluster ${AWS_CLUSTER} \
+       --config-name ${AWS_CONFIG_NAME} \
        --default-launch-type FARGATE \
        --region us-east-1
     ```
@@ -30,7 +47,7 @@
 
     ```console
     ecs-cli up \
-      --cluster-config hello-world-config-name \
+      --cluster-config ${AWS_CONFIG_NAME} \
       --force
     ```
 
@@ -95,7 +112,7 @@
     export AWS_EFS_FILESYSTEM_ID=$( \
       aws efs create-file-system \
         --creation-token hello-world-efs \
-        --tags Key=Name,Value=hello-world-ecs-cluster-efs \
+        --tags Key=Name,Value=${AWS_CLUSTER}-efs \
       | jq --raw-output ".FileSystemId"
     )
     ```
@@ -122,6 +139,18 @@
       --subnet-id ${AWS_SUBNET_ID_2}
     ```
 
+### Open inbound ports
+
+1. Open inbound ports.
+   Example:
+
+    ```console
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
+    ```
+
 ### Run hello-world
 
 1. Run task.
@@ -129,15 +158,13 @@
 
     ```console
     ecs-cli compose \
-      --cluster-config hello-world-config-name \
+      --cluster-config ${AWS_CONFIG_NAME} \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name-1-fail \
+      --project-name ${AWS_PROJECT}-project-1 \
       up \
         --create-log-groups
     ```
-
-1. **Note:** This will fail.
 
 ### Open inbound ports
 
@@ -158,15 +185,13 @@
 
     ```console
     ecs-cli compose \
-      --cluster-config hello-world-config-name \
+      --cluster-config ${AWS_CONFIG_NAME} \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name-2-fail \
+      --project-name ${AWS_PROJECT}-project-2 \
       up \
         --create-log-groups
     ```
-
-1. **Note:** This will fail.
 
 ### Delete inbound rule
 
@@ -181,15 +206,13 @@
 
     ```console
     ecs-cli compose \
-      --cluster-config hello-world-config-name \
+      --cluster-config ${AWS_CONFIG_NAME} \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name-3-succeed \
+      --project-name ${AWS_PROJECT}-project-3 \
       up \
         --create-log-groups
     ```
-
-1. **Note:** This will succeed.
 
 ## Cleanup
 
@@ -215,7 +238,7 @@
 
     ecs-cli down \
       --force \
-      --cluster-config hello-world-config-name
+      --cluster-config ${AWS_CONFIG_NAME}
 
     aws efs delete-file-system \
       --file-system-id ${AWS_EFS_FILESYSTEM_ID}

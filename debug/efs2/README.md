@@ -86,23 +86,6 @@
     )
     ```
 
-### Open inbound ports
-
-1. Open inbound ports.
-   Example:
-
-    ```console
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges='[{CidrIp=0.0.0.0/0,Description="SSH"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
-    ```
-
 ### Provision Elastic File system
 
 1. Create EFS file system.
@@ -117,7 +100,7 @@
     )
     ```
 
-### Create EFS mount
+### Create EFS mounts
 
 1. Create mount in first subnet.
    Example:
@@ -160,12 +143,6 @@
    Example:
 
     ```console
-    aws efs delete-file-system \
-      --file-system-id ${AWS_EFS_FILESYSTEM_ID}
-
-    aws logs delete-log-group \
-      --log-group-name hello-world
-
     export SENZING_ECS_TASK_DEFINITIONS=( \
       "hello-world" \
     )
@@ -183,4 +160,10 @@
     ecs-cli down \
       --force \
       --cluster-config hello-world-config-name
+
+    aws efs delete-file-system \
+      --file-system-id ${AWS_EFS_FILESYSTEM_ID}
+
+    aws logs delete-log-group \
+      --log-group-name hello-world
     ```

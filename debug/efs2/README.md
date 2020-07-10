@@ -189,23 +189,6 @@
         --create-log-groups
     ```
 
-
-
-### Third run hello-world
-
-1. Run task.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${AWS_CONFIG_NAME} \
-      --ecs-params ecs-params.yaml \
-      --file hello-world.yaml \
-      --project-name ${AWS_PROJECT}-project-3 \
-      up \
-        --create-log-groups
-    ```
-
 ## Cleanup
 
 1. Run

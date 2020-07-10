@@ -125,8 +125,7 @@
     ```console
     aws efs create-mount-target \
       --file-system-id ${AWS_EFS_FILESYSTEM_ID} \
-      --subnet-id ${AWS_SUBNET_ID_1} \
-      --security-groups ${AWS_EC2_SECURITY_GROUP}
+      --subnet-id ${AWS_SUBNET_ID_1}
     ```
 
 1. Create mount in second subnet.
@@ -135,8 +134,7 @@
     ```console
     aws efs create-mount-target \
       --file-system-id ${AWS_EFS_FILESYSTEM_ID} \
-      --subnet-id ${AWS_SUBNET_ID_2} \
-      --security-groups ${AWS_EC2_SECURITY_GROUP}
+      --subnet-id ${AWS_SUBNET_ID_2}
     ```
 
 ### Run hello-world

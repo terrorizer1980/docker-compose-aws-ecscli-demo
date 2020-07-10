@@ -166,17 +166,13 @@
         --create-log-groups
     ```
 
-### Open inbound ports
+### Delete inbound rule
 
-1. Open inbound ports.
-   Example:
-
-    ```console
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
-    ```
+1. Visit AWS console for [Security Groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups:)
+1. Choose security group.
+1. In "Inbound rules" section, click "Edit inbound rules" button.
+1. Delete "NFS" inbound rule.
+1. Click "Save rules" button
 
 ### Second run hello-world
 
@@ -193,11 +189,7 @@
         --create-log-groups
     ```
 
-### Delete inbound rule
 
-1. Visit AWS console for [Security Groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups:)
-1. Choose security group
-1. Delete "NFS" inbound rule.
 
 ### Third run hello-world
 

@@ -108,6 +108,7 @@
     ```console
     aws efs create-mount-target \
       --file-system-id ${AWS_EFS_FILESYSTEM_ID} \
+      --security-groups ${AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${AWS_SUBNET_ID_1}
     ```
 
@@ -117,6 +118,7 @@
     ```console
     aws efs create-mount-target \
       --file-system-id ${AWS_EFS_FILESYSTEM_ID} \
+      --security-groups ${AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${AWS_SUBNET_ID_2}
     ```
 

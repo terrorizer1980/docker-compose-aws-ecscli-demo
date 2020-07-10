@@ -132,7 +132,7 @@
       --cluster-config hello-world-config-name \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name \
+      --project-name hello-world-project-name-1-fail \
       up \
         --create-log-groups
     ```
@@ -161,7 +161,7 @@
       --cluster-config hello-world-config-name \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name \
+      --project-name hello-world-project-name-2-fail \
       up \
         --create-log-groups
     ```
@@ -184,7 +184,7 @@
       --cluster-config hello-world-config-name \
       --ecs-params ecs-params.yaml \
       --file hello-world.yaml \
-      --project-name hello-world-project-name \
+      --project-name hello-world-project-name-3-succeed \
       up \
         --create-log-groups
     ```

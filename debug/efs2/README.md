@@ -122,18 +122,6 @@
       --subnet-id ${AWS_SUBNET_ID_2}
     ```
 
-### Open inbound ports
-
-1. Open inbound ports.
-   Example:
-
-    ```console
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
-    ```
-
 ### Run hello-world
 
 1. Run task.
@@ -151,7 +139,7 @@
 
 1. **Note:** This will fail.
 
-### Second open inbound ports
+### Open inbound ports
 
 1. Open inbound ports.
    Example:
@@ -164,6 +152,29 @@
     ```
 
 ### Second run hello-world
+
+1. Run task.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config hello-world-config-name \
+      --ecs-params ecs-params.yaml \
+      --file hello-world.yaml \
+      --project-name hello-world-project-name \
+      up \
+        --create-log-groups
+    ```
+
+1. **Note:** This will fail.
+
+### Delete inbound rule
+
+1. Visit AWS console for [Security Groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups:)
+1. Choose security group
+1. Delete "NFS" inbound rule.
+
+### Third run hello-world
 
 1. Run task.
    Example:

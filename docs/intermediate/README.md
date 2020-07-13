@@ -90,7 +90,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 #### Database credentials
 
-1. :pencil2: Choose a prefix used in AWS object names.
+1. :pencil2: Create username/password for the AWS Aurora-PostgreSQL database master user.
    Example:
 
     ```console
@@ -117,6 +117,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params.yaml
+    ```
+
+
+### Make AWS project directory
+
+1. Make a new directory to handle AWS output.
+   Example:
+
+    ```console
+    export SENZING_AWS_PROJECT_DIR=~/${SENZING_AWS_PROJECT}
+    mkdir ${SENZING_AWS_PROJECT_DIR}
     ```
 
 ### Configure ECS CLI
@@ -151,7 +162,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     ecs-cli up \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --force
+      --force \
+    | tee ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt
     ```
 
 1. :thinking: **Optional:**
@@ -219,16 +231,20 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
    [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
-   Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
    Example:
 
     ```console
-    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws ec2 describe-security-groups \
-        --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
-        --region ${AWS_REGION} \
-      | jq --raw-output ".SecurityGroups[0].GroupId"
-    )
+    aws ec2 describe-security-groups \
+      --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
+      --region ${AWS_REGION} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json
+    ```
+
+1. Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EC2_SECURITY_GROUP=$(jq --raw-output ".SecurityGroups[0].GroupId" ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json)
     ```
 
 1. :thinking: **Optional:**
@@ -279,8 +295,6 @@ For production purposes it is not fine.
       --ip-permissions \
         IpProtocol=tcp,FromPort=8251,ToPort=8251,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Web App"}]'
 
-
-
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
@@ -292,7 +306,6 @@ For production purposes it is not fine.
         IpProtocol=tcp,FromPort=9178,ToPort=9178,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
 
     ```
-
 
 1. :thinking: **Optional:**
    To view Security Group, run
@@ -337,16 +350,20 @@ FIXME: Provision in same VPC and Subnets.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
    [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
-   Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
    Example:
 
     ```console
-    export SENZING_AWS_EFS_FILESYSTEM_ID=$( \
-      aws efs create-file-system \
-        --creation-token ${SENZING_AWS_PROJECT}-efs \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
-      | jq --raw-output ".FileSystemId"
-    )
+    aws efs create-file-system \
+      --creation-token ${SENZING_AWS_PROJECT}-efs \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json
+    ```
+
+1. Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$(jq --raw-output ".FileSystemId" ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json)
     ```
 
 1. Create mount in first subnet.
@@ -356,7 +373,8 @@ FIXME: Provision in same VPC and Subnets.
     aws efs create-mount-target \
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --subnet-id ${SENZING_AWS_SUBNET_ID_1}
+      --subnet-id ${SENZING_AWS_SUBNET_ID_1} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
     ```
 
 1. Create mount in second subnet.
@@ -366,7 +384,8 @@ FIXME: Provision in same VPC and Subnets.
     aws efs create-mount-target \
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --subnet-id ${SENZING_AWS_SUBNET_ID_2}
+      --subnet-id ${SENZING_AWS_SUBNET_ID_2} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
     ```
 
 1. :thinking: **Optional:**
@@ -388,7 +407,6 @@ FIXME: Provision in same VPC and Subnets.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [create-db-subnet-group](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-subnet-group.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
    Example:
 
     ```console
@@ -396,7 +414,7 @@ FIXME: Provision in same VPC and Subnets.
       --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
       --db-subnet-group-description ${SENZING_AWS_PROJECT}-db-subnet-description \
       --subnet-ids ${SENZING_AWS_SUBNET_ID_1} ${SENZING_AWS_SUBNET_ID_2} \
-      > ~/aws-rds-create-db-subnet-group.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-subnet-group.json
     ```
 
 1. Create Aurora cluster.
@@ -404,7 +422,6 @@ FIXME: Provision in same VPC and Subnets.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [create-db-cluster](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-cluster.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
    Example:
 
     ```console
@@ -416,7 +433,7 @@ FIXME: Provision in same VPC and Subnets.
       --master-user-password ${SENZING_AWS_RDS_PASSWORD} \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      > ~/aws-rds-create-db-cluster.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
 
 1. Create Aurora PostgreSQL database.
@@ -435,7 +452,7 @@ FIXME: Provision in same VPC and Subnets.
         --engine aurora-postgresql \
         --publicly-accessible \
         --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
-      > ~/aws-rds-create-db-instance.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
 1. :thinking: **Optional:** References:

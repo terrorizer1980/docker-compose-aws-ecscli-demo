@@ -88,6 +88,16 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export SENZING_AWS_PROJECT=project01
     ```
 
+#### Database credentials
+
+1. :pencil2: Choose a prefix used in AWS object names.
+   Example:
+
+    ```console
+    export SENZING_AWS_RDS_USERNAME=senzing
+    export SENZING_AWS_RDS_PASSWORD=password
+    ```
+
 #### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
@@ -373,7 +383,41 @@ FIXME: Provision in same VPC and Subnets.
 
 #### Provision Aurora PostgreSQL
 
-FIXME:
+1. Create Database subnet group.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-subnet-group](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-subnet-group.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+    aws rds create-db-subnet-group \
+      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
+      --db-subnet-group-description ${SENZING_AWS_PROJECT}-db-subnet-description \
+      --subnet-ids ${SENZING_AWS_SUBNET_ID_1} ${SENZING_AWS_SUBNET_ID_2} \
+      > ~/aws-rds-create-db-subnet-group.json
+    ```
+
+1. Create Aurora cluster.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-cluster](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-cluster.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+    aws rds create-db-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --engine aurora-postgresql \
+      --database-name G2 \
+      --master-username ${SENZING_AWS_RDS_USERNAME} \
+      --master-user-password ${SENZING_AWS_RDS_PASSWORD} \
+      --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
+      --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      > ~/aws-rds-create-db-cluster.json
+    ```
 
 1. Create Aurora PostgreSQL database.
    Run
@@ -385,18 +429,17 @@ FIXME:
 
     ```console
       aws rds create-db-instance \
-        --allocated-storage 20 \
+        --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
         --db-instance-class db.t3.medium \
         --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-        --db-name G2 \
         --engine aurora-postgresql \
-        --iops 10 \
-        --master-user-password g2password \
-        --master-username g2username \
         --publicly-accessible \
         --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
       > ~/aws-rds-create-db-instance.json
     ```
+
+1. :thinking: **Optional:** References:
+    1. [Amazon Aurora User Guide for Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-ug.pdf) pdf
 
 #### Provision Simple Queue Service
 

@@ -2,11 +2,18 @@ version: '3'
 services:
   efsinitcontainer:
     command:
-      - /bin/bash
       - mkdir
-      - -p
-      - /efs/opt/senzing/g2
-    image: debian:10.2
+      - /efs/g2
+      - "&&"
+      - mkdir
+      - /efs/data
+      - "&&"
+      - mkdir
+      - /efs/etc
+      - "&&"
+      - mkdir
+      - /efs/var
+    image: busybox
     logging:
       driver: awslogs
       options:

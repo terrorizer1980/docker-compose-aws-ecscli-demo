@@ -257,6 +257,11 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
+        IpProtocol=tcp,FromPort=5000,ToPort=5000,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing X-Term"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
         IpProtocol=tcp,FromPort=8250,ToPort=8250,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing API server"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -264,10 +269,7 @@ For production purposes it is not fine.
       --ip-permissions \
         IpProtocol=tcp,FromPort=8251,ToPort=8251,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Web App"}]'
 
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=8254,ToPort=8254,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing X-Term"}]'
+
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
@@ -388,6 +390,7 @@ FIXME:
         --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
         --db-name G2 \
         --engine aurora-postgresql \
+        --iops 10 \
         --master-user-password g2password \
         --master-username g2username \
         --publicly-accessible \
@@ -428,9 +431,9 @@ FIXME:
 
 ### Create tasks and services
 
-#### Create directories on Elastic File System
+#### Run init container
 
-Create directories on Elastic File System.
+This "init container" create directories on Elastic File System.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

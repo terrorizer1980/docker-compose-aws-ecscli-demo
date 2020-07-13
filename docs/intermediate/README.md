@@ -257,16 +257,6 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=5672,ToPort=5672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ service"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
         IpProtocol=tcp,FromPort=8250,ToPort=8250,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing API server"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -289,11 +279,8 @@ For production purposes it is not fine.
       --ip-permissions \
         IpProtocol=tcp,FromPort=9178,ToPort=9178,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
 
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
+
 
 1. :thinking: **Optional:**
    To view Security Group, run
@@ -311,6 +298,21 @@ For production purposes it is not fine.
    View Security Group in AWS console.
     1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+
+### AWS bug work-around
+
+1. An AWS `aws`/`ecs-cli` [bug](https://github.com/aws/amazon-ecs-cli/issues/1083) prevents the use of CLI-only instructions.
+To work around the bug:
+    1. Visit [AWS Console for Security Groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups:)
+    1. Choose Security Group ID (e.g. "`e${SENZING_AWS_PROJECT}-cluster")
+        1. Can be found by running:
+
+            ```console
+            echo ${SENZING_AWS_EC2_SECURITY_GROUP}
+            ```
+    1. In "inbound rules", click "edit inbound rules" button
+    1. For "NFS" rule, click "Delete" button to remove rule.
+    1. At bottom, click "Save rules" button.
 
 ### Create backing services
 
@@ -333,6 +335,26 @@ FIXME: Provision in same VPC and Subnets.
         --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
       | jq --raw-output ".FileSystemId"
     )
+    ```
+
+1. Create mount in first subnet.
+   Example:
+
+    ```console
+    aws efs create-mount-target \
+      --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
+      --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --subnet-id ${SENZING_AWS_SUBNET_ID_1}
+    ```
+
+1. Create mount in second subnet.
+   Example:
+
+    ```console
+    aws efs create-mount-target \
+      --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
+      --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --subnet-id ${SENZING_AWS_SUBNET_ID_2}
     ```
 
 1. :thinking: **Optional:**
@@ -436,8 +458,6 @@ Install Senzing onto the Elastic File System.
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 #### Create Postgres service
 
@@ -608,8 +628,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
         1. Click "Update Cluster" to update information.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
 
 #### Create RabbitMQ service
 
@@ -1069,9 +1087,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 1. In AWS Console:
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [auto scaling groups](https://console.aws.amazon.com/ec2/autoscaling/home?#AutoScalingGroups)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
-        1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
         1. [security groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups)
     1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
@@ -1093,7 +1108,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
     1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
 1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
     1. [auto scaling groups](https://console.aws.amazon.com/ec2autoscaling/home?#/details)
-    1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
     1. [launch configurations](https://console.aws.amazon.com/ec2/autoscaling/home?#LaunchConfigurations)
     1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
 1. [ecs](https://console.aws.amazon.com/ecs/home)

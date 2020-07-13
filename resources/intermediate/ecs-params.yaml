@@ -6,9 +6,6 @@ task_definition:
     mem_limit: 1GB
     cpu_limit: 512
   efs_volumes:
-    - name: rabbitmq-dir
-      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /rabbitmq
     - name: senzing-data-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /data

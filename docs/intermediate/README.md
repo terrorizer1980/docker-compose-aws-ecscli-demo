@@ -464,8 +464,7 @@ Install Senzing onto the Elastic File System.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-yum.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-yum \
-      up \
-        --create-log-groups
+      up
     ```
 
 1. This task is a short-lived "job", not a long-running service.

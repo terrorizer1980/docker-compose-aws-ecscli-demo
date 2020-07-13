@@ -428,6 +428,26 @@ FIXME:
 
 ### Create tasks and services
 
+#### Create directories on Elastic File System
+
+Install Senzing onto the Elastic File System.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/intermediate/ecs-params-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-init-efs.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init-efs \
+      up \
+        --create-log-groups
+    ```
+
 #### Run install Senzing task
 
 Install Senzing onto the Elastic File System.

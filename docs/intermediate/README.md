@@ -430,7 +430,7 @@ FIXME:
 
 #### Create directories on Elastic File System
 
-Install Senzing onto the Elastic File System.
+Create directories on Elastic File System.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

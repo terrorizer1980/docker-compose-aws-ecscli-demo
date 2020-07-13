@@ -1,0 +1,19 @@
+version: '3'
+services:
+  efsinitcontainer:
+    command:
+      - /bin/bash
+      - mkdir
+      - -p
+      - /efs/opt/senzing/g2
+    image: debian:10.2
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: intermediate
+    volumes:
+      - senzing-efs-root:/efs
+volumes:
+  senzing-efs-root:

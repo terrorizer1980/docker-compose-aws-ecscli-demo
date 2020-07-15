@@ -21,10 +21,6 @@ task_definition:
       cpu_shares: 0
       essential: true
       mem_limit: 50M
-    rabbitmq:
-      cpu_shares: 0
-      essential: true
-      mem_limit: 256M
     producer:
       cpu_shares: 0
       essential: true

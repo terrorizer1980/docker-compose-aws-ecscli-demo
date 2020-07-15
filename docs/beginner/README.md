@@ -116,7 +116,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export AWS_REGION=us-east-1
+    export AWS_DEFAULT_REGION=us-east-1
     export AWS_KEYPAIR=aws-default-key-pair
     ```
 
@@ -162,7 +162,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
        --cluster ${SENZING_AWS_ECS_CLUSTER} \
        --config-name ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
        --default-launch-type EC2 \
-       --region ${AWS_REGION}
+       --region ${AWS_DEFAULT_REGION}
     ```
 
 1. :thinking: **Optional:**

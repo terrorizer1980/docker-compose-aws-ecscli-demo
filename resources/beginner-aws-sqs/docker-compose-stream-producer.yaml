@@ -9,7 +9,7 @@ services:
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_SQS_QUEUE_URL: ${SENZING_AWS_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: json-to-sqs
     image: senzing/stream-producer
     logging:

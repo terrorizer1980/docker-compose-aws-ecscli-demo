@@ -3,7 +3,7 @@
 ## Overview
 
 This illustrates a reference implementation of Senzing using
-RabbitMQ as the queue and
+AWS SQS as the queue and
 PostgreSQL as the underlying database
 on the Amazon Elastic Container Service in EC2 mode.
 
@@ -11,7 +11,7 @@ The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
 1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is RabbitMQ.
+    1. In this implementation, the queue is AWS SQS.
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
@@ -24,7 +24,6 @@ Arrows represent data flow.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
@@ -55,7 +54,6 @@ This docker formation brings up the following docker containers:
         1. [Create Senzing database schema task](#create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
-        1. [Create RabbitMQ service](#create-rabbitmq-service)
         1. [Create Stream producer task](#create-stream-producer-task)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
@@ -149,6 +147,37 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
     ```
+
+### Provision Simple Queue Service
+
+1. Create SQS queue.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_SQS_QUEUE_URL=$( \
+      aws sqs create-queue \
+        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+      | jq --raw-output ".QueueUrl"
+    )
+    ```
+
+1. :thinking: **Optional:**
+   View Simple Queue Service (SQS) URL.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_SQS_QUEUE_URL}
+    ```
+
+1. :thinking: **Optional:**
+   View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
+   in AWS console.
 
 ### Configure ECS CLI
 
@@ -317,11 +346,6 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=5672,ToPort=5672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ service"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
         IpProtocol=tcp,FromPort=8250,ToPort=8250,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing API server"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -343,11 +367,6 @@ For production purposes it is not fine.
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
         IpProtocol=tcp,FromPort=9178,ToPort=9178,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
 
 1. :thinking: **Optional:**
@@ -536,67 +555,15 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
 
-#### Create RabbitMQ service
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision RabbitMQ service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   To view service definition, run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-rabbitmq
-    ```
-
-1. :thinking: **Optional:**
-   To view RabbitMQ,
-   run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep rabbitmq
-    ```
-
-   Use the value having port 15672 which is the RabbitMQ web application.
-
-   **URL:** [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672)
-   **Username:** user
-   **Password:** bitnami
-
 #### Create Stream producer task
 
-Read JSON lines from a URL-addressable file and send to RabbitMQ.
+Read JSON lines from a URL-addressable file and send to AWS SQS.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to RabbitMQ.
+   to send messages to AWS SQS.
    Example:
 
     ```console
@@ -615,7 +582,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
 
 #### Create Stream loader service
 
-The stream loader service reads messages from RabbitMQ and inserts them into the Senzing Model.
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -868,7 +835,6 @@ echo $SENZING_EC2_HOST
 ```
 
 1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
-1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
 1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
 1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
 1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
@@ -903,7 +869,6 @@ echo $SENZING_EC2_HOST
       "phppgadmin" \
       "postgres" \
       "postgres-init" \
-      "rabbitmq" \
       "stream-loader" \
       "stream-producer" \
       "webapp" \

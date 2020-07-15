@@ -155,7 +155,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
+   Save queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
    Example:
 
     ```console

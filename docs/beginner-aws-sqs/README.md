@@ -108,14 +108,19 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 #### AWS metadata
 
+1. Set the following AWS environment variables:
+    1. [AWS_ACCESS_KEY_ID](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_access_key_id)
+    1. [AWS_SECRET_ACCESS_KEY](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_secret_access_key)
+    1. [AWS_SESSION_TOKEN](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_session_token)
+    1. [AWS_DEFAULT_REGION](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_default_region)
+
 1. :pencil2: Set AWS metadata:
    [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
    [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
    Example:
 
     ```console
-    export AWS_DEFAULT_REGION=us-east-1
-    export AWS_KEYPAIR=aws-default-key-pair
+    export SENZING_AWS_KEYPAIR=aws-default-key-pair
     ```
 
 #### Identify project
@@ -148,6 +153,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/ecs-params.yaml
     ```
 
+### Make AWS project directory
+
+1. Make a new directory to handle AWS output.
+   Example:
+
+    ```console
+    export SENZING_AWS_PROJECT_DIR=~/${SENZING_AWS_PROJECT}
+    mkdir ${SENZING_AWS_PROJECT_DIR}
+    ```
+
 ### Provision Simple Queue Service
 
 1. Create SQS queue.
@@ -155,16 +170,20 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
-   Save queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
    Example:
 
     ```console
-    export SENZING_SQS_QUEUE_URL=$( \
-      aws sqs create-queue \
-        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
-      | jq --raw-output ".QueueUrl"
-    )
+    aws sqs create-queue \
+      --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
+    ```
+
+1. Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
+   Example:
+
+    ```console
+    export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     ```
 
 1. :thinking: **Optional:**
@@ -214,8 +233,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
       --instance-type t3a.xlarge \
-      --keypair ${AWS_KEYPAIR} \
-      --size 1
+      --keypair ${SENZING_AWS_KEYPAIR} \
+      --size 1 \
+    | tee ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt
     ```
 
 1. :thinking: **Optional:**
@@ -249,11 +269,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_CONTAINER_INSTANCE_ARN=$( \
-      aws ecs list-container-instances \
-        --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".containerInstanceArns[0]" \
-    )
+    aws ecs list-container-instances \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ecs-list-container-instances.json
+    ```
+
+1. Save container instance Amazon Resource Name (ARN) in `SENZING_CONTAINER_INSTANCE_ARN` environment variable.
+   Example:
+
+    ```console
+    export SENZING_CONTAINER_INSTANCE_ARN=$(jq --raw-output ".containerInstanceArns[0]" ${SENZING_AWS_PROJECT_DIR}/aws-ecs-list-container-instances.json)
     ```
 
 1. From the ARN, find the AWS EC2 Instance ID.
@@ -264,12 +289,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_EC2_INSTANCE_ID=$( \
       aws ecs describe-container-instances \
         --cluster ${SENZING_AWS_ECS_CLUSTER} \
         --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
-      | jq --raw-output ".containerInstances[0].ec2InstanceId" \
-    )
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ecs-describe-container-instances.json
+    ```
+
+1. Save EC2 instance ID in `SENZING_EC2_INSTANCE_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_EC2_INSTANCE_ID=$(jq --raw-output ".containerInstances[0].ec2InstanceId" ${SENZING_AWS_PROJECT_DIR}/aws-ecs-describe-container-instances.json)
     ```
 
 1. From the AWS EC2 Instance ID, find the instance host address.
@@ -280,11 +310,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_EC2_HOST=$( \
-      aws ec2 describe-instances \
-        --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
-      | jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" \
-    )
+    aws ec2 describe-instances \
+      --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-instances.json
+    ```
+
+1. Save EC2 host IP address in `SENZING_EC2_HOST` environment variable.
+   Example:
+
+    ```console
+    export SENZING_EC2_HOST=$(jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-instances.json)
     ```
 
 1. :thinking: **Optional:** View EC2 IP address.
@@ -304,14 +339,20 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws cloudformation list-stack-resources \
-        --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" \
-    )
+    aws cloudformation list-stack-resources \
+      --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-cloudformation-list-stack-resources.json
     ```
 
-1. :thinking: **Optional:** View security group ID.
+1. Save EC2 security group in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EC2_SECURITY_GROUP=$(jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" ${SENZING_AWS_PROJECT_DIR}/aws-cloudformation-list-stack-resources.json)
+    ```
+
+1. :thinking: **Optional:**
+   View security group ID.
    Example:
 
     ```console

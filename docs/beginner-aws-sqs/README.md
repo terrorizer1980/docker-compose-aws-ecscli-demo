@@ -87,12 +87,6 @@ To install `aws`, follow steps at
 To install `ecs-cli`, follow steps at
 [Configuring the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
 
-### Multi-factor authentication
-
-:thinking: **Optional:**
-If multi-factor authentication is used to access AWS,
-see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
-
 ### Clone repository
 
 For more information on environment variables,
@@ -111,19 +105,23 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ## Tutorial
 
-### Identify metadata
-
-#### AWS metadata
+### Authentication
 
 1. Set the following AWS environment variables:
     1. [AWS_ACCESS_KEY_ID](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_access_key_id)
     1. [AWS_SECRET_ACCESS_KEY](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_secret_access_key)
     1. [AWS_SESSION_TOKEN](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_session_token)
-    1. [AWS_DEFAULT_REGION](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_default_region)
+1. :thinking: **Optional:**
+   If multi-factor authentication is used to access AWS,
+   see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
 
-1. :pencil2: Set AWS metadata:
-   [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
-   [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+### Identify metadata
+
+#### AWS metadata
+
+1. :pencil2: Set AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
+    1. See [AWS_DEFAULT_REGION](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_default_region)
+1. :pencil2: Set AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
    Example:
 
     ```console

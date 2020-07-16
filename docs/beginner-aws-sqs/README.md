@@ -43,6 +43,12 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Identify metadata](#identify-metadata)
+        1. [AWS metadata](#aws-metadata)
+        1. [Identify project](#identify-project)
+        1. [Multi-factor authentication](#multi-factor-authentication)
+        1. [Clone repository](#clone-repository)
+    1. [Make AWS project directory](#make-aws-project-directory)
+    1. [Provision Simple Queue Service](#provision-simple-queue-service)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
     1. [Find EC2 host address](#find-ec2-host-address)
@@ -64,6 +70,7 @@ This docker formation brings up the following docker containers:
 1. [Cleanup](#cleanup)
     1. [Bring down cluster](#bring-down-cluster)
     1. [Delete tasks definitions](#delete-tasks-definitions)
+    1. [Delete SQS](#delete-sqs)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
@@ -935,7 +942,6 @@ echo $SENZING_EC2_HOST
         ) > /dev/null; \
     done
     ```
-
 
 ### Delete SQS
 

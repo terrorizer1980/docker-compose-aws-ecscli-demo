@@ -907,8 +907,7 @@ echo $SENZING_EC2_HOST
 
     ```console
     aws sqs delete-queue \
-      --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue
+      --queue-url ${SENZING_SQS_QUEUE_URL}
     ```
 
 ### Clean logs

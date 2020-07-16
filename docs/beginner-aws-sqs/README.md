@@ -895,6 +895,22 @@ echo $SENZING_EC2_HOST
     done
     ```
 
+
+### Delete SQS
+
+1. Delete SQS queue.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [delete-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/delete-queue.html).
+   Example:
+
+    ```console
+    aws sqs delete-queue \
+      --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue
+    ```
+
 ### Clean logs
 
 1. Delete logs. Run

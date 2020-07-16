@@ -643,7 +643,7 @@ The stream loader service reads messages from Kafka and inserts them into the Se
 #### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -699,7 +699,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
 
 1. :thinking: **Optional:**
    Play with
-   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specifiation/master/senzing-rest-api.yaml).
    In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
 

@@ -890,17 +890,68 @@ echo $SENZING_EC2_HOST
 
 ## Cleanup
 
-### Bring down cluster
+### Delete services
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
+   to stop services.
+   Example:
+
+1. Bring servicec down
    Example:
 
     ```console
-    ecs-cli down \
-      --force \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-xterm.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-jupyter.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-webapp.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-apiserver.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-stream-loader.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-phppgadmin.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-postgres.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
+      service down
     ```
 
 ### Delete tasks definitions
@@ -941,6 +992,19 @@ echo $SENZING_EC2_HOST
           | jq --raw-output .taskDefinitionArns[0] \
         ) > /dev/null; \
     done
+    ```
+
+### Bring down cluster
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   Example:
+
+    ```console
+    ecs-cli down \
+      --force \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 ### Delete SQS

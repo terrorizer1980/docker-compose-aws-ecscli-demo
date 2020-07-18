@@ -65,8 +65,8 @@ This docker formation brings up the following docker containers:
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
-        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
@@ -780,52 +780,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
 
-#### Create Jupyter notebook service
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Senzing Web App service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-jupyter.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   To view service definition, run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-jupyter
-    ```
-
-1. :thinking: **Optional:**
-   To view Jupyter, run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep jupyter
-    ```
-
-   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
 
 #### Create Senzing X-Term service
 
@@ -874,6 +828,53 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
 
+#### Create Jupyter notebook service
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing Web App service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-jupyter.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-jupyter
+    ```
+
+1. :thinking: **Optional:**
+   To view Jupyter, run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+    | grep jupyter
+    ```
+
+   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
+
 ### Service recap
 
 Once the formation is running, the following services can be found at `SENZING_EC2_HOST`.
@@ -906,15 +907,15 @@ echo $SENZING_EC2_HOST
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-xterm.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-jupyter.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-jupyter.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-aws-sqs/docker-compose-xterm.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service down
 
     ecs-cli compose \

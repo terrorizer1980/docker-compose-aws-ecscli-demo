@@ -3,7 +3,7 @@
 ## Overview
 
 This illustrates a reference implementation of Senzing using
-AWS Simple Queue Service (SQS) as the queue and
+Kafka as the queue and
 PostgreSQL as the underlying database
 on the Amazon Elastic Container Service (ECS) in EC2 mode.
 
@@ -11,7 +11,7 @@ The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
 1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is AWS SQS.
+    1. In this implementation, the queue is Kafka.
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
@@ -79,16 +79,15 @@ This docker formation brings up the following docker containers:
 
 ## Prerequisites
 
+### Install AWS CLI
+
+To install `aws`, see
+[How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
+
 ### Install ECS CLI
 
-To install `ecs-cli`, follow steps at
-[Configuring the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
-
-### Multi-factor authentication
-
-:thinking: **Optional:**
-If multi-factor authentication is used to access AWS,
-see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
+To install `ecs-cli`, see
+[How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
 
 ### Clone repository
 
@@ -108,18 +107,29 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ## Tutorial
 
+### Authentication
+
+1. Create an
+   [AWS session](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws-session).
+1. Set the following AWS environment variables:
+    1. [AWS_ACCESS_KEY_ID](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_access_key_id)
+    1. [AWS_SECRET_ACCESS_KEY](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_secret_access_key)
+    1. [AWS_SESSION_TOKEN](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_session_token)
+1. :thinking: **Optional:**
+   If multi-factor authentication is used to access AWS,
+   see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
+
 ### Identify metadata
 
 #### AWS metadata
 
-1. :pencil2: Set AWS metadata:
-   [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and
-   [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+1. :pencil2: Set AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
+    1. Set [AWS_DEFAULT_REGION](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_default_region)
+1. :pencil2: Set AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
    Example:
 
     ```console
-    export AWS_DEFAULT_REGION=us-east-1
-    export AWS_KEYPAIR=aws-default-key-pair
+    export SENZING_AWS_KEYPAIR=aws-default-key-pair
     ```
 
 #### Identify project
@@ -150,6 +160,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
     export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner-kafka/ecs-params.yaml
+    ```
+
+### Make AWS project directory
+
+1. Make a new directory to handle AWS output.
+   Example:
+
+    ```console
+    export SENZING_AWS_PROJECT_DIR=~/${SENZING_AWS_PROJECT}
+    mkdir ${SENZING_AWS_PROJECT_DIR}
     ```
 
 ### Configure ECS CLI
@@ -187,8 +207,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
       --instance-type t3a.xlarge \
-      --keypair ${AWS_KEYPAIR} \
-      --size 1
+      --keypair ${SENZING_AWS_KEYPAIR} \
+      --size 1 \
+    | tee ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt
     ```
 
 1. :thinking: **Optional:**
@@ -222,11 +243,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_CONTAINER_INSTANCE_ARN=$( \
-      aws ecs list-container-instances \
-        --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".containerInstanceArns[0]" \
-    )
+    aws ecs list-container-instances \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ecs-list-container-instances.json
+    ```
+
+1. Save container instance Amazon Resource Name (ARN) in `SENZING_CONTAINER_INSTANCE_ARN` environment variable.
+   Example:
+
+    ```console
+    export SENZING_CONTAINER_INSTANCE_ARN=$(jq --raw-output ".containerInstanceArns[0]" ${SENZING_AWS_PROJECT_DIR}/aws-ecs-list-container-instances.json)
     ```
 
 1. From the ARN, find the AWS EC2 Instance ID.
@@ -237,12 +263,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_EC2_INSTANCE_ID=$( \
-      aws ecs describe-container-instances \
-        --cluster ${SENZING_AWS_ECS_CLUSTER} \
-        --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
-      | jq --raw-output ".containerInstances[0].ec2InstanceId" \
-    )
+    aws ecs describe-container-instances \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ecs-describe-container-instances.json
+    ```
+
+1. Save EC2 instance ID in `SENZING_EC2_INSTANCE_ID` environment variable.
+   Example:
+
+    ```console
+    export SENZING_EC2_INSTANCE_ID=$(jq --raw-output ".containerInstances[0].ec2InstanceId" ${SENZING_AWS_PROJECT_DIR}/aws-ecs-describe-container-instances.json)
     ```
 
 1. From the AWS EC2 Instance ID, find the instance host address.
@@ -253,11 +284,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_EC2_HOST=$( \
-      aws ec2 describe-instances \
-        --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
-      | jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" \
-    )
+    aws ec2 describe-instances \
+      --filters Name=instance-id,Values=${SENZING_EC2_INSTANCE_ID} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-instances.json
+    ```
+
+1. Save EC2 host IP address in `SENZING_EC2_HOST` environment variable.
+   Example:
+
+    ```console
+    export SENZING_EC2_HOST=$(jq --raw-output ".Reservations[0].Instances[0].PublicIpAddress" ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-instances.json)
     ```
 
 1. :thinking: **Optional:** View EC2 IP address.
@@ -277,14 +313,20 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_AWS_EC2_SECURITY_GROUP=$( \
-      aws cloudformation list-stack-resources \
-        --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
-      | jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" \
-    )
+    aws cloudformation list-stack-resources \
+      --stack-name amazon-ecs-cli-setup-${SENZING_AWS_ECS_CLUSTER} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-cloudformation-list-stack-resources.json
     ```
 
-1. :thinking: **Optional:** View security group ID.
+1. Save EC2 security group in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+   Example:
+
+    ```console
+    export SENZING_AWS_EC2_SECURITY_GROUP=$(jq --raw-output ".StackResourceSummaries[] | select(.LogicalResourceId == \"EcsSecurityGroup\").PhysicalResourceId" ${SENZING_AWS_PROJECT_DIR}/aws-cloudformation-list-stack-resources.json)
+    ```
+
+1. :thinking: **Optional:**
+   View security group ID.
    Example:
 
     ```console
@@ -378,7 +420,7 @@ For production purposes it is not fine.
 
 ### Create tasks and services
 
-#### Install Senzing task
+#### Run install Senzing task
 
 Install Senzing into `/opt/senzing` on the EC2 instance.
 
@@ -400,7 +442,6 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
-
 1. :thinking: **Optional:**
    View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
@@ -409,6 +450,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         1. If task is seen, it is still "RUNNING".  Wait until task is complete.
     1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
         1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Create Postgres service
 
@@ -449,7 +491,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
         1. Click "Services" tab.
         1. Click on link in "Service Name" column.
 
-#### Create Senzing database schema task
+#### Run create Senzing database schema task
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -475,7 +517,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
+        1. If task is seen, it is still "RUNNING".
 
 #### Create phpPgAdmin service
 
@@ -535,7 +577,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
-
 1. :thinking: **Optional:**
    View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
@@ -624,7 +665,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
    **URL:** [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179)
 
-#### Create Stream producer task
+#### Run Stream producer task
 
 Read JSON lines from a URL-addressable file and send to Kafka.
 
@@ -742,7 +783,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
 
 1. :thinking: **Optional:**
    Play with
-   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specifiation/master/senzing-rest-api.yaml).
+   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
    In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
 
@@ -799,53 +840,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
 
-#### Create Jupyter notebook service
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Senzing Web App service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   To view service definition, run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-jupyter
-    ```
-
-1. :thinking: **Optional:**
-   To view Jupyter, run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep jupyter
-    ```
-
-   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
-
 #### Create Senzing X-Term service
 
 1. Run
@@ -893,19 +887,130 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254)
 
-## Cleanup
-
-### Bring down cluster
+#### Create Jupyter notebook service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing Web App service.
    Example:
 
     ```console
-    ecs-cli down \
-      --force \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   To view service definition, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-jupyter
+    ```
+
+1. :thinking: **Optional:**
+   To view Jupyter, run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+    | grep jupyter
+    ```
+
+   **URL:** [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178)
+
+### Service recap
+
+Once the formation is running, the following services can be found at `SENZING_EC2_HOST`.
+
+To find the value of `SENZING_EC2_HOST`, run
+
+```console
+echo $SENZING_EC2_HOST
+```
+
+1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
+1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
+1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
+1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
+
+## Cleanup
+
+### Delete services
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
+   to stop services.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-xterm.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-webapp.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-apiserver.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-loader.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-phppgadmin.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
+      service down
     ```
 
 ### Delete tasks definitions
@@ -948,6 +1053,19 @@ The Senzing Web App provides a user interface to Senzing functionality.
           | jq --raw-output .taskDefinitionArns[0] \
         ) > /dev/null; \
     done
+    ```
+
+### Bring down cluster
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   Example:
+
+    ```console
+    ecs-cli down \
+      --force \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 ### Clean logs

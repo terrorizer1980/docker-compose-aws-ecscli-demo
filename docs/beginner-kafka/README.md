@@ -114,7 +114,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 1. Set the following AWS environment variables:
     1. [AWS_ACCESS_KEY_ID](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_access_key_id)
     1. [AWS_SECRET_ACCESS_KEY](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_secret_access_key)
-    1. [AWS_SESSION_TOKEN](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_session_token)
 1. :thinking: **Optional:**
    If multi-factor authentication is used to access AWS,
    see [How to set AWS multi-factor authentication credentials](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-mfa-credentials.md).
@@ -582,7 +581,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
+        1. If task is seen, it is still "RUNNING".
+1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Create Kafka service
 
@@ -945,6 +945,7 @@ echo $SENZING_EC2_HOST
 ```
 
 1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
+1. [http://${SENZING_EC2_HOST}:xxxx](http://0.0.0.0:xxxx) - Kafdrop
 1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
 1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
 1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term

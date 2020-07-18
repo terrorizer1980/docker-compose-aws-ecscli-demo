@@ -298,9 +298,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-      aws ecs describe-container-instances \
-        --cluster ${SENZING_AWS_ECS_CLUSTER} \
-        --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
+    aws ecs describe-container-instances \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --container-instances ${SENZING_CONTAINER_INSTANCE_ARN} \
     > ${SENZING_AWS_PROJECT_DIR}/aws-ecs-describe-container-instances.json
     ```
 

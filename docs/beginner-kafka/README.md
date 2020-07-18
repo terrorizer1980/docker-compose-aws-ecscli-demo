@@ -1,35 +1,78 @@
 # docker-compose-aws-ecscli-demo-beginner-kafka
 
+## Overview
+
+This illustrates a reference implementation of Senzing using
+AWS Simple Queue Service (SQS) as the queue and
+PostgreSQL as the underlying database
+on the Amazon Elastic Container Service (ECS) in EC2 mode.
+
+The instructions show how to set up a system that:
+
+1. Reads JSON lines from a file on the internet.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is AWS SQS.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a PostgreSQL database.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
+1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+The following diagram shows the relationship of the docker containers in this docker composition.
+Arrows represent data flow.
+
+![Image of architecture](architecture.png)
+
+This docker formation brings up the following docker containers:
+
+1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[postgres](https://hub.docker.com/_/postgres)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
+
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
-    1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
+    1. [Authentication](#authentication)
     1. [Identify metadata](#identify-metadata)
+        1. [AWS metadata](#aws-metadata)
+        1. [Identify project](#identify-project)
+        1. [EULA](#eula)
+        1. [Synthesize variables](#synthesize-variables)
+    1. [Make AWS project directory](#make-aws-project-directory)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
     1. [Find EC2 host address](#find-ec2-host-address)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
     1. [Create tasks and services](#create-tasks-and-services)
-        1. [Install Senzing task](#install-senzing-task)
+        1. [Run install Senzing task](#run-install-senzing-task)
         1. [Create Postgres service](#create-postgres-service)
-        1. [Create Senzing database schema task](#create-senzing-database-schema-task)
+        1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
         1. [Create Kafka service](#create-kafka-service)
         1. [Create Kafdrop service](#create-kafdrop-service)
-        1. [Create Stream producer task](#create-stream-producer-task)
+        1. [Run Stream producer task](#run-stream-producer-task)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
-        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+        1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+    1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
-    1. [Bring down cluster](#bring-down-cluster)
+    1. [Delete services](#delete-services)
     1. [Delete tasks definitions](#delete-tasks-definitions)
+    1. [Bring down cluster](#bring-down-cluster)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)

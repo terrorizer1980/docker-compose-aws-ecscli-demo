@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-beginner
+# docker-compose-aws-ecscli-demo-beginner-aws-sqs
 
 ## Overview
 

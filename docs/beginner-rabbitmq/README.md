@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-beginner
+# docker-compose-aws-ecscli-demo-beginner-rabbitmq
 
 ## Overview
 

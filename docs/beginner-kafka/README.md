@@ -24,7 +24,10 @@ Arrows represent data flow.
 
 This docker formation brings up the following docker containers:
 
+1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*

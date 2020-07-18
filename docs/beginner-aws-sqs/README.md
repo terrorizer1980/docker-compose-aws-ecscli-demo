@@ -780,7 +780,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
    **URL:** [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251)
 
-
 #### Create Senzing X-Term service
 
 1. Run

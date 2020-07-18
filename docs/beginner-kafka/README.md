@@ -1013,7 +1013,7 @@ echo $SENZING_EC2_HOST
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
-      service up
+      service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \

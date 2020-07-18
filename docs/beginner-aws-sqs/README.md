@@ -81,13 +81,13 @@ This docker formation brings up the following docker containers:
 
 ### Install AWS CLI
 
-To install `aws`, follow steps at
-[Installing the AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
+To install `aws`, see
+[How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
 
 ### Install ECS CLI
 
-To install `ecs-cli`, follow steps at
-[Configuring the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
+To install `ecs-cli`, see
+[How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
 
 ### Clone repository
 

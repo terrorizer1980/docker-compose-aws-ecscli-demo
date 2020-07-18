@@ -3,9 +3,9 @@
 ## Overview
 
 This illustrates a reference implementation of Senzing using
-AWS SQS as the queue and
+AWS Simple Queue Service (SQS) as the queue and
 PostgreSQL as the underlying database
-on the Amazon Elastic Container Service in EC2 mode.
+on the Amazon Elastic Container Service (ECS) in EC2 mode.
 
 The instructions show how to set up a system that:
 
@@ -30,23 +30,24 @@ This docker formation brings up the following docker containers:
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
-1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 
 ## Contents
 
 1. [Prerequisites](#prerequisites)
     1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
-    1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
+    1. [Authentication](#authentication)
     1. [Identify metadata](#identify-metadata)
         1. [AWS metadata](#aws-metadata)
         1. [Identify project](#identify-project)
-        1. [Multi-factor authentication](#multi-factor-authentication)
-        1. [Clone repository](#clone-repository)
+        1. [EULA](#eula)
+        1. [Synthesize variables](#synthesize-variables)
     1. [Make AWS project directory](#make-aws-project-directory)
     1. [Provision Simple Queue Service](#provision-simple-queue-service)
     1. [Configure ECS CLI](#configure-ecs-cli)
@@ -68,8 +69,9 @@ This docker formation brings up the following docker containers:
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
-    1. [Bring down cluster](#bring-down-cluster)
+    1. [Delete services](#delete-services)
     1. [Delete tasks definitions](#delete-tasks-definitions)
+    1. [Bring down cluster](#bring-down-cluster)
     1. [Delete SQS](#delete-sqs)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)

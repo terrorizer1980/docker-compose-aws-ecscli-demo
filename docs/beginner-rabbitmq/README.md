@@ -910,11 +910,11 @@ To find the value of `SENZING_EC2_HOST`, run
 echo $SENZING_EC2_HOST
 ```
 
-1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
-1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
 1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
-1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
 1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
+1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
+1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
+1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
 1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
 
 ## Cleanup

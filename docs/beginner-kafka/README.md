@@ -635,8 +635,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafdrop.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-kafdrop \
-      service up \
-        --launch-type EC2
+      service up
     ```
 
 1. :thinking: **Optional:**

@@ -14,7 +14,7 @@ The instructions show how to set up a system that:
     1. In this implementation, the queue is AWS SQS.
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
-1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -667,7 +667,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 #### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -723,7 +723,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
 
 1. :thinking: **Optional:**
    Play with
-   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+   [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
    In **Server variables** > **host** text field, enter value of `SENZING_EC2_HOST`.
    To find the value, run
 
@@ -888,7 +888,7 @@ echo $SENZING_EC2_HOST
 1. [http://${SENZING_EC2_HOST}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
 1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
 1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
-1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
 
 ## Cleanup
 

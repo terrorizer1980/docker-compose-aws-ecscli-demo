@@ -1,9 +1,9 @@
-# docker-compose-aws-ecscli-demo-beginner-kafka
+# docker-compose-aws-ecscli-demo-beginner-rabbitmq
 
 ## Overview
 
 This illustrates a reference implementation of Senzing using
-Kafka as the queue and
+RabbitMQ as the queue and
 PostgreSQL as the underlying database
 on the Amazon Elastic Container Service (ECS) in EC2 mode.
 
@@ -11,7 +11,7 @@ The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
 1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is Kafka.
+    1. In this implementation, the queue is RabbitMQ.
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
@@ -24,10 +24,8 @@ Arrows represent data flow.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
-1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
@@ -63,8 +61,7 @@ This docker formation brings up the following docker containers:
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
-        1. [Create Kafka service](#create-kafka-service)
-        1. [Create Kafdrop service](#create-kafdrop-service)
+        1. [Create RabbitMQ service](#create-rabbitmq-service)
         1. [Run Stream producer task](#run-stream-producer-task)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
@@ -161,7 +158,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner-kafka/ecs-params.yaml
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
     ```
 
 ### Make AWS project directory
@@ -358,12 +355,12 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=2181,ToPort=2181,IpRanges='[{CidrIp=0.0.0.0/0,Description="Zookeeper"}]'
+        IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=5432,ToPort=5432,IpRanges='[{CidrIp=0.0.0.0/0,Description="PostgreSQL"}]'
+        IpProtocol=tcp,FromPort=5672,ToPort=5672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ service"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
@@ -383,11 +380,6 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=9092,ToPort=9092,IpRanges='[{CidrIp=0.0.0.0/0,Description="Kafka service"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
         IpProtocol=tcp,FromPort=9171,ToPort=9171,IpRanges='[{CidrIp=0.0.0.0/0,Description="phpPgAdmin"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -398,7 +390,7 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=9179,ToPort=9179,IpRanges='[{CidrIp=0.0.0.0/0,Description="Kafdrop"}]'
+        IpProtocol=tcp,FromPort=15672,ToPort=15672,IpRanges='[{CidrIp=0.0.0.0/0,Description="RabbitMQ user interface"}]'
     ```
 
 1. :thinking: **Optional:**
@@ -436,7 +428,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
         --create-log-groups
@@ -468,7 +460,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service up
     ```
@@ -506,7 +498,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up
     ```
@@ -535,7 +527,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up
     ```
@@ -572,7 +564,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up
     ```
@@ -587,22 +579,22 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
         1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
-#### Create Kafka service
+#### Create RabbitMQ service
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Kafka service.
+   to provision RabbitMQ service.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service up
     ```
 
@@ -616,43 +608,11 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-kafka
-    ```
-
-#### Create Kafdrop service
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Kafdrop service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafdrop.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-kafdrop \
-      service up
+      --services ${SENZING_AWS_PROJECT}-project-name-rabbitmq
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
-   [aws](https://docs.aws.amazon.com/cli/latest/reference/index.html)
-   [ecs](https://docs.aws.amazon.com/cli/latest/reference/ecs/index.html)
-   [describe-services](https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-services.html).
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-kafdrop
-    ```
-
-1. :thinking: **Optional:**
-   To view Kafdrop,
+   To view RabbitMQ,
    run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
@@ -662,27 +622,31 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep kafdrop
+    | grep rabbitmq
     ```
 
-   **URL:** [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179)
+   Use the value having port 15672 which is the RabbitMQ web application.
+
+   **URL:** [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672)
+   **Username:** user
+   **Password:** bitnami
 
 #### Run Stream producer task
 
-Read JSON lines from a URL-addressable file and send to Kafka.
+Read JSON lines from a URL-addressable file and send to RabbitMQ.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to Kafka.
+   to send messages to RabbitMQ.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up
     ```
@@ -694,7 +658,7 @@ Read JSON lines from a URL-addressable file and send to Kafka.
 
 #### Create Stream loader service
 
-The stream loader service reads messages from Kafka and inserts them into the Senzing Model.
+The stream loader service reads messages from RabbitMQ and inserts them into the Senzing Model.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -708,7 +672,7 @@ The stream loader service reads messages from Kafka and inserts them into the Se
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
     ```
@@ -743,7 +707,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up
     ```
@@ -809,7 +773,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up
     ```
@@ -856,7 +820,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up
     ```
@@ -903,7 +867,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up
     ```
@@ -950,7 +914,7 @@ echo $SENZING_EC2_HOST
 1. [http://${SENZING_EC2_HOST}:8254](http://0.0.0.0:8254) - Senzing X-Term
 1. [http://${SENZING_EC2_HOST}:9171](http://0.0.0.0:9171) - PhpPgAdmin
 1. [http://${SENZING_EC2_HOST}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
-1. [http://${SENZING_EC2_HOST}:9179](http://0.0.0.0:9179) - Kafdrop
+1. [http://${SENZING_EC2_HOST}:15672](http://0.0.0.0:15672) - RabbitMQ
 1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
 
 ## Cleanup
@@ -969,63 +933,56 @@ echo $SENZING_EC2_HOST
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafdrop.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-kafdrop \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-kafka.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-kafka \
-      service down
-
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner-kafka/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service down
     ```
@@ -1041,11 +998,10 @@ echo $SENZING_EC2_HOST
       "init" \
       "init-container" \
       "jupyter" \
-      "kafdrop" \
-      "kafka" \
       "phppgadmin" \
       "postgres" \
       "postgres-init" \
+      "rabbitmq" \
       "stream-loader" \
       "stream-producer" \
       "webapp" \

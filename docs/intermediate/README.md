@@ -512,7 +512,6 @@ FIXME: Provision in same VPC and Subnets.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
    Example:
 
     ```console
@@ -526,6 +525,9 @@ FIXME: Provision in same VPC and Subnets.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
+1. :thinking: **Optional:**
+   View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)
+   in AWS console.
 1. :thinking: **Optional:** References:
     1. [Amazon Aurora User Guide for Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-ug.pdf) pdf
 
@@ -1215,6 +1217,45 @@ echo $SENZING_EC2_HOST
 ### Delete Aurora PostgreSQL
 
 FIXME:
+
+1. Delete Aurora PostgreSQL database.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-instance.html).
+   Example:
+
+    ```console
+      aws rds delete-db-instance \
+        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
+    ```
+
+1. Delete Aurora cluster.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster.html).
+   Example:
+
+    ```console
+    aws rds delete-db-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster.json
+    ```
+
+1. Create Database subnet group.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-subnet-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-subnet-group.html).
+   Example:
+
+    ```console
+    aws rds delete-db-subnet-group \
+      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-subnet-group.json
+    ```
 
 ### Delete Elastic File System
 

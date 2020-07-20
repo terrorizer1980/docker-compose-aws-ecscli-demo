@@ -154,8 +154,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export SENZING_AWS_RDS_USERNAME=senzing
-    export SENZING_AWS_RDS_PASSWORD=password
+    export POSTGRES_USERNAME=senzing
+    export POSTGRES_PASSWORD=password
     ```
 
 #### EULA
@@ -500,8 +500,8 @@ FIXME: Provision in same VPC and Subnets.
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
       --engine aurora-postgresql \
       --database-name G2 \
-      --master-username ${SENZING_AWS_RDS_USERNAME} \
-      --master-user-password ${SENZING_AWS_RDS_PASSWORD} \
+      --master-username ${POSTGRES_USERNAME} \
+      --master-user-password ${POSTGRES_PASSWORD} \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
@@ -524,6 +524,9 @@ FIXME: Provision in same VPC and Subnets.
         --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
+
+1. Set `POSTGRES_HOST`
+   Example:
 
 1. :thinking: **Optional:**
    View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)
@@ -824,7 +827,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address definition.
    This information will be used in subsequent steps.
-   Save host IP in `SENZING_RABBITMQ_HOST` environment variable.
+   Save host IP in `SENZING_IP_ADDRESS_APISERVER` environment variable.
    Example:
 
     ```console
@@ -995,12 +998,12 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Service recap
 
-Once the formation is running, the following services can be found at `SENZING_EC2_HOST`.
+Once the formation is running, the following services can be found at `SENZING_XXXX_HOST`.
 
-To find the value of `SENZING_EC2_HOST`, run
+To find the value of `SENZING_XXXX_HOST`, run
 
 ```console
-echo $SENZING_EC2_HOST
+echo $SENZING_XXXX_HOST
 ```
 
 1. [http://${SENZING_xxx}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App

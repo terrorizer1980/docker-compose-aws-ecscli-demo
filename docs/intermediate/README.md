@@ -295,7 +295,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     aws ec2 describe-security-groups \
       --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
-      --region ${AWS_REGION} \
+      --region ${AWS_DEFAULT_REGION} \
     > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json
     ```
 

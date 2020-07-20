@@ -18,7 +18,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-aws-sqs
     ports:
       - 8250:8250
     privileged: true

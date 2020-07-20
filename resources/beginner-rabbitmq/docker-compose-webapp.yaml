@@ -10,6 +10,6 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-rabbitmq
     ports:
       - 8251:8251

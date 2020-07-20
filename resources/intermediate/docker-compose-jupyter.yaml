@@ -16,7 +16,7 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: intermediate
     ports:
-      - 9178:8888
+      - 8888:8888
     volumes:
       - senzing-var-dir:/notebooks/shared
       - senzing-data-version-dir:/opt/senzing/data

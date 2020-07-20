@@ -1,18 +1,15 @@
 version: '3'
 services:
-  initcontainer:
+  postgresinit:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${SENZING_EC2_HOST}:5432/${POSTGRES_DB:-G2}"
-      SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.5}
+      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    image: senzing/postgresql-client:${SENZING_POSTGRES_CLIENT_VERSION:-1.0.0}
     logging:
       driver: awslogs
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
-    user: "0"
+        awslogs-stream-prefix: beginner-rabbitmq
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2

@@ -337,6 +337,16 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
+        IpProtocol=tcp,FromPort=80,ToPort=80,IpRanges='[{CidrIp=0.0.0.0/0,Description="HTTP"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
+        IpProtocol=tcp,FromPort=443,ToPort=443,IpRanges='[{CidrIp=0.0.0.0/0,Description="HTTPS"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
         IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
 
     aws ec2 authorize-security-group-ingress \
@@ -357,12 +367,12 @@ For production purposes it is not fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=9171,ToPort=9171,IpRanges='[{CidrIp=0.0.0.0/0,Description="phpPgAdmin"}]'
+        IpProtocol=tcp,FromPort=8888,ToPort=8888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
-        IpProtocol=tcp,FromPort=9178,ToPort=9178,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
+        IpProtocol=tcp,FromPort=9171,ToPort=9171,IpRanges='[{CidrIp=0.0.0.0/0,Description="phpPgAdmin"}]'
     ```
 
 1. :thinking: **Optional:**

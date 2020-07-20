@@ -12,10 +12,10 @@ services:
       SENZING_RECORD_MONITOR: 1000
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: json-to-sqs
-    image: senzing/stream-producer
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     logging:
       driver: awslogs
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-aws-sqs

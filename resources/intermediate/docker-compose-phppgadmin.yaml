@@ -33,5 +33,5 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: intermediate
     ports:
-      - 9171:80
-      - 9172:443
+      - 80:80
+      - 443:443

@@ -9,7 +9,7 @@ services:
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-aws-sqs
     user: "0"
     volumes:
       - ${SENZING_DATA_DIR:-/opt/senzing/data}:/opt/senzing/data

@@ -158,7 +158,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner/ecs-params.yaml
+    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/ecs-params.yaml
     ```
 
 ### Make AWS project directory
@@ -428,7 +428,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init \
       up \
         --create-log-groups
@@ -460,7 +460,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service up
     ```
@@ -498,7 +498,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres-init.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up
     ```
@@ -527,7 +527,7 @@ Install Senzing into `/opt/senzing` on the EC2 instance.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up
     ```
@@ -564,7 +564,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up
     ```
@@ -593,7 +593,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-rabbitmq.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service up
     ```
@@ -646,7 +646,7 @@ Read JSON lines from a URL-addressable file and send to RabbitMQ.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up
     ```
@@ -672,7 +672,7 @@ The stream loader service reads messages from RabbitMQ and inserts them into the
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
     ```
@@ -707,7 +707,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up
     ```
@@ -773,7 +773,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up
     ```
@@ -820,7 +820,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up
     ```
@@ -867,7 +867,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up
     ```
@@ -933,56 +933,56 @@ echo $SENZING_EC2_HOST
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-rabbitmq.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-rabbitmq.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-rabbitmq \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/beginner/docker-compose-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/beginner-rabbitmq/docker-compose-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service down
     ```

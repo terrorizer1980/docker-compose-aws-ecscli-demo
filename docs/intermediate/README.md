@@ -37,24 +37,30 @@ This docker formation brings up the following docker containers:
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
-    1. [Multi-factor authentication](#multi-factor-authentication)
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
+    1. [Authentication](#authentication)
     1. [Identify metadata](#identify-metadata)
         1. [AWS metadata](#aws-metadata)
         1. [Identify project](#identify-project)
+        1. [Database credentials](#database-credentials)
         1. [EULA](#eula)
         1. [Synthesize variables](#synthesize-variables)
     1. [Make AWS project directory](#make-aws-project-directory)
-    1. [Create backing services](#create-backing-services)
-        1. [Provision Simple Queue Service](#provision-simple-queue-service)
-        1. [Provision Elastic File system](#provision-elastic-file-system)
     1. [Configure ECS CLI](#configure-ecs-cli)
     1. [Create cluster](#create-cluster)
+    1. [Save cluster metadata](#save-cluster-metadata)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
+    1. [AWS bug work-around](#aws-bug-work-around)
+    1. [Create backing services](#create-backing-services)
+        1. [Provision Elastic File System](#provision-elastic-file-system)
+        1. [Provision Aurora PostgreSQL](#provision-aurora-postgresql)
+        1. [Provision Simple Queue Service](#provision-simple-queue-service)
     1. [Create tasks and services](#create-tasks-and-services)
+        1. [Run EFS init container](#run-efs-init-container)
         1. [Run install Senzing task](#run-install-senzing-task)
         1. [Create Postgres service](#create-postgres-service)
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
@@ -71,7 +77,9 @@ This docker formation brings up the following docker containers:
     1. [Delete services](#delete-services)
     1. [Delete tasks definitions](#delete-tasks-definitions)
     1. [Bring down cluster](#bring-down-cluster)
-    1. [Delete SQS](#delete-sqs)
+    1. [Delete Simple Queue Service](#delete-simple-queue-service)
+    1. [Delete Aurora PostgreSQL](#delete-aurora-postgresql)
+    1. [Delete Elastic File System](#delete-elastic-file-system)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
@@ -181,41 +189,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     mkdir ${SENZING_AWS_PROJECT_DIR}
     ```
 
-### Provision Simple Queue Service
-
-1. Create SQS queue.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
-   Example:
-
-    ```console
-    aws sqs create-queue \
-      --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
-    ```
-
-1. Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
-   Example:
-
-    ```console
-    export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
-    ```
-
-1. :thinking: **Optional:**
-   View Simple Queue Service (SQS) URL.
-   Example:
-
-    ```console
-    echo ${SENZING_SQS_QUEUE_URL}
-    ```
-
-1. :thinking: **Optional:**
-   View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
-   in AWS console.
-
 ### Configure ECS CLI
 
 1. Run
@@ -264,7 +237,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         1. [subnets](https://console.aws.amazon.com/vpc/home?#subnets)
         1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
 
-### Save Cluster metadata
+### Save cluster metadata
 
 1. The `ecs-cli up` command that just completed prints metadata
    that needs to be captured in environment variables for later use.
@@ -420,6 +393,7 @@ To work around the bug:
             ```console
             echo ${SENZING_AWS_EC2_SECURITY_GROUP}
             ```
+
     1. In "inbound rules", click "edit inbound rules" button
     1. For "NFS" rule, click "Delete" button to remove rule.
     1. At bottom, click "Save rules" button.
@@ -428,7 +402,7 @@ To work around the bug:
 
 FIXME: Provision in same VPC and Subnets.
 
-#### Provision Elastic File system
+#### Provision Elastic File System
 
 1. Create EFS file system.
    Run
@@ -550,16 +524,20 @@ FIXME: Provision in same VPC and Subnets.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
-   Save file system ID in `SENZING_AWS_SQS_ID` environment variable.
    Example:
 
     ```console
-    export SENZING_AWS_SQS_QUEUE_URL=$( \
-      aws sqs create-queue \
-        --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
-      | jq --raw-output ".QueueUrl"
-    )
+    aws sqs create-queue \
+      --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
+    ```
+
+1. Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
+   Example:
+
+    ```console
+    export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     ```
 
 1. :thinking: **Optional:**
@@ -567,7 +545,7 @@ FIXME: Provision in same VPC and Subnets.
    Example:
 
     ```console
-    echo ${SENZING_AWS_SQS_QUEUE_URL}
+    echo ${SENZING_SQS_QUEUE_URL}
     ```
 
 1. :thinking: **Optional:**
@@ -1208,7 +1186,7 @@ echo $SENZING_EC2_HOST
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
-### Delete SQS
+### Delete Simple Queue Service
 
 1. Delete SQS queue.
    Run
@@ -1222,7 +1200,11 @@ echo $SENZING_EC2_HOST
       --queue-url ${SENZING_SQS_QUEUE_URL}
     ```
 
-### Delete elastic file system
+### Delete Aurora PostgreSQL
+
+FIXME:
+
+### Delete Elastic File System
 
 1. Delete EFS file system.
    Run

@@ -527,6 +527,20 @@ FIXME: Provision in same VPC and Subnets.
 
 1. Set `POSTGRES_HOST`
    Example:
+1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
+   Example:
+
+    ```console
+    export POSTGRES_HOST=$(jq --raw-output ".DBCluster.Endpoint" ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json)
+    ```
+
+1. :thinking: **Optional:**
+   View AWS Aurora PostgreSQL hostname.
+   Example:
+
+    ```console
+    echo ${POSTGRES_HOST}
+    ```
 
 1. :thinking: **Optional:**
    View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)

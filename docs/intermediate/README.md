@@ -418,7 +418,7 @@ FIXME: Provision in same VPC and Subnets.
       --throughput-mode bursting \
       --performance-mode generalPurpose \
       --region ${AWS_DEFAULT_REGION} \
-      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
     > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json
     ```
 

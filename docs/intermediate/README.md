@@ -62,7 +62,6 @@ This docker formation brings up the following docker containers:
     1. [Create tasks and services](#create-tasks-and-services)
         1. [Run EFS init container](#run-efs-init-container)
         1. [Run install Senzing task](#run-install-senzing-task)
-        1. [Create Postgres service](#create-postgres-service)
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
@@ -393,6 +392,8 @@ For production purposes it is not fine.
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
 
 ### AWS bug work-around
+
+** MAY BE DEPRECATED **
 
 1. An AWS `aws`/`ecs-cli` [bug](https://github.com/aws/amazon-ecs-cli/issues/1083) prevents the use of CLI-only instructions.
 To work around the bug:
@@ -1089,13 +1090,6 @@ echo $SENZING_XXXX_HOST
       --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
       --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service down
-
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
-      --file ${GIT_REPOSITORY_DIR}/resources/intermediate/docker-compose-postgres.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres \
       service down
     ```
 

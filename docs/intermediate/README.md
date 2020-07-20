@@ -430,6 +430,10 @@ FIXME: Provision in same VPC and Subnets.
     ```
 
 1. Create mount in first subnet.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html).
    Example:
 
     ```console
@@ -441,6 +445,10 @@ FIXME: Provision in same VPC and Subnets.
     ```
 
 1. Create mount in second subnet.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html).
    Example:
 
     ```console

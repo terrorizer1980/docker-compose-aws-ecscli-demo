@@ -1206,9 +1206,7 @@ echo $SENZING_XXXX_HOST
 
 ### Delete Elastic File System
 
-
-
-1. Create mount in first subnet.
+1. Delete mount in first subnet.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
@@ -1223,7 +1221,7 @@ echo $SENZING_XXXX_HOST
     > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
     ```
 
-1. Create mount in second subnet.
+1. Delete mount in second subnet.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
@@ -1237,7 +1235,6 @@ echo $SENZING_XXXX_HOST
       --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_2} \
     > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
     ```
-
 
 1. Delete EFS file system.
    Run

@@ -444,7 +444,7 @@ FIXME: Provision in same VPC and Subnets.
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${SENZING_AWS_SUBNET_ID_2} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
     ```
 
 1. :thinking: **Optional:**

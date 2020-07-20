@@ -393,7 +393,7 @@ For production purposes it is not fine.
 
 ### AWS bug work-around
 
-** MAY BE DEPRECATED **
+**MAY BE DEPRECATED**
 
 1. An AWS `aws`/`ecs-cli` [bug](https://github.com/aws/amazon-ecs-cli/issues/1083) prevents the use of CLI-only instructions.
 To work around the bug:
@@ -1103,6 +1103,7 @@ echo $SENZING_XXXX_HOST
       "apiserver" \
       "init" \
       "init-container" \
+      "init-efs" \
       "jupyter" \
       "phppgadmin" \
       "postgres" \
@@ -1111,6 +1112,7 @@ echo $SENZING_XXXX_HOST
       "stream-producer" \
       "webapp" \
       "xterm" \
+      "yum" \
     )
     ```
 
@@ -1161,8 +1163,6 @@ echo $SENZING_XXXX_HOST
     ```
 
 ### Delete Aurora PostgreSQL
-
-FIXME:
 
 1. Delete Aurora PostgreSQL database.
    Run

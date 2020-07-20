@@ -8,7 +8,7 @@ services:
       - "--NotebookApp.token=''"
     environment:
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432:${POSTGRES_DB:-G2}/"
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.1.5}
     logging:
       driver: awslogs
       options:

@@ -1206,6 +1206,39 @@ echo $SENZING_XXXX_HOST
 
 ### Delete Elastic File System
 
+
+
+1. Create mount in first subnet.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html).
+   Example:
+
+    ```console
+    export SENZING_AWS_MOUNT_TARGET_ID_1=$(jq --raw-output ".MountTargetId" ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json)
+
+    aws efs delete-mount-target \
+      --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_1} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
+    ```
+
+1. Create mount in second subnet.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
+   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html).
+   Example:
+
+    ```console
+    export SENZING_AWS_MOUNT_TARGET_ID_2=$(jq --raw-output ".MountTargetId" ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json)
+
+    aws efs delete-mount-target \
+      --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_2} \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
+    ```
+
+
 1. Delete EFS file system.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)

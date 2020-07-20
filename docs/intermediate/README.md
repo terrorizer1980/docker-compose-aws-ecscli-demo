@@ -1187,6 +1187,7 @@ echo $SENZING_XXXX_HOST
     ```console
     aws rds delete-db-cluster \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --skip-final-snapshot \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster.json
     ```
 

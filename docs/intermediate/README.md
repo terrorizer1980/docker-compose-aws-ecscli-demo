@@ -717,8 +717,8 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     | grep phppgadmin
     ```
 
-   **Username:** postgres
-   **Password:** postgres
+   **Username:** ${POSTGRES_USERNAME}
+   **Password:** ${POSTGRES_PASSWORD}
 
 #### Run init-container task
 
@@ -1032,19 +1032,27 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Service recap
 
-Once the formation is running, the following services can be found at `SENZING_XXXX_HOST`.
-
-To find the value of `SENZING_XXXX_HOST`, run
+Once the formation is running, the services can be found by running
 
 ```console
-echo $SENZING_XXXX_HOST
+ecs-cli ps \
+  --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
 ```
 
-1. [http://${SENZING_xxx}:8251](http://0.0.0.0:8251) - Senzing Entity Search Web App
-1. [http://${SENZING_xxx}:8254](http://0.0.0.0:8254) - Senzing X-Term
-1. [http://${SENZING_xxx}:9171](http://0.0.0.0:9171) - PhpPgAdmin
-1. [http://${SENZING_xxx}:9178](http://0.0.0.0:9178) - Jupyter Notebooks
-1. [Senzing API in Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
+and looking in the **Ports** column.
+The following services should be seen:
+
+| Port | Service                       |
+|-----:|-------------------------------|
+|   80 | PhpPgAdmin                    |
+|  443 | PhpPgAdmin - HTTPS            |
+| 8250 | Senzing API server            |
+| 8251 | Senzing Entity Search Web App |
+| 5000 | Senzing X-Term                |
+| 8888 | Jupyter Notebooks             |
+
+1. When using the [Senzing API in the Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml),
+use the "Senzing API Server" host and port.
 
 ## Cleanup
 

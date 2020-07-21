@@ -524,14 +524,14 @@ To work around the bug:
    Example:
 
     ```console
-      aws rds create-db-instance \
-        --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-        --db-instance-class db.t3.medium \
-        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-        --engine aurora-postgresql \
-        --publicly-accessible \
-        --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
+    aws rds create-db-instance \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-instance-class db.t3.medium \
+      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+      --engine aurora-postgresql \
+      --publicly-accessible \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
 1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
@@ -649,9 +649,7 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".  Wait until task is complete.
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
-        1. [instances](https://console.aws.amazon.com/ec2/v2/home?#Instances)
+        1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run create Senzing database schema task
@@ -678,13 +676,13 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
 
 1. This task is a short-lived "job", not a long-running service.
    When the task state is `STOPPED`, the job has finished.
-
 1. :thinking: **Optional:**
    View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
         1. Select ${SENZING_AWS_ECS_CLUSTER}
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".
+1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Create phpPgAdmin service
 

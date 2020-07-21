@@ -54,7 +54,6 @@ This docker formation brings up the following docker containers:
     1. [Save cluster metadata](#save-cluster-metadata)
     1. [Find security group ID](#find-security-group-id)
     1. [Open inbound ports](#open-inbound-ports)
-    1. [AWS bug work-around](#aws-bug-work-around)
     1. [Create backing services](#create-backing-services)
         1. [Provision Elastic File System](#provision-elastic-file-system)
         1. [Provision Aurora PostgreSQL](#provision-aurora-postgresql)
@@ -1173,9 +1172,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
    Example:
 
     ```console
-      aws rds delete-db-instance \
-        --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
+    aws rds delete-db-instance \
+      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
     ```
 
 1. Delete Aurora cluster.
@@ -1219,7 +1218,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
     aws efs delete-mount-target \
       --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_1} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-1.json
     ```
 
 1. Delete mount in second subnet.
@@ -1234,7 +1233,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
     aws efs delete-mount-target \
       --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_2} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
+    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-2.json
     ```
 
 1. Delete EFS file system.

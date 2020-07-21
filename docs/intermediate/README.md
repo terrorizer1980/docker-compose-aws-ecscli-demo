@@ -60,7 +60,7 @@ This docker formation brings up the following docker containers:
         1. [Provision Aurora PostgreSQL](#provision-aurora-postgresql)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
     1. [Create tasks and services](#create-tasks-and-services)
-        1. [Run EFS init container](#run-efs-init-container)
+        1. [Run EFS init container task](#run-efs-init-container-task)
         1. [Run install Senzing task](#run-install-senzing-task)
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
@@ -411,8 +411,6 @@ To work around the bug:
 
 ### Create backing services
 
-FIXME: Provision in same VPC and Subnets.
-
 #### Provision Elastic File System
 
 1. Create EFS file system.
@@ -438,6 +436,14 @@ FIXME: Provision in same VPC and Subnets.
 
     ```console
     export SENZING_AWS_EFS_FILESYSTEM_ID=$(jq --raw-output ".FileSystemId" ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json)
+    ```
+
+1. :thinking: **Optional:**
+   View file system ID.
+   Example:
+
+    ```console
+    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
     ```
 
 1. Create mount in first subnet.
@@ -468,14 +474,6 @@ FIXME: Provision in same VPC and Subnets.
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${SENZING_AWS_SUBNET_ID_2} \
     > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
-    ```
-
-1. :thinking: **Optional:**
-   View file system ID.
-   Example:
-
-    ```console
-    echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
     ```
 
 1. :thinking: **Optional:**
@@ -536,8 +534,6 @@ FIXME: Provision in same VPC and Subnets.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
-1. Set `POSTGRES_HOST`
-   Example:
 1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
    Example:
 
@@ -596,7 +592,7 @@ FIXME: Provision in same VPC and Subnets.
 
 ### Create tasks and services
 
-#### Run EFS init container
+#### Run EFS init container task
 
 This "init container" create directories on Elastic File System.
 
@@ -615,6 +611,17 @@ This "init container" create directories on Elastic File System.
       up \
         --create-log-groups
     ```
+
+1. This task is a short-lived "job", not a long-running service.
+   When the task state is `STOPPED`, the job has finished.
+
+1. :thinking: **Optional:**
+   View progress in AWS Console.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".
+1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run install Senzing task
 
@@ -648,6 +655,10 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run create Senzing database schema task
+
+1. Verify that AWS Aurora/PostgreSQL database is available.
+    1. Visit [rds](https://console.aws.amazon.com/rds/home?#databases:).
+    1. Verify **Status** is "Available".
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

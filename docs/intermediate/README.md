@@ -1035,7 +1035,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 1. When using the [Senzing API in the Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml),
     1. In **Servers** drop-down, choose `{protocol}://{host}:{port}`.
-    1. In **Server variables > host** text box, enter the IP address found when running the `ecs-cli ps` command.
+    1. In **Server variables > host** text box, enter the IP address
+       of the "Senzing API server" found when running the `ecs-cli ps` command.
 
 ## Cleanup
 

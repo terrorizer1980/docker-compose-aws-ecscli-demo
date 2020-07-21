@@ -1014,24 +1014,24 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Service recap
 
-Once the formation is running, hosts and ports for services can be found by running
+1. Once the formation is running, hosts and ports for services can be found by running
 
-```console
-ecs-cli ps \
-  --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-```
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
+    ```
 
-and looking in the **Ports** column.
-The following services should be seen:
+   and looking in the **Ports** column.
+   The following services should be seen:
 
-| Port | Service                       |
-|-----:|-------------------------------|
-|   80 | PhpPgAdmin                    |
-|  443 | PhpPgAdmin - HTTPS            |
-| 8250 | Senzing API server            |
-| 8251 | Senzing Entity Search Web App |
-| 5000 | Senzing X-Term                |
-| 8888 | Jupyter Notebooks             |
+   | Port | Service                       |
+   |-----:|-------------------------------|
+   |   80 | PhpPgAdmin                    |
+   |  443 | PhpPgAdmin - HTTPS            |
+   | 8250 | Senzing API server            |
+   | 8251 | Senzing Entity Search Web App |
+   | 5000 | Senzing X-Term                |
+   | 8888 | Jupyter Notebooks             |
 
 1. When using the [Senzing API in the Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml),
     1. In **Servers** drop-down, choose `{protocol}://{host}:{port}`.

@@ -1,13 +1,13 @@
 version: '3'
 services:
   xterm:
-    image: senzing/xterm
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.0.3}
     logging:
       driver: awslogs
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-aws-sqs
     ports:
       - 8254:5000
     volumes:

@@ -4,12 +4,12 @@ services:
     environment:
       SENZING_API_SERVER_URL: "http://${SENZING_EC2_HOST}:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.0.0}
     logging:
       driver: awslogs
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
         awslogs-region: us-east-1
-        awslogs-stream-prefix: beginner
+        awslogs-stream-prefix: beginner-rabbitmq
     ports:
       - 8251:8251

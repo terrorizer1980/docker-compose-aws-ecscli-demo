@@ -1,0 +1,27 @@
+version: '3'
+services:
+  efsinitcontainer:
+    command:
+      - mkdir
+      - /efs/g2
+      - "&&"
+      - mkdir
+      - -p
+      - /efs/data/1.0.0
+      - "&&"
+      - mkdir
+      - /efs/etc
+      - "&&"
+      - mkdir
+      - /efs/var
+    image: busybox
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: intermediate
+    volumes:
+      - senzing-efs-root:/efs
+volumes:
+  senzing-efs-root:

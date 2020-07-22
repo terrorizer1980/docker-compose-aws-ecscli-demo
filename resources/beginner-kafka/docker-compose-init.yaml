@@ -3,7 +3,7 @@ services:
   yum:
     environment:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
-    image: senzing/yum:${SENZING_YUM_VERSION:-1.1.3}
+    image: senzing/yum:${SENZING_DOCKER_IMAGE_VERSION_YUM:-1.1.3}
     logging:
       driver: awslogs
       options:

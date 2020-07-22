@@ -344,8 +344,9 @@ For production purposes it is not fine.
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --ip-permissions \
-        IpProtocol=tcp,FromPort=2049,ToPort=2049,IpRanges='[{CidrIp=0.0.0.0/0,Description="NFS"}]'
+      --protocol tcp \
+      --port 2049 \
+      --source-group ${SENZING_AWS_EC2_SECURITY_GROUP}
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
@@ -389,6 +390,7 @@ For production purposes it is not fine.
    View Security Group in AWS console.
     1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+        1. It will have 10 Permission entries and a description of "default VPC security group".
 
 ### Create backing services
 

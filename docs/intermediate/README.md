@@ -407,10 +407,10 @@ For production purposes it is not fine.
     aws efs create-file-system \
       --creation-token ${SENZING_AWS_PROJECT}-efs \
       --no-encrypt \
-      --throughput-mode bursting \
       --performance-mode generalPurpose \
       --region ${AWS_DEFAULT_REGION} \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
+      --throughput-mode bursting \
     > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json
     ```
 
@@ -474,8 +474,8 @@ For production purposes it is not fine.
 
     ```console
     aws rds create-db-subnet-group \
-      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
       --db-subnet-group-description ${SENZING_AWS_PROJECT}-db-subnet-description \
+      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
       --subnet-ids ${SENZING_AWS_SUBNET_ID_1} ${SENZING_AWS_SUBNET_ID_2} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-subnet-group.json
     ```
@@ -489,12 +489,12 @@ For production purposes it is not fine.
 
     ```console
     aws rds create-db-cluster \
-      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --engine aurora-postgresql \
       --database-name G2 \
-      --master-username ${POSTGRES_USERNAME} \
-      --master-user-password ${POSTGRES_PASSWORD} \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
+      --engine aurora-postgresql \
+      --master-user-password ${POSTGRES_PASSWORD} \
+      --master-username ${POSTGRES_USERNAME} \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```

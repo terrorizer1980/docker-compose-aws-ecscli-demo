@@ -8,10 +8,13 @@ services:
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_MONITORING_PERIOD_IN_SECONDS: 30
-      SENZING_RECORD_MAX: 10001
+      SENZING_READ_QUEUE_MAXSIZE: 200
+      SENZING_RECORD_MAX: 150001
+      SENZING_RECORD_MAX: 100000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: json-to-sqs
+      SENZING_THREADS_PER_PRINT: 30
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     logging:
       driver: awslogs

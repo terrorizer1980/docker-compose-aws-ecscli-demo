@@ -749,7 +749,8 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-no-efs.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
-      up
+      up \
+        --create-log-groups
     ```
 
 1. This task is a short-lived "job", not a long-running service.

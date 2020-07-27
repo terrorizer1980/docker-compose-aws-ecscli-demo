@@ -502,24 +502,6 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
 
-1. DEPRECATE: Create Aurora PostgreSQL database.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html).
-   Example:
-
-    ```console
-    aws rds create-db-instance \
-      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --db-instance-class db.t3.medium \
-      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-      --engine aurora-postgresql \
-      --publicly-accessible \
-      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
-    ```
-
 1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
    Example:
 
@@ -654,9 +636,9 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-postgres-init.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-postgres-init.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-init-postgres.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init-postgres \
       up
     ```
 
@@ -1110,10 +1092,10 @@ The Senzing Web App provides a user interface to Senzing functionality.
       "init" \
       "init-container" \
       "init-efs" \
+      "init-postgres" \
       "jupyter" \
       "phppgadmin" \
       "postgres" \
-      "postgres-init" \
       "stream-loader" \
       "stream-producer" \
       "webapp" \
@@ -1169,19 +1151,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 ### Delete Aurora PostgreSQL
-
-1. DEPRECATE: Delete Aurora PostgreSQL database.
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [delete-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-instance.html).
-   Example:
-
-    ```console
-    aws rds delete-db-instance \
-      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
-    ```
 
 1. Delete Aurora cluster.
    Run

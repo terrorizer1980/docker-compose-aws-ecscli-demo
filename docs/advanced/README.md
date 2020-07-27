@@ -463,7 +463,10 @@ For production purposes it is not fine.
    View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
    in AWS console.
 
-#### Provision Aurora PostgreSQL
+#### Provision Aurora PostgreSQL Serverless
+
+**Note:** See
+[Limitations of Aurora Serverless](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations)
 
 1. Create Database subnet group.
    Run
@@ -493,6 +496,7 @@ For production purposes it is not fine.
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --engine aurora-postgresql \
+      --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \

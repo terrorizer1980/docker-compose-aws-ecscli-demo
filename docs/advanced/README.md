@@ -56,7 +56,7 @@ This docker formation brings up the following docker containers:
     1. [Open inbound ports](#open-inbound-ports)
     1. [Create backing services](#create-backing-services)
         1. [Provision Elastic File System](#provision-elastic-file-system)
-        1. [Provision Aurora PostgreSQL](#provision-aurora-postgresql)
+        1. [Provision Aurora PostgreSQL Serverless](#provision-aurora-postgresql-serverless)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
     1. [Create tasks and services](#create-tasks-and-services)
         1. [Run EFS init container task](#run-efs-init-container-task)
@@ -499,11 +499,12 @@ For production purposes it is not fine.
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
+      --scaling-configuration MinCapacity=8,MaxCapacity=64,SecondsUntilAutoPause=1000,AutoPause=true \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
 
-1. Create Aurora PostgreSQL database.
+1. DEPRECATE: Create Aurora PostgreSQL database.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
@@ -592,7 +593,7 @@ This "init container" create directories on Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init-efs.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-init-efs.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-efs \
       up \
@@ -1171,7 +1172,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 ### Delete Aurora PostgreSQL
 
-1. Delete Aurora PostgreSQL database.
+1. DEPRECATE: Delete Aurora PostgreSQL database.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
@@ -1266,6 +1267,17 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     aws logs delete-log-group \
       --log-group-name senzing-docker-compose-aws-ecscli-demo
+    ```
+
+1. Delete Aurora Serverless logs. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
+   [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
+   Example:
+
+    ```console
+    aws logs delete-log-group \
+      --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster/postgresql
     ```
 
 ### Review cleanup in AWS console

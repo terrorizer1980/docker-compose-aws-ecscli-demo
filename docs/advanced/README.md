@@ -622,7 +622,7 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-yum.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-yum.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-yum \
       up
@@ -654,7 +654,7 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-postgres-init.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-postgres-init.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-postgres-init \
       up
@@ -683,7 +683,7 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up
@@ -719,7 +719,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init-container.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up
@@ -811,7 +811,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-apiserver.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up
@@ -895,7 +895,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-webapp.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up
@@ -940,7 +940,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up
@@ -985,7 +985,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-jupyter.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up
@@ -1058,42 +1058,42 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-jupyter.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-webapp.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-apiserver.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${SENZING_AWS_ECS_PARAMS_FILE} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service down

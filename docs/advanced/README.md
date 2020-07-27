@@ -237,21 +237,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Save cluster metadata
 
-1. The `ecs-cli up` command that just completed prints metadata
-   that needs to be captured in environment variables for later use.
-   Example:
-
-    ```console
-    :
-    INFO[0001] Waiting for your cluster resources to be created...
-    INFO[0002] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
-    INFO[0063] Cloudformation stack status         stackStatus=CREATE_IN_PROGRESS
-    VPC created: vpc-00000000000000000
-    Subnet created: subnet-11111111111111111
-    Subnet created: subnet-22222222222222222
-    Cluster creation succeeded.
-    ```
-
 1. :pencil2: Set environment variable with VPC ID.
    Example:
 
@@ -312,6 +297,24 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     echo ${SENZING_AWS_EC2_SECURITY_GROUP}
     ```
 
+1. :thinking: **Optional:**
+   To view Security Group, run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
+   Example:
+
+    ```console
+    aws ec2 describe-security-groups \
+      --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
+    ```
+
+1. :thinking: **Optional:**
+   View Security Group in AWS console.
+    1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
+    1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
+        1. It will have 10 Permission entries and a description of "default VPC security group".
+
 ### Open inbound ports
 
 :warning: **Warning:** The following inbound port specifications are **wide open**.
@@ -341,12 +344,6 @@ For production purposes it is not fine.
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
         IpProtocol=tcp,FromPort=443,ToPort=443,IpRanges='[{CidrIp=0.0.0.0/0,Description="HTTPS"}]'
-
-    aws ec2 authorize-security-group-ingress \
-      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
-      --protocol tcp \
-      --port 2049 \
-      --source-group ${SENZING_AWS_EC2_SECURITY_GROUP}
 
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
@@ -495,6 +492,7 @@ For production purposes it is not fine.
       --database-name G2 \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
+      --enable-http-endpoint \
       --engine aurora-postgresql \
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
@@ -778,7 +776,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up

@@ -9,7 +9,7 @@ services:
       driver: awslogs
       options:
         awslogs-group: senzing-docker-compose-aws-ecscli-demo
-        awslogs-region: us-east-1
-        awslogs-stream-prefix: intermediate
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced
     ports:
       - 8251:8251

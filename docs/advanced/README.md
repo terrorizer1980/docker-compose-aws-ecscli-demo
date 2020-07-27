@@ -256,21 +256,21 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export SENZING_AWS_VPC_ID=vpc-00000000000000000
+    export SENZING_AWS_VPC_ID=$(awk '/VPC created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt)
     ```
 
 1. :pencil2: Set environment variable with Subnet #1
    Example:
 
     ```console
-    export SENZING_AWS_SUBNET_ID_1=subnet-11111111111111111
+    export SENZING_AWS_SUBNET_ID_1=$(awk '/Subnet created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt | awk 'NR==1')
     ```
 
 1. :pencil2: Set environment variable with Subnet #2
    Example:
 
     ```console
-    export SENZING_AWS_SUBNET_ID_2=subnet-22222222222222222
+    export SENZING_AWS_SUBNET_ID_2=$(awk '/Subnet created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt | awk 'NR==2')
     ```
 
 1. :thinking: **Optional:**

@@ -58,7 +58,7 @@ This docker formation brings up the following docker containers:
         1. [Provision Elastic File System](#provision-elastic-file-system)
         1. [Provision Aurora PostgreSQL Serverless](#provision-aurora-postgresql-serverless)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
-    1. [Create tasks](#create-tasks)
+    1. [Run tasks](#run-tasks)
         1. [Run EFS init container task](#run-efs-init-container-task)
         1. [Run install Senzing task](#run-install-senzing-task)
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
@@ -175,7 +175,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
-    export SENZING_AWS_ECS_PARAMS_FILE=${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params.yaml
     ```
 
 ### Make AWS project directory
@@ -388,7 +387,7 @@ For production purposes it is not fine.
    View Security Group in AWS console.
     1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
     1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
-        1. It will have 10 Permission entries and a description of "default VPC security group".
+        1. It will have 9 Permission entries and a description of "default VPC security group".
 
 ### Create backing services
 
@@ -559,7 +558,7 @@ For production purposes it is not fine.
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console.
 
-### Create tasks
+### Run tasks
 
 Task are short-lived "jobs", not long-running services.
 When the task state is `STOPPED`, the job has finished.
@@ -575,6 +574,11 @@ When the task state is `STOPPED`, the job has finished.
 
 This "init container" create directories on Elastic File System.
 
+1. Verify that AWS EFS can be mounted.
+    1. Visit [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems).
+    1. Choose ${SENZING_AWS_PROJECT}-ecs-cluster-efs.
+    1. Select "Network" tab.
+    1. Verify **Mount target state** is "Available".
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -618,7 +622,8 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
 
 1. Verify that AWS Aurora/PostgreSQL database is available.
     1. Visit [rds](https://console.aws.amazon.com/rds/home?#databases:).
-    1. Verify **Status** is "Available".
+    1. Choose ${SENZING_AWS_PROJECT}-aurora-cluster
+    1. Verify **Info** is "Available".
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -676,10 +681,12 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
-      up \
-        --create-log-groups
+      up
     ```
 
+1. :thinking: **Optional:**
+   View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
+   in AWS console to verify "Messages available".
 1. This is a long-running job.
    There is no need to wait for its completion.
 

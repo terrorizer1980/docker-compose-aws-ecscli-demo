@@ -3,12 +3,9 @@ task_definition:
   task_execution_role: ecsTaskExecutionRole
   ecs_network_mode: awsvpc
   task_size:
-    mem_limit: 16GB
-    cpu_limit: 2048
+    mem_limit: 4GB
+    cpu_limit: 512
   efs_volumes:
-    - name: senzing-data-dir
-      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /data
     - name: senzing-data-version-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /data/1.0.0
@@ -18,9 +15,6 @@ task_definition:
     - name: senzing-g2-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /g2
-    - name: senzing-var-dir
-      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /var
 run_params:
   network_configuration:
     awsvpc_configuration:

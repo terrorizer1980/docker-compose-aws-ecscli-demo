@@ -1290,18 +1290,28 @@ examples of the Senzing Java and Python SDK use.
 ### Review cleanup in AWS console
 
 1. In AWS Console:
-    1. [ec2](https://console.aws.amazon.com/ec2/v2/home)
+    1. ec2
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
         1. [security groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups)
-    1. [cloudformation](https://console.aws.amazon.com/cloudformation/home?#/stacks)
-    1. [cloudwatch](https://console.aws.amazon.com/cloudwatch/home)
+    1. cloudformation
+        1. [stacks](https://console.aws.amazon.com/cloudformation/home?#/stacks)
+    1. cloudwatch
         1. [log groups](https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups)
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
+    1. ecs
         1. [clusters](https://console.aws.amazon.com/ecs/home?#/clusters)
         1. [task definitions](https://console.aws.amazon.com/ecs/home?#/taskDefinitions)
     1. [efs](https://console.aws.amazon.com/efs/home?#/filesystems)
-    1. [rds](https://console.aws.amazon.com/rds/home?#databases:)
+    1. rds
+        1. [databases](https://console.aws.amazon.com/rds/home?#databases:)
+        1. [parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
     1. [sqs](https://console.aws.amazon.com/sqs/v2/home)
+    1. vpc
+        1. [internet gateways](https://console.aws.amazon.com/vpc/home?#igws)
+        1. [network acls](https://console.aws.amazon.com/vpc/home?#acls)
+        1. [route tables](https://console.aws.amazon.com/vpc/home?#RouteTables)
+        1. [security groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups)
+        1. [subnets](https://console.aws.amazon.com/vpc/home?#subnets)
+        1. [vpc](https://console.aws.amazon.com/vpc/home?#vpcs)
 
 ## References
 

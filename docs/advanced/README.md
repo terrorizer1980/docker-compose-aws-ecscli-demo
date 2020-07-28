@@ -220,7 +220,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ecs-cli up \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --force \
-    | tee ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt
+      | tee ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt
     ```
 
 1. :thinking: **Optional:**
@@ -279,7 +279,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     aws ec2 describe-security-groups \
       --filters Name=vpc-id,Values=${SENZING_AWS_VPC_ID} \
       --region ${AWS_DEFAULT_REGION} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json
     ```
 
 1. Save security group ID in `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
@@ -408,7 +408,7 @@ For production purposes it is not fine.
       --region ${AWS_DEFAULT_REGION} \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-ecs-cluster-efs \
       --throughput-mode bursting \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json
     ```
 
 1. Save file system ID in `SENZING_AWS_EFS_FILESYSTEM_ID` environment variable.
@@ -438,7 +438,7 @@ For production purposes it is not fine.
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${SENZING_AWS_SUBNET_ID_1} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
     ```
 
 1. Create mount in second subnet.
@@ -453,7 +453,7 @@ For production purposes it is not fine.
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID} \
       --security-groups ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --subnet-id ${SENZING_AWS_SUBNET_ID_2} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-2.json
     ```
 
 1. :thinking: **Optional:**
@@ -485,6 +485,7 @@ For production purposes it is not fine.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html).
+   Example:
 
     ```console
     aws rds create-db-cluster-parameter-group \
@@ -499,6 +500,7 @@ For production purposes it is not fine.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html).
+   Example:
 
     ```console
     aws rds modify-db-cluster-parameter-group \
@@ -567,7 +569,7 @@ For production purposes it is not fine.
     aws sqs create-queue \
       --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
     ```
 
 1. Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
@@ -758,7 +760,7 @@ It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep phppgadmin
+      | grep phppgadmin
     ```
 
    **Username:** ${POSTGRES_USERNAME}
@@ -843,7 +845,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep apiserver
+      | grep apiserver
     ```
 
 1. Run
@@ -927,7 +929,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep webapp
+      | grep webapp
     ```
 
 #### Create Senzing X-Term service
@@ -975,7 +977,7 @@ It can be used to run Senzing command-line tools.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep xterm
+      | grep xterm
     ```
 
 #### Create Jupyter notebook service
@@ -1023,7 +1025,7 @@ examples of the Senzing Java and Python SDK use.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-    | grep jupyter
+      | grep jupyter
     ```
 
 ### Service recap
@@ -1220,7 +1222,7 @@ examples of the Senzing Java and Python SDK use.
 
     aws efs delete-mount-target \
       --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_1} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-1.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-1.json
     ```
 
 1. Delete mount in second subnet.
@@ -1235,7 +1237,7 @@ examples of the Senzing Java and Python SDK use.
 
     aws efs delete-mount-target \
       --mount-target-id ${SENZING_AWS_MOUNT_TARGET_ID_2} \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-2.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-2.json
     ```
 
 1. Delete EFS file system.

@@ -480,6 +480,36 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-subnet-group.json
     ```
 
+1. Create Aurora cluster parameter group.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html).
+
+    ```console
+    aws rds create-db-cluster-parameter-group \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --db-parameter-group-family aurora-postgresql10 \
+      --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
+    ```
+
+1. Modify Aurora cluster parameter group.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html).
+
+    ```console
+    aws rds modify-db-cluster-parameter-group \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --parameters \
+          "ParameterName=synchronous_commit,ParameterValue=off,ApplyMethod=immediate" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
+    ```
+
+1. :thinking: **Optional:** View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
+
 1. Create Aurora cluster.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -491,6 +521,7 @@ For production purposes it is not fine.
     aws rds create-db-cluster \
       --database-name G2 \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --enable-http-endpoint \
       --engine aurora-postgresql \
@@ -1119,7 +1150,6 @@ examples of the Senzing Java and Python SDK use.
     done
     ```
 
-
 ### Delete Simple Queue Service
 
 1. Delete SQS queue.
@@ -1150,7 +1180,20 @@ examples of the Senzing Java and Python SDK use.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster.json
     ```
 
-1. Create Database subnet group.
+1. Delete Database cluster parameter group.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster-parameter-group.html).
+   Example:
+
+    ```console
+    aws rds delete-db-cluster-parameter-group \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster-parameter-group.json
+    ```
+
+1. Delete Database subnet group.
    Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)

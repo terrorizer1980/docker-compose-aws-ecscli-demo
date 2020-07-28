@@ -1292,7 +1292,6 @@ examples of the Senzing Java and Python SDK use.
 1. In AWS Console:
     1. ec2
         1. [network interfaces](https://console.aws.amazon.com/ec2/v2/home?#NIC)
-        1. [security groups](https://console.aws.amazon.com/ec2/v2/home?#SecurityGroups)
     1. cloudformation
         1. [stacks](https://console.aws.amazon.com/cloudformation/home?#/stacks)
     1. cloudwatch

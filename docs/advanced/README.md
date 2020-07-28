@@ -75,10 +75,10 @@ This docker formation brings up the following docker containers:
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
     1. [Delete tasks definitions](#delete-tasks-definitions)
-    1. [Bring down cluster](#bring-down-cluster)
     1. [Delete Simple Queue Service](#delete-simple-queue-service)
     1. [Delete Aurora PostgreSQL](#delete-aurora-postgresql)
     1. [Delete Elastic File System](#delete-elastic-file-system)
+    1. [Bring down cluster](#bring-down-cluster)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
@@ -117,7 +117,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 1. Create an
    [AWS session](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws-session).
-1. Set the following AWS environment variables:
+1. :pencil2: Set the following AWS environment variables:
     1. [AWS_ACCESS_KEY_ID](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_access_key_id)
     1. [AWS_SECRET_ACCESS_KEY](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_secret_access_key)
     1. [AWS_SESSION_TOKEN](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-environment-variables.md#aws_session_token)
@@ -144,7 +144,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export SENZING_AWS_PROJECT=project01
+    export SENZING_AWS_PROJECT=my-project-1
     ```
 
 #### Database credentials
@@ -238,21 +238,21 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Save cluster metadata
 
-1. :pencil2: Set environment variable with VPC ID.
+1. Set environment variable with VPC ID.
    Example:
 
     ```console
     export SENZING_AWS_VPC_ID=$(awk '/VPC created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt)
     ```
 
-1. :pencil2: Set environment variable with Subnet #1
+1. Set environment variable with Subnet #1
    Example:
 
     ```console
     export SENZING_AWS_SUBNET_ID_1=$(awk '/Subnet created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt | awk 'NR==1')
     ```
 
-1. :pencil2: Set environment variable with Subnet #2
+1. Set environment variable with Subnet #2
    Example:
 
     ```console
@@ -564,6 +564,13 @@ For production purposes it is not fine.
 Task are short-lived "jobs", not long-running services.
 When the task state is `STOPPED`, the job has finished.
 
+1. :thinking: **Optional:**
+   View task progress in AWS Console.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".
+
 #### Run EFS init container task
 
 This "init container" create directories on Elastic File System.
@@ -584,12 +591,6 @@ This "init container" create directories on Elastic File System.
         --create-log-groups
     ```
 
-1. :thinking: **Optional:**
-   View progress in AWS Console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run install Senzing task
@@ -611,12 +612,6 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
       up
     ```
 
-1. :thinking: **Optional:**
-   View progress in AWS Console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run create Senzing database schema task
@@ -641,12 +636,6 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
       up
     ```
 
-1. :thinking: **Optional:**
-   View progress in AWS Console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run init-container task
@@ -668,12 +657,6 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
       up
     ```
 
-1. :thinking: **Optional:**
-   View progress in AWS Console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
 
 #### Run Stream producer task
@@ -703,6 +686,11 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 ### Create services
 
 #### Create phpPgAdmin service
+
+:thinking: **Optional:**
+[phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
+is a web-based database adminitration tool.
+It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -775,7 +763,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 #### Create Senzing API server service
 
 The Senzing API server communicates with the Senzing Engine to provide an HTTP
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) service.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -906,6 +894,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 #### Create Senzing X-Term service
 
+:thinking: **Optional:** The Senzing X-Term service provides console access.
+It can be used to run Senzing command-line tools.
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -950,6 +941,9 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 #### Create Jupyter notebook service
+
+:thinking: **Optional:** The Jupyter notebook service hosts Jupyter notebooks with
+examples of the Senzing Java and Python SDK use.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1118,18 +1112,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
     done
     ```
 
-### Bring down cluster
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
-   Example:
-
-    ```console
-    ecs-cli down \
-      --force \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
 
 ### Delete Simple Queue Service
 
@@ -1216,6 +1198,19 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     aws efs delete-file-system \
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID}
+    ```
+
+### Bring down cluster
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   Example:
+
+    ```console
+    ecs-cli down \
+      --force \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
     ```
 
 ### Clean logs

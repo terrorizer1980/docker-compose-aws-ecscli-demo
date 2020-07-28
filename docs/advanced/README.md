@@ -297,24 +297,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     echo ${SENZING_AWS_EC2_SECURITY_GROUP}
     ```
 
-1. :thinking: **Optional:**
-   To view Security Group, run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
-   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
-   Example:
-
-    ```console
-    aws ec2 describe-security-groups \
-      --group-ids ${SENZING_AWS_EC2_SECURITY_GROUP}
-    ```
-
-1. :thinking: **Optional:**
-   View Security Group in AWS console.
-    1. View [VPC > Security Groups](https://console.aws.amazon.com/vpc/home?#SecurityGroups:)
-    1. In "Security group ID" column, click ID having the value stored in the `SENZING_AWS_EC2_SECURITY_GROUP` environment variable.
-        1. It will have 10 Permission entries and a description of "default VPC security group".
-
 ### Open inbound ports
 
 :warning: **Warning:** The following inbound port specifications are **wide open**.

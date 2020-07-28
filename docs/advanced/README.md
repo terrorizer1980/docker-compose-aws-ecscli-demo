@@ -58,13 +58,14 @@ This docker formation brings up the following docker containers:
         1. [Provision Elastic File System](#provision-elastic-file-system)
         1. [Provision Aurora PostgreSQL Serverless](#provision-aurora-postgresql-serverless)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
-    1. [Create tasks and services](#create-tasks-and-services)
+    1. [Create tasks](#create-tasks)
         1. [Run EFS init container task](#run-efs-init-container-task)
         1. [Run install Senzing task](#run-install-senzing-task)
         1. [Run create Senzing database schema task](#run-create-senzing-database-schema-task)
-        1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Run init-container task](#run-init-container-task)
         1. [Run Stream producer task](#run-stream-producer-task)
+    1. [Create services](#create-services)
+        1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Create Stream loader service](#create-stream-loader-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
@@ -558,7 +559,10 @@ For production purposes it is not fine.
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console.
 
-### Create tasks and services
+### Create tasks
+
+Task are short-lived "jobs", not long-running services.
+When the task state is `STOPPED`, the job has finished.
 
 #### Run EFS init container task
 
@@ -579,9 +583,6 @@ This "init container" create directories on Elastic File System.
       up \
         --create-log-groups
     ```
-
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
 
 1. :thinking: **Optional:**
    View progress in AWS Console.
@@ -610,8 +611,6 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
       up
     ```
 
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
 1. :thinking: **Optional:**
    View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
@@ -642,8 +641,6 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
       up
     ```
 
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
 1. :thinking: **Optional:**
    View progress in AWS Console.
     1. [ecs](https://console.aws.amazon.com/ecs/home)
@@ -651,6 +648,59 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
         1. Click "Tasks" tab.
         1. If task is seen, it is still "RUNNING".
 1. Wait until task has completed and is in the `STOPPED` state.
+
+#### Run init-container task
+
+Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-init-container.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
+      up
+    ```
+
+1. :thinking: **Optional:**
+   View progress in AWS Console.
+    1. [ecs](https://console.aws.amazon.com/ecs/home)
+        1. Select ${SENZING_AWS_ECS_CLUSTER}
+        1. Click "Tasks" tab.
+        1. If task is seen, it is still "RUNNING".
+1. Wait until task has completed and is in the `STOPPED` state.
+
+#### Run Stream producer task
+
+Read JSON lines from a URL-addressable file and send to AWS SQS.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
+      up \
+        --create-log-groups
+    ```
+
+1. This is a long-running job.
+   There is no need to wait for its completion.
+
+### Create services
 
 #### Create phpPgAdmin service
 
@@ -687,61 +737,6 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
 
    **Username:** ${POSTGRES_USERNAME}
    **Password:** ${POSTGRES_PASSWORD}
-
-#### Run init-container task
-
-Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-init-container.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-init-container.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
-      up
-    ```
-
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
-1. :thinking: **Optional:**
-   View progress in AWS Console.
-    1. [ecs](https://console.aws.amazon.com/ecs/home)
-        1. Select ${SENZING_AWS_ECS_CLUSTER}
-        1. Click "Tasks" tab.
-        1. If task is seen, it is still "RUNNING".
-1. Wait until task has completed and is in the `STOPPED` state.
-
-#### Run Stream producer task
-
-Read JSON lines from a URL-addressable file and send to AWS SQS.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to AWS SQS.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
-      up \
-        --create-log-groups
-    ```
-
-1. This task is a short-lived "job", not a long-running service.
-   When the task state is `STOPPED`, the job has finished.
-   However, this is a long-running job.
-   There is no need to wait for its completion.
 
 #### Create Stream loader service
 

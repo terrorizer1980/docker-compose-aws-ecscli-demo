@@ -7,23 +7,25 @@ These performance metrics are for the
 
 ### SQS ingestion using stream-producer json-to-sqs
 
-- **cpu_limit:**
+- **Threads:**
   Specified in
-  [ecs-params-stream-producer.yaml](../../resources/advanced/ecs-params-stream-producer.yaml)
-  `task_definition.task_size.cpu_limit`
+  [docker-compose-stream-producer.yaml](../../resources/advanced/docker-compose-stream-producer.yaml)
+  `SENZING_THREADS_PER_PRINT`.
 - **mem_limit:**
   Specified in
   [ecs-params-stream-producer.yaml](../../resources/advanced/ecs-params-stream-producer.yaml)
   `task_definition.task_size.mem_limit`
-- **Rate:** Messages queued per second.
-- **Threads:**
+- **cpu_limit:**
   Specified in
-  [docker-compose-stream-producer.yaml](../../resources/advanced/docker-compose-stream-producer.yaml)
-  `SENZING_THREADS_PER_PROCESS`.
+  [ecs-params-stream-producer.yaml](../../resources/advanced/ecs-params-stream-producer.yaml)
+  `task_definition.task_size.cpu_limit`
 - **Internal queue:**
   Specified in
   [docker-compose-stream-producer.yaml](../../resources/advanced/docker-compose-stream-producer.yaml)
   `SENZING_READ_QUEUE_MAXSIZE`.
+- **Rate:** Messages queued per second.
+
+
 
 | Threads | mem_limit | cpu_limit | Internal queue | :arrow_right: | Rate |
 |--------:|----------:|----------:|---------------:|:-------------:|-----:|
@@ -34,23 +36,30 @@ These performance metrics are for the
 |      16 |      30GB |      4096 |             50 | :arrow_right: |  385 |
 |      30 |      30GB |      4096 |             50 | :arrow_right: |  385 |
 
-
 ### SQS ingestion using stream-producer json-to-sqs-batch
 
-| Rate | Threads | mem_limit | cpu_limit | Internal queue | :arrow_right: |
+| Threads | mem_limit | cpu_limit | Internal queue | :arrow_right: | Rate |
 |--------:|----------:|----------:|---------------:|:-------------:|-----:|
 |      16 |      16GB |      2048 |            200 | :arrow_right: | 1700 |
 
 ## SQS to Senzing engine using stream-loader
-
-- **cpu_limit:** Specified ecs-params.yaml `task_definition.task_size.cpu_limit`
-- **CPUUtilization:** Percent CPU used
-- **DB capacity:** Specified Database capacity
-- **DB CPU:** Percent database CPU used
-- **mem_limit:** Specified ecs-params.yaml `task_definition.task_size.mem_limit`
-- **MemoryUtilization:** Percent memory used
-- **Rate:** Messages inserted per second
 - **Threads:** Specified SENZING_THREADS_PER_PROCESS
+- **mem_limit:**
+  Specified in
+  [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
+  `task_definition.task_size.mem_limit`
+- **cpu_limit:**
+  Specified in
+  [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
+  `task_definition.task_size.cpu_limit`
+- **DB capacity:** Specified Database capacity
+  Specified in
+  [Provision Aurora PostgreSQL Serverless](README.md#provision-aurora-postgresql-serverless)
+  `--scaling-configuration` parameter.
+- **Rate:** Messages inserted per second.
+- **MemoryUtilization:** Percent memory used.
+- **CPUUtilization:** Percent CPU used.
+- **DB CPU:** Percent database CPU used.
 
 | Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | MemoryUtilization | CPUUtilization | DB CPU |
 |--------:|----------:|----------:|------------:|:-------------:|-----:|------------------:|---------------:|-------:|

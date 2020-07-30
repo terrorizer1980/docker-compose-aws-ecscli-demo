@@ -513,7 +513,7 @@ For production purposes it is not fine.
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
-      --scaling-configuration MinCapacity=8,MaxCapacity=64,SecondsUntilAutoPause=1000,AutoPause=true \
+      --scaling-configuration MinCapacity=2,MaxCapacity=64,SecondsUntilAutoPause=1000,AutoPause=true \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
@@ -768,6 +768,21 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
+   to scale up services.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      service scale 2
     ```
 
 1. :thinking: **Optional:**

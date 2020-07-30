@@ -864,7 +864,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    To find the value, run
 
     ```console
-    echo $SENZING_IP_ADDRESS_APISERVER
+    echo ${SENZING_IP_ADDRESS_APISERVER}
     ```
 
 #### Create Senzing Web App service
@@ -1342,6 +1342,40 @@ examples of the Senzing Java and Python SDK use.
         1. [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
         1. [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+
+## Troubleshooting
+
+### Environment variables
+
+1. List values of environment variables.
+   Example:
+
+    ```console
+    echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+    echo "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
+    echo "GIT_ACCOUNT=${GIT_ACCOUNT}"
+    echo "GIT_ACCOUNT_DIR=${GIT_ACCOUNT_DIR}"
+    echo "GIT_REPOSITORY=${GIT_REPOSITORY}"
+    echo "GIT_REPOSITORY_DIR=${GIT_REPOSITORY_DIR}"
+    echo "POSTGRES_HOST=${POSTGRES_HOST}"
+    echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+    echo "POSTGRES_USERNAME=${POSTGRES_USERNAME}"
+    echo "SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA}"
+    echo "SENZING_AWS_EC2_SECURITY_GROUP=${SENZING_AWS_EC2_SECURITY_GROUP}"
+    echo "SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_ECS_CLUSTER}"
+    echo "SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_ECS_CLUSTER_CONFIG}"
+    echo "SENZING_AWS_EFS_FILESYSTEM_ID=${SENZING_AWS_EFS_FILESYSTEM_ID}"
+    echo "SENZING_AWS_KEYPAIR=${SENZING_AWS_KEYPAIR}"
+    echo "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}"
+    echo "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}"
+    echo "SENZING_AWS_PROJECT=${SENZING_AWS_PROJECT}"
+    echo "SENZING_AWS_PROJECT_DIR=${SENZING_AWS_PROJECT_DIR}"
+    echo "SENZING_AWS_SUBNET_ID_1=${SENZING_AWS_SUBNET_ID_1}"
+    echo "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}"
+    echo "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}"
+    echo "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}"
+    echo "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}"
+    ```
 
 ### Etc
 

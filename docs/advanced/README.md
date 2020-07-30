@@ -784,7 +784,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service scale 2
+      service scale 8
     ```
 
 1. :thinking: **Optional:**

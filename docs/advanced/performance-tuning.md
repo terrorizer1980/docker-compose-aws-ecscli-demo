@@ -79,6 +79,7 @@ These performance metrics are for the
 | Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | P-cores | L-cores |
 |--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|--------:|--------:|
 |      12 |       8GB |      2048 |           8 | :arrow_right: |   50 |    38% | 65% | 51% of 08 |       1 |       2 |
+|      16 |      30GB |      4096 |           8 | :arrow_right: |   69 |    16% | 42% | 61% of 08 |       2 |       4 |
 |      20 |      30GB |      4096 |           8 | :arrow_right: |  103 |    18% | 74% | 59% of 16 |       2 |       4 |
 
 ## References

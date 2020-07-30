@@ -82,6 +82,7 @@ This docker formation brings up the following docker containers:
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
+1. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -472,7 +473,7 @@ For production purposes it is not fine.
     ```console
     aws rds create-db-cluster-parameter-group \
       --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
-      --db-parameter-group-family aurora-postgresql10 \
+      --db-parameter-group-family aurora-postgresql11 \
       --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
     ```
@@ -1343,6 +1344,15 @@ examples of the Senzing Java and Python SDK use.
         1. [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
         1. [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
 
+### Etc
+
+1. [Installing the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
+1. [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
+1. YAML file formats
+    1. [Using Docker Compose File Syntax](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-parameters.html)
+    1. [Using Amazon ECS Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-ecsparams.html)
+1. [Tutorial: Creating a Cluster with an EC2 Task Using the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-ec2.html)
+
 ## Troubleshooting
 
 ### Environment variables
@@ -1376,12 +1386,3 @@ examples of the Senzing Java and Python SDK use.
     echo "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}"
     echo "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}"
     ```
-
-### Etc
-
-1. [Installing the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_installation.html).
-1. [Using the awslogs Log Driver](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html)
-1. YAML file formats
-    1. [Using Docker Compose File Syntax](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-parameters.html)
-    1. [Using Amazon ECS Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-ecsparams.html)
-1. [Tutorial: Creating a Cluster with an EC2 Task Using the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-ec2.html)

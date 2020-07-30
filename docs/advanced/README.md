@@ -473,7 +473,7 @@ For production purposes it is not fine.
     ```console
     aws rds create-db-cluster-parameter-group \
       --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
-      --db-parameter-group-family aurora-postgresql11 \
+      --db-parameter-group-family aurora-postgresql10 \
       --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
     ```

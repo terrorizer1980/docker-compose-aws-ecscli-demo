@@ -7,7 +7,7 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-group: senzing-docker-compose-aws-ecscli-demo
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
         awslogs-stream-prefix: advanced
     user: "0"

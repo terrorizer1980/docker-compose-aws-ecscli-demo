@@ -10,6 +10,7 @@ services:
         awslogs-stream-prefix: advanced
     ports:
       - 5000:5000
+    user: "0"
     volumes:
       - senzing-data-version-dir:/opt/senzing/data
       - senzing-etc-dir:/etc/opt/senzing

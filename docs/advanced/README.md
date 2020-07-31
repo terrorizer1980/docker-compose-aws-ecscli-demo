@@ -174,6 +174,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
+    export SENZING_AWS_LOGS_GROUP=${SENZING_AWS_PROJECT}-log-group
     export SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_PROJECT}-cluster
     export SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_PROJECT}-config-name
     ```
@@ -1275,7 +1276,7 @@ examples of the Senzing Java and Python SDK use.
 
     ```console
     aws logs delete-log-group \
-      --log-group-name senzing-docker-compose-aws-ecscli-demo
+      --log-group-name ${SENZING_AWS_LOGS_GROUP}
     ```
 
 1. Delete Aurora Serverless logs. Run

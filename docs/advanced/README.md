@@ -71,6 +71,8 @@ This docker formation brings up the following docker containers:
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+    1. [Autoscale services](#autoscale-services)
+        1. [Autoscale Stream loader service](#autoscale-stream-loader-service)
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
@@ -1066,10 +1068,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-           PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization}, \
-           ScaleInCooldown=60, \
-           ScaleOutCooldown=60, \
-           TargetValue=75.0
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=60,ScaleOutCooldown=60,TargetValue=75.0"
     ```
 
 ### Service recap

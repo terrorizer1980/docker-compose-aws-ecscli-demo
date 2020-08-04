@@ -1048,11 +1048,10 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     aws application-autoscaling register-scalable-target \
       --max-capacity 10 \
       --min-capacity 1 \
-      --resource-id service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
-
     ```
 
 1. Run
@@ -1064,15 +1063,14 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling put-scaling-policy \
-      --policy-name ${SENZING_AWS_PROJECT}-scaling-policy-stream-loader \
+      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
       --policy-type TargetTrackingScaling \
-      --resource-id service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=60,ScaleOutCooldown=60,TargetValue=75.0"
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=60,ScaleOutCooldown=60,TargetValue=75.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
-
     ```
 
 ### Service recap

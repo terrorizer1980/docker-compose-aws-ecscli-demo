@@ -1029,6 +1029,49 @@ examples of the Senzing Java and Python SDK use.
       | grep jupyter
     ```
 
+### Autoscale services
+
+#### Autoscale Stream loader service
+
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
+   to identify the stream loader as a scaleable resource.
+   Example:
+
+    ```console
+    aws application-autoscaling register-scalable-target \
+      --max-capacity 10 \
+      --min-capacity 1 \
+      --resource-id service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
+   to create a scaling policy.
+   Example:
+
+    ```console
+    aws application-autoscaling put-scaling-policy \
+      --policy-name ${SENZING_AWS_PROJECT}-scaling-policy-stream-loader \
+      --policy-type TargetTrackingScaling \
+      --resource-id service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs \
+      --target-tracking-scaling-policy-configuration \
+           PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization}, \
+           ScaleInCooldown=60, \
+           ScaleOutCooldown=60, \
+           TargetValue=75.0
+    ```
+
 ### Service recap
 
 1. Once the formation is running, hosts and ports for services can be found by running

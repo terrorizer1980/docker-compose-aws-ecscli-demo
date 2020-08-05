@@ -516,7 +516,7 @@ For production purposes it is not fine.
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
-      --scaling-configuration MinCapacity=1,MaxCapacity=384,SecondsUntilAutoPause=1000,AutoPause=true \
+      --scaling-configuration MinCapacity=2,MaxCapacity=384,SecondsUntilAutoPause=1000,AutoPause=true \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```

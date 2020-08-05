@@ -549,10 +549,12 @@ For production purposes it is not fine.
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Keep messages for 14 days.
    Example:
 
     ```console
     aws sqs create-queue \
+      --attributes MessageRetentionPeriod=1209600 \
       --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json

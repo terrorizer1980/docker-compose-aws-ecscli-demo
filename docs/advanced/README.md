@@ -775,7 +775,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       service up
     ```
 
-1. Run
+1. :thinking: **Optional:**
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)

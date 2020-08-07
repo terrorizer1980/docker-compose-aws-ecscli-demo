@@ -149,7 +149,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export SENZING_AWS_PROJECT=senzing-project-1
+    export SENZING_AWS_PROJECT=senzing-1
     ```
 
 #### Database credentials

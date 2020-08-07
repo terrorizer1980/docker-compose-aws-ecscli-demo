@@ -144,10 +144,12 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 #### Identify project
 
 1. :pencil2: Choose a prefix used in AWS object names.
+   This will also be the name of a directory storing AWS output.
+   See [Make AWS project directory](#make-aws-project-directory).
    Example:
 
     ```console
-    export SENZING_AWS_PROJECT=my-project-1
+    export SENZING_AWS_PROJECT=senzing-project-1
     ```
 
 #### Database credentials
@@ -1049,7 +1051,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 10 \
+      --max-capacity 60 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \

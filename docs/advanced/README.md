@@ -578,6 +578,68 @@ For production purposes it is not fine.
     ```
 
 1. :thinking: **Optional:**
+   Create "Dead letter" queue.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   Example:
+
+    ```console
+    aws sqs create-queue \
+      --attributes MessageRetentionPeriod=1209600 \
+      --queue-name ${SENZING_AWS_PROJECT}-sqs-dead-letter-queue \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-dead-letter-queue \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json
+    ```
+
+1. :thinking: **Optional:**
+   Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
+   Example:
+
+    ```console
+    export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
+    ```
+
+1. :thinking: **Optional:**
+   Get Queue attributes.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [get-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/get-queue-attributes.html).
+   Example:
+
+    ```console
+    aws sqs get-queue-attributes \
+      --queue-url ${SENZING_SQS_DEAD_LETTER_QUEUE_URL} \
+      --attribute-names All \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json
+    ```
+
+1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
+   Example:
+
+    ```console
+    export SENZING_SQS_DEAD_LETTER_QUEUE_ARN=$(jq --raw-output ".Attributes.QueueArn" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json)
+    ```
+
+
+1. :thinking: **Optional:**
+   Set Queue attributes.
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [set-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/set-queue-attributes.html).
+   Example:
+
+    ```console
+    aws sqs set-queue-attributes \
+      --queue-url ${SENZING_SQS_QUEUE_URL} \
+      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"5\"}"}' \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-set-queue-attributes.json
+    ```
+
+1. :thinking: **Optional:**
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console.
 

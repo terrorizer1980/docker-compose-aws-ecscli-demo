@@ -60,27 +60,33 @@ These performance metrics are for the
 - **Memory:** AWS MemoryUtilization metric.
 - **CPU:** AWS CPUUtilization metric.
 - **DB CPU:** Percent database CPU used of "Database Capacity Units".
-- **P-cores:** "Physical cores" reported in `senzing-loader.py` log.
-- **L-cores:** "Logical cores" reported in `senzing-loader.py` log.
 
 ### Vary threads
 
-| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | P-cores | L-cores |
-|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|--------:|--------:|
-|       4 |      16GB |      2048 |           8 | :arrow_right: |   20 |    18% | 23% | 25% of 08 |         |         |
-|       8 |      16GB |      2048 |           8 | :arrow_right: |   40 |    20% | 55% | 42% of 08 |         |         |
-|      10 |      16GB |      2048 |           8 | :arrow_right: |   60 |    23% | 84% | 60% of 08 |         |         |
-|      11 |      16GB |      2048 |           8 | :arrow_right: |   70 |    25% | 89% | 65% of 08 |         |         |
-|      12 |      16GB |      2048 |           8 | :arrow_right: |   70 |    27% | 93% | 63% of 08 |         |         |
-|      16 |      16GB |      2048 |           8 | :arrow_right: |   00 |    00% | 00% | 00% of 08 |         |         |
+| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    |
+|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|
+|       4 |      16GB |      2048 |           8 | :arrow_right: |   20 |    18% | 23% | 25% of 08 |
+|       8 |      16GB |      2048 |           8 | :arrow_right: |   40 |    20% | 55% | 42% of 08 |
+|      10 |      16GB |      2048 |           8 | :arrow_right: |   60 |    23% | 84% | 60% of 08 |
+|      11 |      16GB |      2048 |           8 | :arrow_right: |   70 |    25% | 89% | 65% of 08 |
+|      12 |       8GB |      2048 |           8 | :arrow_right: |   50 |    38% | 65% | 51% of 08 |
+|      12 |      16GB |      2048 |           8 | :arrow_right: |   70 |    27% | 93% | 63% of 08 |
+|      16 |      30GB |      4096 |           8 | :arrow_right: |   69 |    16% | 42% | 61% of 08 |
+|      20 |      30GB |      4096 |           8 | :arrow_right: |  103 |    18% | 74% | 59% of 16 |
 
-### Vary memory
+### Did not work
 
-| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | P-cores | L-cores |
-|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|--------:|--------:|
-|      12 |       8GB |      2048 |           8 | :arrow_right: |   50 |    38% | 65% | 51% of 08 |       1 |       2 |
-|      16 |      30GB |      4096 |           8 | :arrow_right: |   69 |    16% | 42% | 61% of 08 |       2 |       4 |
-|      20 |      30GB |      4096 |           8 | :arrow_right: |  103 |    18% | 74% | 59% of 16 |       2 |       4 |
+| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    |
+|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|
+|      16 |      12GB |      4096 |           8 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |
+|      16 |      16GB |      2048 |           8 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |
+
+### New work
+
+| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    |
+|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|
+|      12 |      12GB |      4096 |           2 | :arrow_right: |   53 |    37% | 32% | 51% of 02 |
+
 
 ## References
 

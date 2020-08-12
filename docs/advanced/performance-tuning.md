@@ -69,11 +69,11 @@ These performance metrics are for the
 
 ### Results
 
-| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | Cost      | ACU | %CPU | DB use | dbIO | Date tested |
-|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|----:|-----:|-------:|-----:|-------------|
-|       8 |       8GB |      1024 | :arrow_right: |   32 |    46% | 89% | $ 0.02062 |   2 |  35% |        |   9K |             |
-|      10 |       8GB |      1024 | :arrow_right: |      |        |     |           |     |      |        |      |             |
-|      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |           |   2 |  36% |   0.72 |  10K |  2020-08-12 |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
+|       8 |       8GB |      1024 | :arrow_right: |   32 |    46% | 89% |   2 |  35% |   0.70 |   9K |  2020-08-12 |
+|      10 |       8GB |      1024 | :arrow_right: |      |        |     |     |      |        |      |             |
+|      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |   2 |  36% |   0.72 |  10K |  2020-08-12 |
 
 
 ### Archive results
@@ -112,6 +112,14 @@ Using
 | per GB per hour     | $0.00182423  |
 | per vCPU per second | $0.000011244 |
 | per GB per second   | $0.000001235 |
+
+Using
+[Amazon Aurora Pricing](https://aws.amazon.com/rds/aurora/pricing/)
+
+| Resource rate      | Pricing      |
+|--------------------|:-------------|
+| per ACU per hour   | $0.06        |
+| per ACU per second | $0.000016667 |
 
 ### AWS Console
 

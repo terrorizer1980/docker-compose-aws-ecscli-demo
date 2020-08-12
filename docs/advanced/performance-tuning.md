@@ -57,8 +57,9 @@ These performance metrics are for the
     1. **Rate:** Messages inserted per second.
     1. **Memory:** AWS MemoryUtilization metric for service.
     1. **CPU:** AWS CPUUtilization metric for service.
-    1. **Cost:** Cost of ECS CPU and Memory (not database)
-        1. ((100K / Rate) * mem_limit_cost) + ((100K / Rate) * cpu_limit_cost)
+    1. **Cost:** Cost of ECS CPU and Memory per Million (not database)
+       based on [AWS Fargate Pricing ](https://aws.amazon.com/fargate/pricing/)
+        1. ((1M / Rate) * mem_limit_cost) + ((1M / Rate) * cpu_limit_cost)
     1. **ACU:** Maximum AWS Capacity Units allocated for database.
     1. **%CPU:** Percent database CPU used of "Database Capacity Units".
     1. **DB use:** ACU * %CPU.
@@ -68,11 +69,11 @@ These performance metrics are for the
 
 ### Results
 
-| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | Cost | ACU | %CPU | DB use | dbIO | Date tested |
-|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|-----:|----:|-----:|-------:|-----:|-------------|
-|       8 |       8GB |      1024 | :arrow_right: |      |        |     |      |     |      |        |      |             |
-|      10 |       8GB |      1024 | :arrow_right: |      |        |     |      |     |      |        |      |             |
-|      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |      |  02 |  36% |   0.72 |  10K |  2020-08-12 |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | Cost      | ACU | %CPU | DB use | dbIO | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|----:|-----:|-------:|-----:|-------------|
+|       8 |       8GB |      1024 | :arrow_right: |   32 |    46% | 89% | $ 0.02062 |   2 |  35% |        |   9K |             |
+|      10 |       8GB |      1024 | :arrow_right: |      |        |     |           |     |      |        |      |             |
+|      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |           |   2 |  36% |   0.72 |  10K |  2020-08-12 |
 
 
 ### Archive results
@@ -93,12 +94,24 @@ These performance metrics are for the
 
 | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
 |--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
-<tr> <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> </tr>
+| <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> </tr>
 |      16 |      12GB |      4096 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 |      16 |      16GB |      2048 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 
 
 ## References
+
+### AWS Fargate Pricing
+
+Using
+[AWS Fargate Pricing](https://aws.amazon.com/fargate/pricing/).
+
+| Resource rate       | Pricing      |
+|---------------------|:-------------|
+| per vCPU per hour   | $0.04048     |
+| per GB per hour     | $0.00182423  |
+| per vCPU per second | $0.000011244 |
+| per GB per second   | $0.000001235 |
 
 ### AWS Console
 

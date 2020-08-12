@@ -86,8 +86,7 @@ These performance metrics are for the
 
 | Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | Date tested |
 |--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|------------:|
-|      12 |       8GB |      1024 |           2 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |  2020-00-00 |
-
+|      12 |       8GB |      1024 |           2 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |  2020-08-12 |
 
 ## References
 

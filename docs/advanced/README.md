@@ -590,7 +590,7 @@ For production purposes it is not fine.
 :thinking: **Optional:**
 AWS SQS supports
 [dead-letter queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html).
-If a "dead-letter" queue is desired, the following steps will create a dead letter queue.
+If a "dead-letter" queue is desired, the following steps will create a dead-letter queue.
 If not desired, proceed to
 [Run tasks](#run-tasks).
 
@@ -598,7 +598,7 @@ If not desired, proceed to
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html)
-   to create "dead letter" queue.
+   to create "dead-letter" queue.
    Example:
 
     ```console
@@ -609,7 +609,7 @@ If not desired, proceed to
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json
     ```
 
-1. Save SQS queue URL in `SENZING_SQS_DEAD_LETTER_QUEUE_URL` environment variable.
+1. Save SQS dead-letter queue URL in `SENZING_SQS_DEAD_LETTER_QUEUE_URL` environment variable.
    Example:
 
     ```console
@@ -1310,6 +1310,18 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --queue-url ${SENZING_SQS_QUEUE_URL}
     ```
 
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
+   [delete-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/delete-queue.html)
+   to delete dead-letter SQS queue.
+   Example:
+
+    ```console
+    aws sqs delete-queue \
+      --queue-url ${SENZING_SQS_DEAD_LETTER_QUEUE_URL}
+    ```
+
 ### Delete Aurora PostgreSQL
 
 1. Run
@@ -1522,6 +1534,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 ### Environment variables
 
 1. List values of environment variables.
+   Will show if some variables are not set.
    Example:
 
     ```console
@@ -1549,5 +1562,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}\n"\
     "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}\n"\
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
+    "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"
     ```

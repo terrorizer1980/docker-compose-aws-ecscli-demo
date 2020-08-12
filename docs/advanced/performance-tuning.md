@@ -72,9 +72,14 @@ These performance metrics are for the
 | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
 |--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
 |       8 |       8GB |      1024 | :arrow_right: |   32 |    46% | 89% |   2 |  35% |   0.70 |   9K |  2020-08-12 |
-|      10 |       8GB |      1024 | :arrow_right: |      |        |     |     |      |        |      |             |
+|       8 |       8GB |      2048 | :arrow_right: |      |        |     |     |      |        |      |             |
+|      10 |       8GB |      1024 | :arrow_right: |   33 |    49% | 99% |   2 |  40% |        |  10K |  2020-08-12 | <<
+|      10 |       8GB |      2048 | :arrow_right: |      |        |     |     |      |        |      |             |
 |      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |   2 |  36% |   0.72 |  10K |  2020-08-12 |
+|      12 |       8GB |      2048 | :arrow_right: |      |        |     |     |      |        |      |             |
 
+For cost analysis, see
+[cost-calculations.pdf](cost-calculations.pdf).
 
 ### Archive results
 
@@ -94,7 +99,6 @@ These performance metrics are for the
 
 | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
 |--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
-| <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> </tr>
 |      16 |      12GB |      4096 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 |      16 |      16GB |      2048 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 

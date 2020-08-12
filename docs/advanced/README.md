@@ -197,7 +197,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html).
+   [configure](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-configure.html)
+   to configure Elastic Container System (ECS) Command Line Interface (CLI).
    Example:
 
     ```console
@@ -219,7 +220,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html).
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-up.html)
+   to create ECS Fargate cluster.
    Example:
 
     ```console
@@ -274,11 +276,11 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Find security group ID
 
-1. Find the AWS security group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
    [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+   to find the AWS security group.
    Example:
 
     ```console
@@ -310,11 +312,11 @@ Meaning they can be accessed from anywhere.
 For demonstration purposes, this is fine.
 For production purposes it is not fine.
 
-1. Open inbound ports.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
-   [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html).
+   [authorize-security-group-ingress](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html)
+   to open inbound ports.
    Example:
 
     ```console
@@ -360,10 +362,11 @@ For production purposes it is not fine.
     ```
 
 1. :thinking: **Optional:**
-   To view Security Group, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ec2](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html)
-   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html).
+   [describe-security-groups](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-security-groups.html)
+   to view Security Group.
    Example:
 
     ```console
@@ -381,11 +384,11 @@ For production purposes it is not fine.
 
 #### Provision Elastic File System
 
-1. Create EFS file system.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html).
+   [create-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-file-system.html)
+   to create Elastic File System (EFS).
    Example:
 
     ```console
@@ -414,11 +417,11 @@ For production purposes it is not fine.
     echo ${SENZING_AWS_EFS_FILESYSTEM_ID}
     ```
 
-1. Create mount in first subnet.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html).
+   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html)
+   to create mount in first subnet.
    Example:
 
     ```console
@@ -429,11 +432,11 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-mount-target-1.json
     ```
 
-1. Create mount in second subnet.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html).
+   [create-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/create-mount-target.html)
+   to create mount in second subnet.
    Example:
 
     ```console
@@ -453,11 +456,11 @@ For production purposes it is not fine.
 **Note:** See
 [Limitations of Aurora Serverless](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations)
 
-1. Create Database subnet group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-subnet-group](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-subnet-group.html).
+   [create-db-subnet-group](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-subnet-group.html)
+   to create database subnet group.
    Example:
 
     ```console
@@ -468,11 +471,11 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-subnet-group.json
     ```
 
-1. Create Aurora cluster parameter group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html).
+   [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html)
+   to create Aurora cluster parameter group.
    Example:
 
     ```console
@@ -483,11 +486,11 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
     ```
 
-1. Modify Aurora cluster parameter group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html).
+   [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html)
+   to modify Aurora cluster parameter group.
    Example:
 
     ```console
@@ -500,11 +503,11 @@ For production purposes it is not fine.
 
 1. :thinking: **Optional:** View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
 
-1. Create Aurora cluster.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster.html).
+   [create-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster.html)
+   to create Aurora cluster.
    Example:
 
     ```console
@@ -546,11 +549,11 @@ For production purposes it is not fine.
 
 #### Provision Simple Queue Service
 
-1. Create SQS queue.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html)
+   to create SQS queue.
    Keep messages for 14 days.
    Example:
 
@@ -578,11 +581,23 @@ For production purposes it is not fine.
     ```
 
 1. :thinking: **Optional:**
-   Create "Dead letter" queue.
-   Run
+   View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
+   in AWS console.
+
+#### Provision Dead Letter Simple Queue Service
+
+:thinking: **Optional:**
+AWS SQS supports
+[dead-letter queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html).
+If a "dead-letter" queue is desired, the following steps will create a dead letter queue.
+If not desired, proceed to
+[Run tasks](#run-tasks).
+
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html).
+   [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html)
+   to create "dead letter" queue.
    Example:
 
     ```console
@@ -593,20 +608,18 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json
     ```
 
-1. :thinking: **Optional:**
-   Save SQS queue URL in `SENZING_SQS_QUEUE_URL` environment variable.
+1. Save SQS queue URL in `SENZING_SQS_DEAD_LETTER_QUEUE_URL` environment variable.
    Example:
 
     ```console
     export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
     ```
 
-1. :thinking: **Optional:**
-   Get Queue attributes.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [get-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/get-queue-attributes.html).
+   [get-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/get-queue-attributes.html)
+   to get dead-letter queue attributes.
    Example:
 
     ```console
@@ -616,32 +629,32 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json
     ```
 
-1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
+1. Save dead-letter queue Amazon Resource Name (ARN) in `SENZING_SQS_DEAD_LETTER_QUEUE_ARN` environment variable.
    Example:
 
     ```console
     export SENZING_SQS_DEAD_LETTER_QUEUE_ARN=$(jq --raw-output ".Attributes.QueueArn" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json)
     ```
 
-
-1. :thinking: **Optional:**
-   Set Queue attributes.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [set-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/set-queue-attributes.html).
+   [set-queue-attributes](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/set-queue-attributes.html)
+   to set queue attributes.
    Example:
 
     ```console
     aws sqs set-queue-attributes \
       --queue-url ${SENZING_SQS_QUEUE_URL} \
-      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"5\"}"}' \
+      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"3\"}"}' \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-set-queue-attributes.json
     ```
 
 1. :thinking: **Optional:**
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console.
+    1. Choose queue.
+    1. Choose "Dead-letter queue" tab
 
 ### Run tasks
 
@@ -668,6 +681,7 @@ This "init container" create directories on Elastic File System.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to run task.
    Example:
 
     ```console
@@ -690,6 +704,7 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to run task.
    Example:
 
     ```console
@@ -736,6 +751,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to run task.
    Example:
 
     ```console
@@ -800,10 +816,11 @@ It can be used to run Senzing command-line tools.
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
    Example:
 
     ```console
@@ -813,10 +830,10 @@ It can be used to run Senzing command-line tools.
     ```
 
 1. :thinking: **Optional:**
-   To view Senzing X-Term, run
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
+   to find IP address and port for Senzing X-Term.
    Example:
 
     ```console
@@ -860,11 +877,10 @@ It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing
     ```
 
 1. :thinking: **Optional:**
-   To view phpPgAdmin,
-   run
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
+   to find IP address and port for phpPgAdmin.
    Example:
 
     ```console
@@ -916,10 +932,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
    Example:
 
     ```console
@@ -951,10 +968,11 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
    Example:
 
     ```console
@@ -964,10 +982,10 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```
 
 1. :thinking: **Optional:**
-   To view API server, run
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
+   to find IP address and port for Senzing API Server.
    Example:
 
     ```console
@@ -1035,10 +1053,11 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
    Example:
 
     ```console
@@ -1048,10 +1067,10 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```
 
 1. :thinking: **Optional:**
-   To view Senzing web app, run
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
+   to find IP address and port for Senzing Web App.
    Example:
 
     ```console
@@ -1083,10 +1102,11 @@ examples of the Senzing Java and Python SDK use.
     ```
 
 1. :thinking: **Optional:**
-   To view service definition, run
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html).
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
    Example:
 
     ```console
@@ -1096,10 +1116,10 @@ examples of the Senzing Java and Python SDK use.
     ```
 
 1. :thinking: **Optional:**
-   To view Jupyter, run
+   Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port.
+   to find IP address and port for Jupyter.
    Example:
 
     ```console
@@ -1118,7 +1138,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
    [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
-   to identify the stream loader as a scaleable resource.
+   to identify the stream loader as a scalable resource.
    Example:
 
     ```console
@@ -1255,11 +1275,12 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     )
     ```
 
-1. Delete task definitions. Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [deregister-task-definition](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/deregister-task-definition.html)
-   in a loop over `SENZING_ECS_TASK_DEFINITIONS` values.
+   in a loop over `SENZING_ECS_TASK_DEFINITIONS` values
+   to delete task definitions.
    Example:
 
     ```console
@@ -1276,11 +1297,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 ### Delete Simple Queue Service
 
-1. Delete SQS queue.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
-   [delete-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/delete-queue.html).
+   [delete-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/delete-queue.html)
+   to delete SQS queue.
    Example:
 
     ```console
@@ -1290,11 +1311,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 ### Delete Aurora PostgreSQL
 
-1. Delete Aurora cluster.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [delete-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster.html).
+   [delete-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster.html)
+   to delete Aurora cluster.
    Example:
 
     ```console
@@ -1304,11 +1325,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster.json
     ```
 
-1. Delete Database subnet group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [delete-db-subnet-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-subnet-group.html).
+   [delete-db-subnet-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-subnet-group.html)
+   to delete database subnet group.
    Example:
 
     ```console
@@ -1317,11 +1338,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-subnet-group.json
     ```
 
-1. Delete Database cluster parameter group.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [delete-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster-parameter-group.html).
+   [delete-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster-parameter-group.html)
+   to delete database cluster parameter group.
    Example:
 
     ```console
@@ -1332,11 +1353,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 ### Delete Elastic File System
 
-1. Delete mount in first subnet.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html).
+   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html)
+   to delete mount in first subnet.
    Example:
 
     ```console
@@ -1347,11 +1368,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-1.json
     ```
 
-1. Delete mount in second subnet.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html).
+   [delete-mount-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-mount-target.html)
+   to delete mount in second subnet.
    Example:
 
     ```console
@@ -1362,11 +1383,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       > ${SENZING_AWS_PROJECT_DIR}/aws-efs-delete-mount-target-2.json
     ```
 
-1. Delete EFS file system.
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [efs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/index.html)
-   [delete-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-file-system.html).
+   [delete-file-system](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/efs/delete-file-system.html)
+   to delete Elastic File System (EFS).
    Example:
 
     ```console
@@ -1378,7 +1399,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html).
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
+   to bring down cluster.
    Example:
 
     ```console
@@ -1389,10 +1411,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 ### Clean logs
 
-1. Delete logs. Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
    [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
+   to delete logs.
    Example:
 
     ```console
@@ -1400,10 +1423,11 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --log-group-name ${SENZING_AWS_LOGS_GROUP}
     ```
 
-1. Delete Aurora Serverless logs. Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [logs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/index.html)
    [delete-log-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/delete-log-group.html)
+   to delete Aurora logs.
    Example:
 
     ```console

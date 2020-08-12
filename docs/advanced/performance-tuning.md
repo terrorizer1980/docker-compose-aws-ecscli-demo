@@ -89,8 +89,7 @@ These performance metrics are for the
 
 | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
 |--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
-| -
-| one <td colspan=3> three <td colspan=4> |
+| <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> -
 |      16 |      12GB |      4096 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 |      16 |      16GB |      2048 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 

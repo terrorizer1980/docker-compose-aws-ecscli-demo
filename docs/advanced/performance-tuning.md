@@ -55,20 +55,24 @@ These performance metrics are for the
        `task_definition.task_size.cpu_limit`.
 1. Results
     1. **Rate:** Messages inserted per second.
-    1. **Memory:** AWS MemoryUtilization metric for container.
-    1. **CPU:** AWS CPUUtilization metric for container.
-    1. **ACU:** Maximum AWS Capacity Units allocated for database
+    1. **Memory:** AWS MemoryUtilization metric for service.
+    1. **CPU:** AWS CPUUtilization metric for service.
+    1. **Cost:** Cost of ECS CPU and Memory (not database)
+        1. ((100K / Rate) * mem_limit_cost) + ((100K / Rate) * cpu_limit_cost)
+    1. **ACU:** Maximum AWS Capacity Units allocated for database.
     1. **%CPU:** Percent database CPU used of "Database Capacity Units".
-    1. **DB use:** ACU * %CPU
-    1. **dbIO:** Maximum database Write IOPS
-    1. **Date tested:** Date of test
+    1. **DB use:** ACU * %CPU.
+    1. **dbIO:** Maximum database Write IOPS.
+
+    1. **Date tested:** Date of test.
 
 ### Results
 
-| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
-|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
-|      12 |       8GB |      1024 | :arrow_right: |   35 |    54% | 99% |  02 |  36% |   0.72 |  10K |  2020-08-12 |
-|      11 |       8GB |      1024 | :arrow_right: |   00 |    00% | 00% |  00 |  00% |        |  00K |  2020-08-12 |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | Cost | ACU | %CPU | DB use | dbIO | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|-----:|----:|-----:|-------:|-----:|-------------|
+|       8 |       8GB |      1024 | :arrow_right: |      |        |     |      |     |      |        |      |             |
+|      10 |       8GB |      1024 | :arrow_right: |      |        |     |      |     |      |        |      |             |
+|      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |      |  02 |  36% |   0.72 |  10K |  2020-08-12 |
 
 
 ### Archive results
@@ -89,16 +93,10 @@ These performance metrics are for the
 
 | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
 |--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
-| <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> -
+<tr> <td colspan=3> **Inputs** <td colspan=1> :arrow_right: <td colspan=5> **Results** <td colspan=1> </tr>
 |      16 |      12GB |      4096 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 |      16 |      16GB |      2048 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 
-### New work
-
-| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
-|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
-|      12 |       8GB |      1024 | :arrow_right: |   35 |    54% | 99% |  02 |  36% |   0.72 |  10K |  2020-08-12 |
-|      11 |       8GB |      1024 | :arrow_right: |   00 |    00% | 00% |  00 |  00% |        |  00K |  2020-08-12 |
 
 ## References
 

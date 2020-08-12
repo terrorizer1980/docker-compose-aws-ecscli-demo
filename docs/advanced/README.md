@@ -879,8 +879,7 @@ If not desired, proceed to
       service up
     ```
 
-1. :thinking: **Optional:**
-   Run
+1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port for phpPgAdmin.
@@ -1086,6 +1085,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 :thinking: **Optional:** The Jupyter notebook service hosts Jupyter notebooks with
 examples of the Senzing Java and Python SDK use.
+If not desired, proceed to
+[Autoscale services](#autoscale-services).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

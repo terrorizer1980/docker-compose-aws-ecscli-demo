@@ -43,50 +43,63 @@ These performance metrics are for the
 
 ## SQS to Senzing engine using stream-loader
 
-- **Threads:** Specified SENZING_THREADS_PER_PROCESS
-- **mem_limit:**
-  Specified in
-  [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
-  `task_definition.task_size.mem_limit`.
-- **cpu_limit:**
-  Specified in
-  [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
-  `task_definition.task_size.cpu_limit`.
-- **DB capacity:** Specified Database capacity.
-  Specified in
-  [Provision Aurora PostgreSQL Serverless](README.md#provision-aurora-postgresql-serverless)
-  `--scaling-configuration` parameter.
-- **Rate:** Messages inserted per second.
-- **Memory:** AWS MemoryUtilization metric.
-- **CPU:** AWS CPUUtilization metric.
-- **DB CPU:** Percent database CPU used of "Database Capacity Units".
+1. Parameters
+    1. **Threads:** Specified SENZING_THREADS_PER_PROCESS
+    1. **mem_limit:**
+       Specified in
+       [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
+       `task_definition.task_size.mem_limit`.
+    1. **cpu_limit:**
+       Specified in
+       [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
+       `task_definition.task_size.cpu_limit`.
+1. Results
+    1. **Rate:** Messages inserted per second.
+    1. **Memory:** AWS MemoryUtilization metric for container.
+    1. **CPU:** AWS CPUUtilization metric for container.
+    1. **ACU:** Maximum AWS Capacity Units allocated for database
+    1. **%CPU:** Percent database CPU used of "Database Capacity Units".
+    1. **DB use:** ACU * %CPU
+    1. **dbIO:** Maximum database Write IOPS
+    1. **Date tested:** Date of test
 
-### Vary threads
+### Results
 
-| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | Date tested |
-|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|------------:|
-|       4 |      16GB |      2048 |           8 | :arrow_right: |   20 |    18% | 23% | 25% of 08 |             |
-|       8 |      16GB |      2048 |           8 | :arrow_right: |   40 |    20% | 55% | 42% of 08 |             |
-|      10 |      16GB |      2048 |           8 | :arrow_right: |   60 |    23% | 84% | 60% of 08 |             |
-|      11 |      16GB |      2048 |           8 | :arrow_right: |   70 |    25% | 89% | 65% of 08 |             |
-|      12 |       8GB |      2048 |           8 | :arrow_right: |   50 |    38% | 65% | 51% of 08 |             |
-|      12 |      12GB |      4096 |           2 | :arrow_right: |   53 |    37% | 32% | 51% of 02 |  2020-08-10 |
-|      12 |      16GB |      2048 |           8 | :arrow_right: |   70 |    27% | 93% | 63% of 08 |             |
-|      16 |      30GB |      4096 |           8 | :arrow_right: |   69 |    16% | 42% | 61% of 08 |             |
-|      20 |      30GB |      4096 |           8 | :arrow_right: |  103 |    18% | 74% | 59% of 16 |             |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
+|      12 |       8GB |      1024 | :arrow_right: |   35 |    54% | 99% |  02 |  36% |   0.72 |  10K |  2020-08-12 |
+|      11 |       8GB |      1024 | :arrow_right: |   00 |    00% | 00% |  00 |  00% |        |  00K |  2020-08-12 |
+
+
+### Archive results
+
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
+|       4 |      16GB |      2048 | :arrow_right: |   20 |    18% | 23% | 25% of 08 |      |             |
+|       8 |      16GB |      2048 | :arrow_right: |   40 |    20% | 55% | 42% of 08 |      |             |
+|      10 |      16GB |      2048 | :arrow_right: |   60 |    23% | 84% | 60% of 08 |      |             |
+|      11 |      16GB |      2048 | :arrow_right: |   70 |    25% | 89% | 65% of 08 |      |             |
+|      12 |       8GB |      2048 | :arrow_right: |   50 |    38% | 65% | 51% of 08 |      |             |
+|      12 |      12GB |      4096 | :arrow_right: |   53 |    37% | 32% | 51% of 02 |      |  2020-08-10 |
+|      12 |      16GB |      2048 | :arrow_right: |   70 |    27% | 93% | 63% of 08 |      |             |
+|      16 |      30GB |      4096 | :arrow_right: |   69 |    16% | 42% | 61% of 08 |      |             |
+|      20 |      30GB |      4096 | :arrow_right: |  103 |    18% | 74% | 59% of 16 |      |             |
 
 ### Did not work
 
-| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    |
-|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|
-|      16 |      12GB |      4096 |           8 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |
-|      16 |      16GB |      2048 |           8 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | DB CPU    | ACUs | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----------:|-----:|------------:|
+| -
+| one <td colspan=3> three <td colspan=4> |
+|      16 |      12GB |      4096 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
+|      16 |      16GB |      2048 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |      |             |
 
 ### New work
 
-| Threads | mem_limit | cpu_limit | DB capacity | :arrow_right: | Rate | Memory | CPU | DB CPU    | Date tested |
-|--------:|----------:|----------:|------------:|:-------------:|-----:|-------:|----:|----------:|------------:|
-|      12 |       8GB |      1024 |           2 | :arrow_right: |   00 |    00% | 00% | 00% of 00 |  2020-08-12 |
+| Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested |
+|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|-------------|
+|      12 |       8GB |      1024 | :arrow_right: |   35 |    54% | 99% |  02 |  36% |   0.72 |  10K |  2020-08-12 |
+|      11 |       8GB |      1024 | :arrow_right: |   00 |    00% | 00% |  00 |  00% |        |  00K |  2020-08-12 |
 
 ## References
 

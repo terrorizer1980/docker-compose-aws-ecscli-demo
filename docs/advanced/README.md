@@ -798,6 +798,8 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 
 :thinking: **Optional:** The Senzing X-Term service provides console access.
 It can be used to run Senzing command-line tools.
+If not desired, proceed to
+[Create phpPgAdmin service](#create-phppgadmin-service).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -816,8 +818,7 @@ It can be used to run Senzing command-line tools.
       service up
     ```
 
-1. :thinking: **Optional:**
-   Run
+1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
@@ -830,8 +831,7 @@ It can be used to run Senzing command-line tools.
       --services ${SENZING_AWS_PROJECT}-project-name-xterm
     ```
 
-1. :thinking: **Optional:**
-   Run
+1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
    to find IP address and port for Senzing X-Term.
@@ -859,6 +859,8 @@ It can be used to run Senzing command-line tools.
 [phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
 is a web-based database adminitration tool.
 It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
+If not desired, proceed to
+[Create Stream loader service](#create-stream-loader-service).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1562,6 +1564,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}\n"\
     "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}\n"\
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
+    "SENZING_SQS_DEAD_LETTER_QUEUE_ARN=${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"
     ```

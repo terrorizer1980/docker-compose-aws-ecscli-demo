@@ -58,6 +58,7 @@ This docker formation brings up the following docker containers:
         1. [Provision Elastic File System](#provision-elastic-file-system)
         1. [Provision Aurora PostgreSQL Serverless](#provision-aurora-postgresql-serverless)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
+        1. [Provision Dead Letter Simple Queue Service](#provision-dead-letter-simple-queue-service)
     1. [Run tasks](#run-tasks)
         1. [Run EFS init container task](#run-efs-init-container-task)
         1. [Run install Senzing task](#run-install-senzing-task)

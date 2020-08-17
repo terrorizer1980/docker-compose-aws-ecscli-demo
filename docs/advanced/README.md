@@ -796,6 +796,67 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 
 ### Create services
 
+#### Create sshd service
+
+The Senzing `sshd` service provides `ssh` and `scp` access.
+It can be used to run Senzing command-line tools.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision `sshd` service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-sshd.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-sshd
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for `sshd` service.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      | grep sshd
+    ```
+
+1. :thinking: **Optional:**
+   Add `g2.lic` by using `scp` to copy `g2.lic` to proper place on Elastic File System (EFS).
+
+    ```console
+    SENZING_LICENSE_PATH = /etc/opt/senzing/g2.lic
+    SENZING_SSHD_HOSTNAME =
+    ```
+
+
+    ```console
+    scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOSTNAME}:/etc/opt/senzing/g2.lic
+    ```
+
 #### Create Senzing X-Term service
 
 :thinking: **Optional:**
@@ -1152,7 +1213,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 50 \
+      --max-capacity 60 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \

@@ -1147,7 +1147,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 60 \
+      --max-capacity 30 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
@@ -1170,7 +1170,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=30,ScaleOutCooldown=120,TargetValue=10.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=60,ScaleOutCooldown=120,TargetValue=50.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

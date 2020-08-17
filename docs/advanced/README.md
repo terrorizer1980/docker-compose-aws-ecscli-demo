@@ -502,7 +502,8 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
     ```
 
-1. :thinking: **Optional:** View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
+1. :thinking: **Optional:**
+   View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -545,7 +546,8 @@ For production purposes it is not fine.
 1. :thinking: **Optional:**
    View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)
    in AWS console.
-1. :thinking: **Optional:** References:
+1. :thinking: **Optional:**
+   References:
     1. [Amazon Aurora User Guide for Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-ug.pdf) pdf
 
 #### Provision Simple Queue Service
@@ -796,7 +798,8 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 
 #### Create Senzing X-Term service
 
-:thinking: **Optional:** The Senzing X-Term service provides console access.
+:thinking: **Optional:**
+The Senzing X-Term service provides console access.
 It can be used to run Senzing command-line tools.
 If not desired, proceed to
 [Create phpPgAdmin service](#create-phppgadmin-service).
@@ -818,7 +821,8 @@ If not desired, proceed to
       service up
     ```
 
-1. Run
+1. :thinking: **Optional:**
+   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
@@ -1083,7 +1087,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
 
 #### Create Jupyter notebook service
 
-:thinking: **Optional:** The Jupyter notebook service hosts Jupyter notebooks with
+:thinking: **Optional:**
+The Jupyter notebook service hosts Jupyter notebooks with
 examples of the Senzing Java and Python SDK use.
 If not desired, proceed to
 [Autoscale services](#autoscale-services).
@@ -1147,7 +1152,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 30 \
+      --max-capacity 50 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
@@ -1170,7 +1175,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=60,ScaleOutCooldown=120,TargetValue=50.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=0,ScaleOutCooldown=0,TargetValue=50.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

@@ -649,7 +649,7 @@ If not desired, proceed to
     ```console
     aws sqs set-queue-attributes \
       --queue-url ${SENZING_SQS_QUEUE_URL} \
-      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"3\"}"}' \
+      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"5\"}"}' \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-set-queue-attributes.json
     ```
 

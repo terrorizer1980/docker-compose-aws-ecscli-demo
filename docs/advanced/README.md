@@ -1213,7 +1213,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 60 \
+      --max-capacity 100 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \

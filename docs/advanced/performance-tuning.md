@@ -92,6 +92,7 @@ These performance metrics are for the
 |    27 |       8 |       8GB |      1024 | :arrow_right: |  495 |    43% | 88% |  64 |  52% |        | 145K |  2020-08-17 |     |
 |    43 |       8 |       8GB |      1024 | :arrow_right: |  778 |    76% | 30% | 192 |  59% |        | 220K |  2020-08-17 |     |
 |    60 |       8 |       8GB |      1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% |        | 460K |  2020-08-17 |  2M |
+|   100 |       8 |       8GB |      1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% |        | 570K |  2020-08-18 |  5M |
 
 
 For cost analysis, see

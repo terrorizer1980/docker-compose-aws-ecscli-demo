@@ -801,6 +801,11 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 The Senzing `sshd` service provides `ssh` and `scp` access.
 It can be used to run Senzing command-line tools.
 
+To insert more than 100K records into Senzing,
+a custom license will need to be placed on the system.
+The "sshd service" will be used to place the license onto the
+attached AWS Elastic File System (EFS).
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -835,27 +840,42 @@ It can be used to run Senzing command-line tools.
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for `sshd` service.
+   to find IP addresses and ports of running services.
    Example:
 
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      | grep sshd
+      --desired-status RUNNING \
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
     ```
 
-1. :thinking: **Optional:**
-   Add `g2.lic` by using `scp` to copy `g2.lic` to proper place on Elastic File System (EFS).
+1. Extract the host IP address.
+   Example:
 
     ```console
-    SENZING_LICENSE_PATH = /etc/opt/senzing/g2.lic
-    SENZING_SSHD_HOSTNAME =
+    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
     ```
 
+1. :pencil2: Specify the location of the Senzing license on the local machine.
+   Example:
 
     ```console
-    scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOSTNAME}:/etc/opt/senzing/g2.lic
+    SENZING_LICENSE_PATH = /path/to/my/local/g2.lic
     ```
+
+1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
+   using the "sshd service".
+   Example:
+
+    ```console
+    scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
+    ```
+
+    1. The default password is `senzingsshdpassword`.
+       However, if the docker image was built locally, it may have been changed during `docker build`.
+       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+
 
 #### Create Senzing X-Term service
 

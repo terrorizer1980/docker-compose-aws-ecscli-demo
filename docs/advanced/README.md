@@ -861,7 +861,7 @@ attached AWS Elastic File System (EFS).
    Example:
 
     ```console
-    SENZING_LICENSE_PATH = /path/to/my/local/g2.lic
+    export SENZING_LICENSE_PATH=/path/to/my/local/g2.lic
     ```
 
 1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
@@ -876,6 +876,22 @@ attached AWS Elastic File System (EFS).
        However, if the docker image was built locally, it may have been changed during `docker build`.
        See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
 
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
+   to stop sshd service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-sshd.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
+      service down
+    ```
 
 #### Create Senzing X-Term service
 
@@ -925,6 +941,7 @@ If not desired, proceed to
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
       | grep xterm
     ```
 
@@ -973,6 +990,7 @@ If not desired, proceed to
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
       | grep phppgadmin
     ```
 
@@ -1078,6 +1096,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
       | grep apiserver
     ```
 
@@ -1093,6 +1112,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     export SENZING_IP_ADDRESS_APISERVER=$( \
       ecs-cli ps \
         --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+        --desired-status RUNNING \
       | grep  apiserver \
       | awk '{print $3}' \
       | awk -F \: {'print $1'} \
@@ -1163,6 +1183,7 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
       | grep webapp
     ```
 
@@ -1215,6 +1236,7 @@ If not desired, proceed to
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
       | grep jupyter
     ```
 
@@ -1266,7 +1288,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING
     ```
 
    and looking in the **Ports** column.
@@ -1653,5 +1676,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_ARN=${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
-    "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"
+    "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"\
+    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"
     ```

@@ -64,8 +64,8 @@ These performance metrics are for the
     1. **%CPU:** Percent database CPU used of "Database Capacity Units".
     1. **DB use:** ACU * %CPU.
     1. **dbIO:** Maximum database Write IOPS.
-
     1. **Date tested:** Date of test.
+    1. **Run:** How many records were used in the test.
 
 ### Results
 
@@ -93,7 +93,8 @@ These performance metrics are for the
 |    43 |       8 |       8GB |      1024 | :arrow_right: |  778 |    76% | 30% | 192 |  59% |        | 220K |  2020-08-17 |  1M |
 |    60 |       8 |       8GB |      1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% |        | 460K |  2020-08-17 |  2M |
 |    99 |       8 |       8GB |      1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% |        | 570K |  2020-08-18 |  5M |
-|    25 |      24 |       8GB |      4096 | :arrow_right: |      |        |     |     |      |        |      |  2020-08-18 |  5M |
+|    25 |      24 |       8GB |      4096 | :arrow_right: | 2054 |    84% | 69% | 384 |  43% |        | 590K |  2020-08-20 |  5M |
+|    50 |      24 |       8GB |      4096 | :arrow_right: |      |        |     |     |      |        |      |  2020-08-20 |  5M |
 
 
 For cost analysis, see

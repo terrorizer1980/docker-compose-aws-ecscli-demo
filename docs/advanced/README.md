@@ -881,7 +881,7 @@ attached AWS Elastic File System (EFS).
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
    [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
-   to stop sshd service.
+   to bring down the sshd service.
    Example:
 
     ```console

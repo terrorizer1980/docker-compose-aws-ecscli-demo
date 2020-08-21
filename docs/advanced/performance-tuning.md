@@ -54,6 +54,8 @@ These performance metrics are for the
        [ecs-params-stream-loader.yaml](../../resources/advanced/ecs-params-stream-loader.yaml)
        `task_definition.task_size.cpu_limit`.
 1. Results
+    1. **Scale:** Maximum tasks observed
+    1. **Target:** Autoscale `TargetValue`
     1. **Rate:** Messages inserted per second.
     1. **Memory:** AWS MemoryUtilization metric for service.
     1. **CPU:** AWS CPUUtilization metric for service.
@@ -64,42 +66,56 @@ These performance metrics are for the
     1. **%CPU:** Percent database CPU used of "Database Capacity Units".
     1. **DB use:** ACU * %CPU.
     1. **dbIO:** Maximum database Write IOPS.
+    1. **IOrec:** IOs per record
     1. **Date tested:** Date of test.
     1. **Run:** How many records were used in the test.
+    1. **Fn** Footnotes
 
 ### Results
 
-| Scale | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | Date tested | Run |
-|------:|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|------------:|----:|
-|     1 |       8 |       6GB |      1024 | :arrow_right: |   35 |    62% | 98% |   2 |  48% |   0.96 |  10K |  2020-08-14 |  1K |
-|     1 |       8 |       8GB |      1024 | :arrow_right: |   33 |    46% | 89% |   2 |  35% |   0.70 |   9K |  2020-08-12 |  1K |
-|     1 |       8 |       8GB |      2048 | :arrow_right: |   38 |    46% | 51% |   2 |  50% |   1.00 |  11K |  2020-08-12 |  1K |
-|     1 |       8 |       8GB |      4096 | :arrow_right: |   49 |    48% | 30% |   8 |  64% |   5.12 |  14K |  2020-08-13 |  1K |
-|     1 |      10 |       8GB |      1024 | :arrow_right: |   34 |    51% | 99% |   2 |  42% |   0.84 |  10K |  2020-08-12 |  1K |
-|     1 |      10 |       8GB |      2048 | :arrow_right: |   45 |    51% | 60% |   4 |  50% |   2.00 |  13K |  2020-08-12 |  1K |
-|     1 |      10 |       8GB |      4096 | :arrow_right: |   47 |    51% | 36% |  16 |  70% |  11.00 |  15K |  2020-08-13 |  1K |
-|     1 |      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |   2 |  36% |   0.72 |  10K |  2020-08-12 |  1K |
-|     1 |      12 |       8GB |      2048 | :arrow_right: |   50 |    56% | 82% |  16 |  25% |   4.00 |  15K |  2020-08-13 |  1K |
-|     1 |      12 |       8GB |      4096 | :arrow_right: |   53 |    56% | 34% |   8 |  70% |   5.60 |  15K |  2020-08-13 |  1K |
-|     1 |      14 |       8GB |      2048 | :arrow_right: |   55 |    60% | 90% |   8 |  56% |   4.48 |  16K |  2020-08-13 |  1K |
-|     1 |      14 |       8GB |      4096 | :arrow_right: |   54 |    60% | 65% |  16 |  42% |   6.72 |  25K |  2020-08-13 |  1K |
-|     1 |      16 |       8GB |      4096 | :arrow_right: |   84 |    64% | 69% |  16 |  47% |   7.52 |  28K |  2020-08-13 |  1K |
-|     1 |      18 |       8GB |      4096 | :arrow_right: |   77 |    67% | 52% |  16 |  38% |   6.08 |  21K |  2020-08-13 |  1K |
-|     1 |      20 |       8GB |      4096 | :arrow_right: |   87 |    72% | 62% |  16 |  63% |  10.08 |  24K |  2020-08-13 |  2K |
-|     1 |      22 |       8GB |      4096 | :arrow_right: |   98 |    75% | 78% |  16 |  64% |  10.24 |  30K |  2020-08-14 |  2K |
-|     1 |      24 |       8GB |      4096 | :arrow_right: |   95 |    79% | 79% |  32 |  51% |  16.32 |  30K |  2020-08-14 |  2K |
-|    10 |       8 |       6GB |      1024 | :arrow_right: |  368 |    59% | 95% |  64 |  28% |        | 112K |  2020-08-14 |  1M |
-|    27 |       8 |       8GB |      1024 | :arrow_right: |  495 |    43% | 88% |  64 |  52% |        | 145K |  2020-08-17 |  1M |
-|    43 |       8 |       8GB |      1024 | :arrow_right: |  778 |    76% | 30% | 192 |  59% |        | 220K |  2020-08-17 |  1M |
-|    60 |       8 |       8GB |      1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% |        | 460K |  2020-08-17 |  2M |
-|    99 |       8 |       8GB |      1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% |        | 570K |  2020-08-18 |  5M |
-|    25 |      24 |       8GB |      4096 | :arrow_right: | 2054 |    84% | 69% | 384 |  43% |        | 590K |  2020-08-20 |  5M |
-|    50 |      24 |       8GB |      4096 | :arrow_right: | 1983 |    92% | 59% | 384 |  79% |        | 620K |  2020-08-20 |  5M |
+#### Scale of 1
+
+| Scale | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | IOrec | Date tested | Run | Fn |
+|------:|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|------:|------------:|----:|:--:|
+|     1 |       8 |       6GB |      1024 | :arrow_right: |   35 |    62% | 98% |   2 |  48% |   0.96 |  10K |   285 |  2020-08-14 |  1K |    |
+|     1 |       8 |       8GB |      1024 | :arrow_right: |   33 |    46% | 89% |   2 |  35% |   0.70 |   9K |   272 |  2020-08-12 |  1K |    |
+|     1 |       8 |       8GB |      2048 | :arrow_right: |   38 |    46% | 51% |   2 |  50% |   1.00 |  11K |   289 |  2020-08-12 |  1K |    |
+|     1 |       8 |       8GB |      4096 | :arrow_right: |   49 |    48% | 30% |   8 |  64% |   5.12 |  14K |   285 |  2020-08-13 |  1K |    |
+|     1 |      10 |       8GB |      1024 | :arrow_right: |   34 |    51% | 99% |   2 |  42% |   0.84 |  10K |   294 |  2020-08-12 |  1K |    |
+|     1 |      10 |       8GB |      2048 | :arrow_right: |   45 |    51% | 60% |   4 |  50% |   2.00 |  13K |   288 |  2020-08-12 |  1K |    |
+|     1 |      10 |       8GB |      4096 | :arrow_right: |   47 |    51% | 36% |  16 |  70% |  11.00 |  15K |   319 |  2020-08-13 |  1K |    |
+|     1 |      12 |       8GB |      1024 | :arrow_right: |   35 |    55% | 99% |   2 |  36% |   0.72 |  10K |   285 |  2020-08-12 |  1K |    |
+|     1 |      12 |       8GB |      2048 | :arrow_right: |   50 |    56% | 82% |  16 |  25% |   4.00 |  15K |   300 |  2020-08-13 |  1K |    |
+|     1 |      12 |       8GB |      4096 | :arrow_right: |   53 |    56% | 34% |   8 |  70% |   5.60 |  15K |   283 |  2020-08-13 |  1K |    |
+|     1 |      14 |       8GB |      2048 | :arrow_right: |   55 |    60% | 90% |   8 |  56% |   4.48 |  16K |   290 |  2020-08-13 |  1K |    |
+|     1 |      14 |       8GB |      4096 | :arrow_right: |   54 |    60% | 65% |  16 |  42% |   6.72 |  25K |   463 |  2020-08-13 |  1K |    |
+|     1 |      16 |       8GB |      4096 | :arrow_right: |   84 |    64% | 69% |  16 |  47% |   7.52 |  28K |   333 |  2020-08-13 |  1K |    |
+|     1 |      18 |       8GB |      4096 | :arrow_right: |   77 |    67% | 52% |  16 |  38% |   6.08 |  21K |   272 |  2020-08-13 |  1K |    |
+|     1 |      20 |       8GB |      4096 | :arrow_right: |   87 |    72% | 62% |  16 |  63% |  10.08 |  24K |   275 |  2020-08-13 |  2K |    |
+|     1 |      22 |       8GB |      4096 | :arrow_right: |   98 |    75% | 78% |  16 |  64% |  10.24 |  30K |   306 |  2020-08-14 |  2K |    |
+|     1 |      24 |       8GB |      4096 | :arrow_right: |   95 |    79% | 79% |  32 |  51% |  16.32 |  30K |   315 |  2020-08-14 |  2K |    |
+
+#### Scale up
+
+| Scale | Target | Threads | mem_limit | cpu_limit | :arrow_right: | Rate | Memory | CPU | ACU | %CPU | DB use | dbIO | IOrec | Date tested | Run | Fn |
+|------:|-------:|--------:|----------:|----------:|:-------------:|-----:|-------:|----:|----:|-----:|-------:|-----:|------:|------------:|----:|:--:|
+|    10 |  50.0% |       8 |       6GB |      1024 | :arrow_right: |  368 |    59% | 95% |  64 |  28% |        | 112K |   305 |  2020-08-14 |  1M |    |
+|    27 |  50.0% |       8 |       8GB |      1024 | :arrow_right: |  495 |    43% | 88% |  64 |  52% |        | 145K |   292 |  2020-08-17 |  1M |    |
+|    43 |  50.0% |       8 |       8GB |      1024 | :arrow_right: |  778 |    76% | 30% | 192 |  59% |        | 220K |   282 |  2020-08-17 |  1M |    |
+|    60 |  50.0% |       8 |       8GB |      1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% |        | 460K |   304 |  2020-08-17 |  2M |    |
+|    99 |  50.0% |       8 |       8GB |      1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% |        | 570K |   300 |  2020-08-18 |  5M |    |
+|    99 |  30.0% |       8 |       8GB |      2048 | :arrow_right: |      |        |     |     |      |        |      |       |  2020-08-21 |  6M |    |
+|    25 |  50.0% |      24 |       8GB |      4096 | :arrow_right: | 2054 |    84% | 69% | 384 |  43% |        | 590K |   287 |  2020-08-20 |  5M |    |
+|    50 |  50.0% |      24 |       8GB |      4096 | :arrow_right: | 1983 |    92% | 59% | 384 |  79% |        | 620K |   312 |  2020-08-20 |  5M | [1](#1)   |
 
 
-Notes:
+#### Footnotes
+
+##### 1
 
 1. Scale 50, Threads 24 was very unstable. Of 7M, 600K were in dead-letter queue
+
+#### Cost
 
 For cost analysis, see
 [cost-calculations.pdf](cost-calculations.pdf).

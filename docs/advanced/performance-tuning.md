@@ -104,9 +104,9 @@ These performance metrics are for the
 |    43 |  50.0% |       8 | 8GB | 1024 | :arrow_right: |  778 |    76% | 30% | 192 |  59% | 113.28 | 220K |   282 |  2020-08-17 |  1M |    |
 |    60 |  50.0% |       8 | 8GB | 1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% | 128.64 | 460K |   304 |  2020-08-17 |  2M |    |
 |    99 |  50.0% |       8 | 8GB | 1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% | 172.80 | 570K |   300 |  2020-08-18 |  5M |    |
-|    99 |  30.0% |       8 | 8GB | 2048 | :arrow_right: |      |        |     |     |      |        |      |       |  2020-08-21 |  6M |    |
+|    99 |  20.0% |       8 | 8GB | 2048 | :arrow_right: |  830 |    47% | 30% | 384 |      |        | 420K |       |  2020-08-21 |  6M | [2](#2) |
 |    25 |  50.0% |      24 | 8GB | 4096 | :arrow_right: | 2054 |    84% | 69% | 384 |  43% | 165.12 | 590K |   287 |  2020-08-20 |  5M |    |
-|    50 |  50.0% |      24 | 8GB | 4096 | :arrow_right: | 1983 |    92% | 59% | 384 |  79% | 303.36 | 620K |   312 |  2020-08-20 |  5M | [1](#1)   |
+|    50 |  50.0% |      24 | 8GB | 4096 | :arrow_right: | 1983 |    92% | 59% | 384 |  79% | 303.36 | 620K |   312 |  2020-08-20 |  5M | [1](#1) |
 
 #### Footnotes
 
@@ -114,6 +114,11 @@ These performance metrics are for the
 
 1. Scale 50, Threads 24 was very unstable.
 1. Of 7M run size, 600K were in dead-letter queue.
+
+##### 2
+
+1. ACU went up to 384 but came down to 192 before end of run.
+1. of 5M, 2M ended up in dead-letter queue.
 
 #### Cost
 

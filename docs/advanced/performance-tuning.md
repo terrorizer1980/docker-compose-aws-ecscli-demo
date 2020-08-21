@@ -94,8 +94,12 @@ These performance metrics are for the
 |    60 |       8 |       8GB |      1024 | :arrow_right: | 1511 |    44% | 93% | 192 |  67% |        | 460K |  2020-08-17 |  2M |
 |    99 |       8 |       8GB |      1024 | :arrow_right: | 1900 |    47% | 60% | 384 |  45% |        | 570K |  2020-08-18 |  5M |
 |    25 |      24 |       8GB |      4096 | :arrow_right: | 2054 |    84% | 69% | 384 |  43% |        | 590K |  2020-08-20 |  5M |
-|    50 |      24 |       8GB |      4096 | :arrow_right: |      |        |     |     |      |        |      |  2020-08-20 |  5M |
+|    50 |      24 |       8GB |      4096 | :arrow_right: | 1983 |    92% | 59% | 384 |  79% |        | 620K |  2020-08-20 |  5M |
 
+
+Notes:
+
+1. Scale 50, Threads 24 was very unstable. Of 7M, 600K were in dead-letter queue
 
 For cost analysis, see
 [cost-calculations.pdf](cost-calculations.pdf).

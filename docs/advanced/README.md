@@ -78,10 +78,10 @@ This docker formation brings up the following docker containers:
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
     1. [Delete tasks definitions](#delete-tasks-definitions)
+    1. [Bring down cluster](#bring-down-cluster)
     1. [Delete Simple Queue Service](#delete-simple-queue-service)
     1. [Delete Aurora PostgreSQL](#delete-aurora-postgresql)
     1. [Delete Elastic File System](#delete-elastic-file-system)
-    1. [Bring down cluster](#bring-down-cluster)
     1. [Clean logs](#clean-logs)
     1. [Review cleanup in AWS console](#review-cleanup-in-aws-console)
 1. [References](#references)
@@ -1408,6 +1408,20 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     done
     ```
 
+### Bring down cluster
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
+   to bring down cluster.
+   Example:
+
+    ```console
+    ecs-cli down \
+      --force \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
+    ```
+
 ### Delete Simple Queue Service
 
 1. Run
@@ -1520,20 +1534,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --file-system-id ${SENZING_AWS_EFS_FILESYSTEM_ID}
     ```
 
-### Bring down cluster
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-down.html)
-   to bring down cluster.
-   Example:
-
-    ```console
-    ecs-cli down \
-      --force \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG}
-    ```
-
 ### Clean logs
 
 1. Run
@@ -1643,7 +1643,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 ## Troubleshooting
 
-### Environment variables
+### List environment variables
 
 1. List values of environment variables.
    Will show if some variables are not set.
@@ -1678,4 +1678,23 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"\
     "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"
+    ```
+
+### Set environment variables
+
+1. xxx
+   Example:
+
+    ```console
+    export POSTGRES_HOST=$(jq --raw-output ".DBCluster.Endpoint" ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json)
+    export SENZING_AWS_EC2_SECURITY_GROUP=$(jq --raw-output ".SecurityGroups[0].GroupId" ${SENZING_AWS_PROJECT_DIR}/aws-ec2-describe-security-groups.json)
+    export SENZING_AWS_EFS_FILESYSTEM_ID=$(jq --raw-output ".FileSystemId" ${SENZING_AWS_PROJECT_DIR}/aws-efs-create-file-system.json)
+    export SENZING_AWS_SUBNET_ID_1=$(awk '/Subnet created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt | awk 'NR==1')
+    export SENZING_AWS_SUBNET_ID_2=$(awk '/Subnet created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt | awk 'NR==2')
+    export SENZING_AWS_VPC_ID=$(awk '/VPC created/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-up.txt)
+    export SENZING_SQS_DEAD_LETTER_QUEUE_ARN=$(jq --raw-output ".Attributes.QueueArn" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json)
+    export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
+    export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
+    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
+
     ```

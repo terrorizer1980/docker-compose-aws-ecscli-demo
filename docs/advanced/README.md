@@ -1020,24 +1020,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 1. :thinking: **Optional:**
    Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
-   to scale up services.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service scale 8
-    ```
-
-1. :thinking: **Optional:**
-   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)

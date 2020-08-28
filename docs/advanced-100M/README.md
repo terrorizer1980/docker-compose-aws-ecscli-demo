@@ -56,7 +56,7 @@ This docker formation brings up the following docker containers:
     1. [Open inbound ports](#open-inbound-ports)
     1. [Create backing services](#create-backing-services)
         1. [Provision Elastic File System](#provision-elastic-file-system)
-        1. [Provision Aurora PostgreSQL Serverless](#provision-aurora-postgresql-serverless)
+        1. [Provision Aurora PostgreSQL](#provision-aurora-postgresql)
         1. [Provision Simple Queue Service](#provision-simple-queue-service)
         1. [Provision Dead Letter Simple Queue Service](#provision-dead-letter-simple-queue-service)
     1. [Run tasks](#run-tasks)
@@ -452,10 +452,7 @@ For production purposes it is not fine.
    View [Elastic File Systems](https://console.aws.amazon.com/efs/home?#/filesystems)
    in AWS console.
 
-#### Provision Aurora PostgreSQL Serverless
-
-**Note:** See
-[Limitations of Aurora Serverless](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations)
+#### Provision Aurora PostgreSQL
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -475,57 +472,38 @@ For production purposes it is not fine.
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html)
-   to create Aurora cluster parameter group.
-   Example:
-
-    ```console
-    aws rds create-db-cluster-parameter-group \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
-      --db-parameter-group-family aurora-postgresql10 \
-      --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html)
-   to modify Aurora cluster parameter group.
-   Example:
-
-    ```console
-    aws rds modify-db-cluster-parameter-group \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
-      --parameters \
-          "ParameterName=synchronous_commit,ParameterValue=off,ApplyMethod=immediate" \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
-    ```
-
-1. :thinking: **Optional:**
-   View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [create-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster.html)
-   to create Aurora cluster.
+   [create-db-cluster](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-cluster.html)
+   to create Aurora database cluster.
    Example:
 
     ```console
     aws rds create-db-cluster \
       --database-name G2 \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
-      --enable-http-endpoint \
       --engine aurora-postgresql \
-      --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
-      --scaling-configuration MinCapacity=2,MaxCapacity=384,SecondsUntilAutoPause=3600,AutoPause=true \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-instance.html)
+   to create Auroroa PostgreSQL database.
+   Example:
+
+    ```console
+    aws rds create-db-instance \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-instance-class db.t3.medium \
+      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+      --engine aurora-postgresql \
+      --publicly-accessible \
+      --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
 1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
@@ -546,8 +524,7 @@ For production purposes it is not fine.
 1. :thinking: **Optional:**
    View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)
    in AWS console.
-1. :thinking: **Optional:**
-   References:
+1. :thinking: **Optional:** References:
     1. [Amazon Aurora User Guide for Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-ug.pdf) pdf
 
 #### Provision Simple Queue Service

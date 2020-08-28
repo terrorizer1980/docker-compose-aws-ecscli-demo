@@ -31,7 +31,7 @@ services:
       options:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
-        awslogs-stream-prefix: advanced
+        awslogs-stream-prefix: advanced-100M
     ports:
       - 80:80
       - 443:443

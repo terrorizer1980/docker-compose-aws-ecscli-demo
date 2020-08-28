@@ -478,7 +478,7 @@ For production purposes it is not fine.
 
     ```console
     aws rds create-db-cluster-parameter-group \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --db-cluster-parameter-group-name ${SENZING_AWS_PROJECT}-ecs-cluster \
       --db-parameter-group-family aurora-postgresql11 \
       --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
@@ -493,7 +493,7 @@ For production purposes it is not fine.
 
     ```console
     aws rds modify-db-cluster-parameter-group \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --db-cluster-parameter-group-name ${SENZING_AWS_PROJECT}-ecs-cluster \
       --parameters \
           "ParameterName=synchronous_commit,ParameterValue=off,ApplyMethod=immediate" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
@@ -510,7 +510,7 @@ For production purposes it is not fine.
     aws rds create-db-cluster \
       --database-name G2 \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --db-cluster-parameter-group-name ${SENZING_AWS_PROJECT}-ecs-cluster \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --engine aurora-postgresql \
       --master-user-password ${POSTGRES_PASSWORD} \

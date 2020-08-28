@@ -503,7 +503,7 @@ For production purposes it is not fine.
       --engine aurora-postgresql \
       --publicly-accessible \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-aurora-postgresql \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-instance.json
     ```
 
 1. Save AWS Aurora PostgreSQL hostname in `POSTGRES_HOST` environment variable.
@@ -675,6 +675,107 @@ This "init container" create directories on Elastic File System.
     ```
 
 1. Wait until task has completed and is in the `STOPPED` state.
+
+
+#### Run install pre-release Senzing task
+
+This is a temporary step to install a pre-release of Senzing.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision `sshd` service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-sshd.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-sshd
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP addresses and ports of running services.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
+    ```
+
+1. Extract the host IP address.
+   Example:
+
+    ```console
+    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
+    ```
+
+1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
+   using the "sshd service".
+   Example:
+
+    ```console
+    ssh root@${SENZING_SSHD_HOST}
+    ```
+
+    1. The default password is `senzingsshdpassword`.
+       However, if the docker image was built locally, it may have been changed during `docker build`.
+       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+
+1. In docker container, install pre-release of Senzing.
+   Example:
+
+    ```console
+    curl \
+      --output /senzingrepo_1.0.0-1_amd64.deb \
+      https://senzing-staging-yum.s3.amazonaws.com/senzingstagingrepo-1.0.0-1.x86_64.rpm
+    apt -y install \
+      /senzingrepo_1.0.0-1_amd64.deb
+    apt update
+    apt -y install senzingapi
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
+   to bring down the sshd service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-sshd.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
+      service down
+    ```
+
+1. Skip to
+   [Run create Senzing database schema task](#run-create-senzing-database-schema-task).
 
 #### Run install Senzing task
 

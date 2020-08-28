@@ -498,7 +498,7 @@ For production purposes it is not fine.
     ```console
     aws rds create-db-instance \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --db-instance-class db.t3.medium \
+      --db-instance-class db.r4.xlarge \
       --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
       --engine aurora-postgresql \
       --publicly-accessible \

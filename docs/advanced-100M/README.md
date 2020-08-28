@@ -1548,6 +1548,19 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-instance](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-instance.html)
+   to delete Aurora PostgreSQL database.
+   Example:
+
+    ```console
+    aws rds delete-db-instance \
+      --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
+    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [delete-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster.html)
    to delete Aurora cluster.
    Example:
@@ -1562,19 +1575,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [delete-db-subnet-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-subnet-group.html)
-   to delete database subnet group.
-   Example:
-
-    ```console
-    aws rds delete-db-subnet-group \
-      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-subnet-group.json
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [delete-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-cluster-parameter-group.html)
    to delete database cluster parameter group.
    Example:
@@ -1583,6 +1583,19 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     aws rds delete-db-cluster-parameter-group \
       --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster-parameter-group.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [delete-db-subnet-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/delete-db-subnet-group.html)
+   to delete database subnet group.
+   Example:
+
+    ```console
+    aws rds delete-db-subnet-group \
+      --db-subnet-group-name ${SENZING_AWS_PROJECT}-db-subnet \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-subnet-group.json
     ```
 
 ### Delete Elastic File System

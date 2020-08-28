@@ -1100,6 +1100,13 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
+1. :pencil2: Choose scale-up value.
+   Example:
+
+    ```console
+    export SENZING_STREAM_LOADER_SCALE=8
+    ```
+
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -1114,9 +1121,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service scale 8
+      service scale ${SENZING_STREAM_LOADER_SCALE}
     ```
-
 
 #### Create Senzing API server service
 

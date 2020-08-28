@@ -521,8 +521,10 @@ For production purposes it is not fine.
 
 1. :pencil2: Choose AWS RDS instance class.
    References:
+
     1. [DB Instance Class Types](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Types)
     1. [Amazon RDS Instance Types - Memory Optimized](https://aws.amazon.com/rds/instance-types/#Memory_Optimized)
+
    Example:
 
     ```console

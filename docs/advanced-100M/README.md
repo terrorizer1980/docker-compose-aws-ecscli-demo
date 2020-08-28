@@ -519,6 +519,16 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
 
+1. :pencil2: Choose AWS RDS instance class.
+   References:
+    1. [DB Instance Class Types](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Types)
+    1. [Amazon RDS Instance Types - Memory Optimized](https://aws.amazon.com/rds/instance-types/#Memory_Optimized)
+   Example:
+
+    ```console
+    export SENZING_AWS_DB_INSTANCE_CLASS=db.r5.16xlarge
+    ```
+
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
@@ -529,7 +539,7 @@ For production purposes it is not fine.
     ```console
     aws rds create-db-instance \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --db-instance-class db.r4.xlarge \
+      --db-instance-class ${SENZING_AWS_DB_INSTANCE_CLASS} \
       --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
       --engine aurora-postgresql \
       --publicly-accessible \
@@ -1555,7 +1565,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```console
     aws rds delete-db-instance \
       --db-instance-identifier ${SENZING_AWS_PROJECT}-aurora-postgresql \
-    > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-instance.json
     ```
 
 1. Run

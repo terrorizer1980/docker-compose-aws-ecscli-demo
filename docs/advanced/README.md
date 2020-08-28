@@ -649,7 +649,7 @@ If not desired, proceed to
     ```console
     aws sqs set-queue-attributes \
       --queue-url ${SENZING_SQS_QUEUE_URL} \
-      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"5\"}"}' \
+      --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\":\"'${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}'\",\"maxReceiveCount\":\"100\"}"}' \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-set-queue-attributes.json
     ```
 
@@ -1020,24 +1020,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 1. :thinking: **Optional:**
    Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
-   to scale up services.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service scale 8
-    ```
-
-1. :thinking: **Optional:**
-   Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
@@ -1086,37 +1068,26 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
       --services ${SENZING_AWS_PROJECT}-project-name-apiserver
     ```
 
-1. :thinking: **Optional:**
-   Run
+1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for Senzing API Server.
+   to find IP addresses and ports of running services.
    Example:
 
     ```console
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
-      | grep apiserver
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
     ```
 
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address definition.
+1. Extract the host IP address.
    This information will be used in subsequent steps.
    Save host IP in `SENZING_IP_ADDRESS_APISERVER` environment variable.
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_APISERVER=$( \
-      ecs-cli ps \
-        --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-        --desired-status RUNNING \
-      | grep  apiserver \
-      | awk '{print $3}' \
-      | awk -F \: {'print $1'} \
-    )
+    export SENZING_IP_ADDRESS_APISERVER=$(awk '/apiserver/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
     ```
 
 1. :thinking: **Optional:**

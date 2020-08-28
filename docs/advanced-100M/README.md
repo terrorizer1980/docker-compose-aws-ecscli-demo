@@ -750,7 +750,7 @@ This is a temporary step to install a pre-release of Senzing.
     ```console
     curl \
       --output /senzingrepo_1.0.0-1_amd64.deb \
-      https://senzing-staging-yum.s3.amazonaws.com/senzingstagingrepo-1.0.0-1.x86_64.rpm
+      https://senzing-staging-apt.s3.amazonaws.com/senzingstagingrepo_1.0.0-1_amd64.deb
     apt -y install \
       /senzingrepo_1.0.0-1_amd64.deb
     apt update

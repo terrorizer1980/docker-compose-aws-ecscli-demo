@@ -472,6 +472,36 @@ For production purposes it is not fine.
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [create-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/create-db-cluster-parameter-group.html)
+   to create Aurora cluster parameter group.
+   Example:
+
+    ```console
+    aws rds create-db-cluster-parameter-group \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --db-parameter-group-family aurora-postgresql11 \
+      --description "Parameters for Senzing on ECS project ${SENZING_AWS_PROJECT}" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster-parameter-group.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [modify-db-cluster-parameter-group](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster-parameter-group.html)
+   to modify Aurora cluster parameter group.
+   Example:
+
+    ```console
+    aws rds modify-db-cluster-parameter-group \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
+      --parameters \
+          "ParameterName=synchronous_commit,ParameterValue=off,ApplyMethod=immediate" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
    [create-db-cluster](https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-cluster.html)
    to create Aurora database cluster.
    Example:
@@ -480,6 +510,7 @@ For production purposes it is not fine.
     aws rds create-db-cluster \
       --database-name G2 \
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --engine aurora-postgresql \
       --master-user-password ${POSTGRES_PASSWORD} \
@@ -676,7 +707,6 @@ This "init container" create directories on Elastic File System.
 
 1. Wait until task has completed and is in the `STOPPED` state.
 
-
 #### Run install pre-release Senzing task
 
 This is a temporary step to install a pre-release of Senzing.
@@ -755,6 +785,8 @@ This is a temporary step to install a pre-release of Senzing.
       /senzingrepo_1.0.0-1_amd64.deb
     apt update
     apt -y install senzingapi
+
+    mv /opt/senzing/data/1.0.0/* /opt/senzing/data/
     ```
 
 1. Run

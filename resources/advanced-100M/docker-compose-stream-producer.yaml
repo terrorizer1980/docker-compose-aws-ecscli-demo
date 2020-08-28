@@ -1,6 +1,6 @@
 version: '3'
 services:
-  producer:
+  producer1:
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
@@ -11,6 +11,69 @@ services:
       SENZING_READ_QUEUE_MAXSIZE: 200
       SENZING_RECORD_MAX: 100000
       SENZING_RECORD_MIN: 1
+      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
+      SENZING_THREADS_PER_PRINT: 30
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.2.2}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced-100M
+  producer2:
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
+      SENZING_MONITORING_PERIOD_IN_SECONDS: 60
+      SENZING_READ_QUEUE_MAXSIZE: 200
+      SENZING_RECORD_MAX: 200000
+      SENZING_RECORD_MIN: 100001
+      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
+      SENZING_THREADS_PER_PRINT: 30
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.2.2}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced-100M
+  producer3:
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
+      SENZING_MONITORING_PERIOD_IN_SECONDS: 60
+      SENZING_READ_QUEUE_MAXSIZE: 200
+      SENZING_RECORD_MAX: 300000
+      SENZING_RECORD_MIN: 200001
+      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
+      SENZING_THREADS_PER_PRINT: 30
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.2.2}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced-100M
+  producer3:
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
+      SENZING_MONITORING_PERIOD_IN_SECONDS: 60
+      SENZING_READ_QUEUE_MAXSIZE: 200
+      SENZING_RECORD_MAX: 400000
+      SENZING_RECORD_MIN: 300001
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
       SENZING_THREADS_PER_PRINT: 30

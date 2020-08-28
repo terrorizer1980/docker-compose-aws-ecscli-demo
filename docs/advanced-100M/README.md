@@ -1023,16 +1023,6 @@ If not desired, proceed to
       | grep xterm
     ```
 
-1. :warning::warning:
-   Add `g2.lic`.
-   Remove after debugging:
-
-    ```console
-    curl \
-      --output /etc/opt/senzing/g2.lic \
-      http://example.com/g2.lic
-    ```
-
 #### Create phpPgAdmin service
 
 :thinking: **Optional:**
@@ -1109,6 +1099,24 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
+   to scale up services.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      service scale 8
+    ```
+
 
 #### Create Senzing API server service
 

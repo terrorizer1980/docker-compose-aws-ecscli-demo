@@ -1025,11 +1025,14 @@ attached AWS Elastic File System (EFS).
 
 1. Copy files to the attached AWS Elastic File System (EFS)
    using the "sshd service".
+
    Example:
 
     ```console
     scp ${SENZING_LICENSE_PATH}  root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
     ```
+
+   Example:
 
     ```console
     scp ${SENZING_GOVERNOR_PATH} root@${SENZING_SSHD_HOST}:/opt/senzing/g2/python/senzing_governor.py

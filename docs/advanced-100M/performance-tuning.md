@@ -32,7 +32,7 @@
 | Scale | Threads | mem |  cpu | dbType         | :arrow_right: | Rate | Memory | CPU | dbCPU | dbIO | IOrec | Date tested |  Run | Fn |
 |------:|--------:|----:|-----:|----------------|:-------------:|-----:|-------:|----:|------:|-----:|------:|------------:|-----:|:--:|
 |    12 |       8 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: | 1137 |    80% | 76% |   39% | 406K |   357 |  2020-08-28 | 300K |    |
-|    24 |       8 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: |      |      % |   % |     % |    K |       |  2020-08-28 |   1M |    |
+|    24 |       8 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: | 1563 |    79% | 54% |   69% | 581K |   371 |  2020-08-28 |   1M |    |
 
 #### Footnotes
 

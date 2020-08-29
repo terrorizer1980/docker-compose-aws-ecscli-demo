@@ -911,6 +911,22 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
       up
     ```
 
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-producer-2.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
+      up
+    ```
+
 1. :thinking: **Optional:**
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console to verify "Messages available".

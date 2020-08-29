@@ -1011,7 +1011,7 @@ attached AWS Elastic File System (EFS).
        However, if the docker image was built locally, it may have been changed during `docker build`.
        See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
 
-1. In the docker container, install the Governor
+1. In the docker container, install the Governor.
    Example:
 
     ```console

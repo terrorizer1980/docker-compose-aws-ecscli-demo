@@ -725,6 +725,8 @@ This "init container" create directories on Elastic File System.
 #### Run install pre-release Senzing task
 
 This is a temporary step to install a pre-release of Senzing.
+If using the current public release is required, skip to
+[Run install Senzing task](#run-install-senzing-task).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1005,7 +1007,7 @@ attached AWS Elastic File System (EFS).
     export SENZING_GOVERNOR_PATH=/tmp/senzing_governor.py
     ```
 
-1. Download `senzing_governor.py`.
+1. Download `senzing_governor.py` to local machine.
    Example:
 
     ```console
@@ -1811,28 +1813,36 @@ If not desired, proceed to
     "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}\n"\
     "POSTGRES_USERNAME=${POSTGRES_USERNAME}\n"\
     "SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA}\n"\
+    "SENZING_AWS_DB_INSTANCE_CLASS=${SENZING_AWS_DB_INSTANCE_CLASS}\n"\
     "SENZING_AWS_EC2_SECURITY_GROUP=${SENZING_AWS_EC2_SECURITY_GROUP}\n"\
     "SENZING_AWS_ECS_CLUSTER=${SENZING_AWS_ECS_CLUSTER}\n"\
     "SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_ECS_CLUSTER_CONFIG}\n"\
     "SENZING_AWS_EFS_FILESYSTEM_ID=${SENZING_AWS_EFS_FILESYSTEM_ID}\n"\
     "SENZING_AWS_KEYPAIR=${SENZING_AWS_KEYPAIR}\n"\
+    "SENZING_AWS_LOGS_GROUP=${SENZING_AWS_LOGS_GROUP}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
+    "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
+    "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_PROJECT=${SENZING_AWS_PROJECT}\n"\
     "SENZING_AWS_PROJECT_DIR=${SENZING_AWS_PROJECT_DIR}\n"\
     "SENZING_AWS_SUBNET_ID_1=${SENZING_AWS_SUBNET_ID_1}\n"\
     "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}\n"\
     "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}\n"\
+    "SENZING_GOVERNOR_PATH=${SENZING_GOVERNOR_PATH}\n"\
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
+    "SENZING_LICENSE_PATH=${SENZING_LICENSE_PATH}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_ARN=${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"\
-    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"
+    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"\
+    "SENZING_STREAM_LOADER_SCALE=${SENZING_STREAM_LOADER_SCALE}\n"
     ```
 
 ### Set environment variables
 
-1. xxx
+1. To re-establish environment variables from AWS output files,
+   run the following.
    Example:
 
     ```console
@@ -1846,5 +1856,4 @@ If not desired, proceed to
     export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
     export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
-
     ```

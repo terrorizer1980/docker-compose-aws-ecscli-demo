@@ -1170,7 +1170,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=12
+    export SENZING_STREAM_LOADER_SCALE=24
     ```
 
 1. Run

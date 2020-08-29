@@ -916,7 +916,7 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-producer.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-producer-1.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-1 \
       up
     ```
 
@@ -1527,8 +1527,10 @@ examples of the Senzing Java and Python SDK use.
       "jupyter" \
       "phppgadmin" \
       "postgres" \
+      "redoer" \
       "stream-loader" \
-      "stream-producer" \
+      "stream-producer-1" \
+      "stream-producer-2" \
       "webapp" \
       "xterm" \
       "yum" \

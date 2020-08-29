@@ -9,8 +9,8 @@ services:
       SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
       SENZING_MONITORING_PERIOD_IN_SECONDS: 60
       SENZING_READ_QUEUE_MAXSIZE: 200
-      SENZING_RECORD_MAX: 900000
-      SENZING_RECORD_MIN: 800001
+      SENZING_RECORD_MAX: 2250000
+      SENZING_RECORD_MIN: 2000001
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
       SENZING_THREADS_PER_PRINT: 30
@@ -30,8 +30,8 @@ services:
       SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
       SENZING_MONITORING_PERIOD_IN_SECONDS: 60
       SENZING_READ_QUEUE_MAXSIZE: 200
-      SENZING_RECORD_MAX: 1000000
-      SENZING_RECORD_MIN: 900001
+      SENZING_RECORD_MAX: 2500000
+      SENZING_RECORD_MIN: 2250001
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
       SENZING_THREADS_PER_PRINT: 30
@@ -51,8 +51,8 @@ services:
       SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
       SENZING_MONITORING_PERIOD_IN_SECONDS: 60
       SENZING_READ_QUEUE_MAXSIZE: 200
-      SENZING_RECORD_MAX: 1100000
-      SENZING_RECORD_MIN: 1000001
+      SENZING_RECORD_MAX: 2750000
+      SENZING_RECORD_MIN: 2500001
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
       SENZING_THREADS_PER_PRINT: 30
@@ -63,7 +63,7 @@ services:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
         awslogs-stream-prefix: advanced-100M
-  producer3:
+  producer4:
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
@@ -72,8 +72,8 @@ services:
       SENZING_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz"
       SENZING_MONITORING_PERIOD_IN_SECONDS: 60
       SENZING_READ_QUEUE_MAXSIZE: 200
-      SENZING_RECORD_MAX: 1200000
-      SENZING_RECORD_MIN: 1100001
+      SENZING_RECORD_MAX: 3000000
+      SENZING_RECORD_MIN: 2750001
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: gzipped-json-to-sqs-batch
       SENZING_THREADS_PER_PRINT: 30

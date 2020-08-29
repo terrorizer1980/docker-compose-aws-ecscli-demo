@@ -531,7 +531,7 @@ For production purposes it is not fine.
    Example:
 
     ```console
-    export SENZING_AWS_DB_INSTANCE_CLASS=db.r5.24xlarge
+    export SENZING_AWS_DB_INSTANCE_CLASS=db.r5.16xlarge
     ```
 
 1. Run
@@ -1116,65 +1116,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service scale ${SENZING_STREAM_LOADER_SCALE}
-    ```
-
-#### Create Stream loader service 2
-
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision stream-loader service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-loader-2.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-   to view service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader-2
-    ```
-
-1. :pencil2: Choose scale-up value.
-   Example:
-
-    ```console
-    export SENZING_STREAM_LOADER_SCALE_2=24
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
-   to scale up services.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-loader-2.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
-      service scale ${SENZING_STREAM_LOADER_SCALE_2}
     ```
 
 #### Create Redoer service

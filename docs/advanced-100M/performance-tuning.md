@@ -36,11 +36,17 @@
 |    12 |      22 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: | 1137 |    80% | 76% |   39% | 406K |   357 |  2020-08-28 | 300K |    |
 |    24 |      22 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: | 1563 |    79% | 54% |   69% | 581K |   371 |  2020-08-28 |   1M |    |
 |    24 |      22 | 8GB | 4096 | db.r5.16xlarge | :arrow_right: | 1563 |    85% | 53% |   71% | 586K |   374 |  2020-08-28 |   2M |    |
-|  2x24 |      22 | 8GB | 4096 | db.r5.24xlarge | :arrow_right: |      |      % |   % |     % |    K |       |  2020-08-29 |   5M |    |
+|  2x24 |      22 | 8GB | 4096 | db.r5.24xlarge | :arrow_right: |      |    82% | 32% |   33% | 350K |       |  2020-08-29 |   5M |  1 |
 
 #### Footnotes
 
 ##### 1
+
+1. Initially the database Write IOPS went to 570K, but then went down to 350K. Database CPU 50% to 33%.
+2. Second stream-loader service had 13% CPU.
+
+
+#### Notes
 
 1. Connections per instance: (N threads) + (1 Governor) + (1 ????)
     1. A Scale of "24" using 22 threads is 576 Database connections:  24 * (22 + 1 + 1)

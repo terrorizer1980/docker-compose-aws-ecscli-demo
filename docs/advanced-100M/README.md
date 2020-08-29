@@ -792,15 +792,19 @@ If using the current public release is required, skip to
        See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
 
 1. In docker container, install pre-release of Senzing.
+   *Note:* When installing senzing, there will be 2 prompts to accept End User License Agreement (EULA).
    Example:
 
     ```console
     curl \
       --output /senzingrepo_1.0.0-1_amd64.deb \
       https://senzing-staging-apt.s3.amazonaws.com/senzingstagingrepo_1.0.0-1_amd64.deb
+
     apt -y install \
       /senzingrepo_1.0.0-1_amd64.deb
+
     apt update
+
     apt -y install senzingapi
 
     mv /opt/senzing/data/1.0.0/* /opt/senzing/data/
@@ -828,6 +832,7 @@ If using the current public release is required, skip to
 
 #### Run install Senzing task
 
+:thinking" **Optional:**
 Install Senzing into `/opt/senzing` on the Elastic File System.
 
 1. Run

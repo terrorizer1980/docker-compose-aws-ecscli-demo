@@ -906,7 +906,7 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-producer-1.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
       up
     ```

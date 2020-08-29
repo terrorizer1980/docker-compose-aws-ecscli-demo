@@ -1112,6 +1112,65 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       service scale ${SENZING_STREAM_LOADER_SCALE}
     ```
 
+#### Create Stream loader service 2
+
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision stream-loader service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-stream-loader-2.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader-2
+    ```
+
+1. :pencil2: Choose scale-up value.
+   Example:
+
+    ```console
+    export SENZING_STREAM_LOADER_SCALE_2=24
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
+   to scale up services.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader-2.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
+      service scale ${SENZING_STREAM_LOADER_SCALE_2}
+    ```
+
 #### Create Redoer service
 
 The redoer service reads Senzing Redo records from the Senzing Model and re-does them.
@@ -1273,7 +1332,6 @@ The Senzing Web App provides a user interface to Senzing functionality.
       | grep webapp
     ```
 
-
 #### Create Senzing X-Term service
 
 :thinking: **Optional:**
@@ -1333,7 +1391,7 @@ If not desired, proceed to
 is a web-based database adminitration tool.
 It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
 If not desired, proceed to
-[Create Stream loader service](#create-stream-loader-service).
+[Create Jupyter notebook service](#create-jupyter-notebook-service).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1373,8 +1431,6 @@ If not desired, proceed to
 :thinking: **Optional:**
 The Jupyter notebook service hosts Jupyter notebooks with
 examples of the Senzing Java and Python SDK use.
-If not desired, proceed to
-[Autoscale services](#autoscale-services).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

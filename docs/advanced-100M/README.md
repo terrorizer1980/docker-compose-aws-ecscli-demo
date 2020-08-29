@@ -1029,6 +1029,9 @@ attached AWS Elastic File System (EFS).
 
     ```console
     scp ${SENZING_LICENSE_PATH}  root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
+    ```
+
+    ```console
     scp ${SENZING_GOVERNOR_PATH} root@${SENZING_SSHD_HOST}:/opt/senzing/g2/python/senzing_governor.py
     ```
 

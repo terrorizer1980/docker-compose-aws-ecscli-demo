@@ -1026,6 +1026,10 @@ attached AWS Elastic File System (EFS).
 1. Copy files to the attached AWS Elastic File System (EFS)
    using the "sshd service".
 
+    1. The default password is `senzingsshdpassword`.
+       However, if the docker image was built locally, it may have been changed during `docker build`.
+       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+
    Example:
 
     ```console
@@ -1037,10 +1041,6 @@ attached AWS Elastic File System (EFS).
     ```console
     scp ${SENZING_GOVERNOR_PATH} root@${SENZING_SSHD_HOST}:/opt/senzing/g2/python/senzing_governor.py
     ```
-
-    1. The default password is `senzingsshdpassword`.
-       However, if the docker image was built locally, it may have been changed during `docker build`.
-       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

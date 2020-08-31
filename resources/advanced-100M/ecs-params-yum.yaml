@@ -1,0 +1,23 @@
+version: 1
+task_definition:
+  task_execution_role: ecsTaskExecutionRole
+  ecs_network_mode: awsvpc
+  task_size:
+    mem_limit: 4GB
+    cpu_limit: 512
+  efs_volumes:
+    - name: senzing-data-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /data
+    - name: senzing-g2-dir
+      filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
+      root_directory: /g2
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        - ${SENZING_AWS_SUBNET_ID_1}
+        - ${SENZING_AWS_SUBNET_ID_2}
+      security_groups:
+        - ${SENZING_AWS_EC2_SECURITY_GROUP}
+      assign_public_ip: ENABLED

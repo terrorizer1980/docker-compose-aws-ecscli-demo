@@ -66,11 +66,13 @@ This docker formation brings up the following docker containers:
         1. [Run init-container task](#run-init-container-task)
         1. [Run Stream producer task](#run-stream-producer-task)
     1. [Create services](#create-services)
-        1. [Create phpPgAdmin service](#create-phppgadmin-service)
+        1. [Create sshd service](#create-sshd-service)
         1. [Create Stream loader service](#create-stream-loader-service)
+        1. [Create Redoer service](#create-redoer-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+        1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
     1. [Autoscale services](#autoscale-services)
         1. [Autoscale Stream loader service](#autoscale-stream-loader-service)
@@ -892,7 +894,23 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-1 \
+      up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-2.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
       up
     ```
 
@@ -965,6 +983,22 @@ attached AWS Elastic File System (EFS).
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
     ```
 
+1. :pencil2: Specify the location where to download `senzing_governer.py` onto local machine.
+   Example:
+
+    ```console
+    export SENZING_GOVERNOR_PATH=/tmp/senzing_governor.py
+    ```
+
+1. Download `senzing_governor.py` to local machine.
+   Example:
+
+    ```console
+    curl -X GET \
+      --output ${SENZING_GOVERNOR_PATH} \
+      https://raw.githubusercontent.com/Senzing/governor-postgresql-transaction-id/master/senzing_governor.py
+    ```
+
 1. :pencil2: Specify the location of the Senzing license on the local machine.
    Example:
 
@@ -972,17 +1006,24 @@ attached AWS Elastic File System (EFS).
     export SENZING_LICENSE_PATH=/path/to/my/local/g2.lic
     ```
 
-1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
+1. Copy files to the attached AWS Elastic File System (EFS)
    using the "sshd service".
+
+    1. The default password is `senzingsshdpassword`.
+       However, if the docker image was built locally, it may have been changed during `docker build`.
+       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+
    Example:
 
     ```console
     scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
     ```
 
-    1. The default password is `senzingsshdpassword`.
-       However, if the docker image was built locally, it may have been changed during `docker build`.
-       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+   Example:
+
+    ```console
+    scp ${SENZING_GOVERNOR_PATH} root@${SENZING_SSHD_HOST}:/opt/senzing/g2/python/senzing_governor.py
+    ```
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1000,110 +1041,6 @@ attached AWS Elastic File System (EFS).
       --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
       service down
     ```
-
-#### Create Senzing X-Term service
-
-:thinking: **Optional:**
-The Senzing X-Term service provides console access.
-It can be used to run Senzing command-line tools.
-If not desired, proceed to
-[Create phpPgAdmin service](#create-phppgadmin-service).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Senzing X-Term service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-   to view service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-xterm
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for Senzing X-Term.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      | grep xterm
-    ```
-
-1. :warning::warning:
-   Add `g2.lic`.
-   Remove after debugging:
-
-    ```console
-    curl \
-      --output /etc/opt/senzing/g2.lic \
-      http://example.com/g2.lic
-    ```
-
-#### Create phpPgAdmin service
-
-:thinking: **Optional:**
-[phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
-is a web-based database adminitration tool.
-It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
-If not desired, proceed to
-[Create Stream loader service](#create-stream-loader-service).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision phpPgAdmin database client service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service up
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for phpPgAdmin.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      | grep phppgadmin
-    ```
-
-   **Username:** ${POSTGRES_USERNAME}
-   **Password:** ${POSTGRES_PASSWORD}
 
 #### Create Stream loader service
 
@@ -1138,6 +1075,41 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
+    ```
+
+#### Create Redoer service
+
+The redoer service reads Senzing Redo records from the Senzing Model and re-does them.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision redoer service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-redoer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-redoer.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-redoer \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-redoer
     ```
 
 #### Create Senzing API server service
@@ -1265,6 +1237,100 @@ The Senzing Web App provides a user interface to Senzing functionality.
       --desired-status RUNNING \
       | grep webapp
     ```
+
+#### Create Senzing X-Term service
+
+:thinking: **Optional:**
+The Senzing X-Term service provides console access.
+It can be used to run Senzing command-line tools.
+If not desired, proceed to
+[Create phpPgAdmin service](#create-phppgadmin-service).
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing X-Term service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-xterm
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for Senzing X-Term.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      | grep xterm
+    ```
+
+#### Create phpPgAdmin service
+
+:thinking: **Optional:**
+[phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
+is a web-based database adminitration tool.
+It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
+If not desired, proceed to
+[Create Jupyter notebook service](#create-jupyter-notebook-service).
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision phpPgAdmin database client service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
+      service up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for phpPgAdmin.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      | grep phppgadmin
+    ```
+
+   **Username:** ${POSTGRES_USERNAME}
+   **Password:** ${POSTGRES_PASSWORD}
 
 #### Create Jupyter notebook service
 
@@ -1459,8 +1525,10 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       "jupyter" \
       "phppgadmin" \
       "postgres" \
+      "redoer" \
       "stream-loader" \
-      "stream-producer" \
+      "stream-producer-1" \
+      "stream-producer-2" \
       "webapp" \
       "xterm" \
       "yum" \
@@ -1745,6 +1813,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_ECS_CLUSTER_CONFIG}\n"\
     "SENZING_AWS_EFS_FILESYSTEM_ID=${SENZING_AWS_EFS_FILESYSTEM_ID}\n"\
     "SENZING_AWS_KEYPAIR=${SENZING_AWS_KEYPAIR}\n"\
+    "SENZING_AWS_LOGS_GROUP=${SENZING_AWS_LOGS_GROUP}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_PROJECT=${SENZING_AWS_PROJECT}\n"\
@@ -1752,16 +1821,20 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_SUBNET_ID_1=${SENZING_AWS_SUBNET_ID_1}\n"\
     "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}\n"\
     "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}\n"\
+    "SENZING_GOVERNOR_PATH=${SENZING_GOVERNOR_PATH}\n"\
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
+    "SENZING_LICENSE_PATH=${SENZING_LICENSE_PATH}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_ARN=${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"\
-    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"
+    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"\
+    "SENZING_STREAM_LOADER_SCALE=${SENZING_STREAM_LOADER_SCALE}\n"
     ```
 
 ### Set environment variables
 
-1. xxx
+1. To re-establish environment variables from AWS output files,
+   run the following.
    Example:
 
     ```console
@@ -1775,5 +1848,4 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
     export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
-
     ```

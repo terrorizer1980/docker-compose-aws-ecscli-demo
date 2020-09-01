@@ -33,6 +33,7 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
 1. [100M insert - Aurora PostgreSQL Server](docs/advanced-100M)
    Insert 100M records on a server-based Aurora PostgreSQL database.
    (i.e. this is **not** serverless PostgreSQL)
+
    :warning:
    This is an expensive demonstration.
    It will take 24-26 hours to complete.

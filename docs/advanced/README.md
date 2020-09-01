@@ -881,19 +881,24 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 #### Run Stream producer task
 
 Read JSON lines from a URL-addressable file and send to AWS SQS.
+*Note:*
+Two ECS services each containing one task are deployed because they fill the SQS queue faster
+than one ECS service with two tasks. Don't know why. :shrug:
+Each service has different `SENZING_RECORD_MIN`, `SENZING_RECORD_MAX` values in
+the `docker-compose-stream-producer-N.yaml` file.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to AWS SQS.
+   to send messages to AWS SQS from first copy of ECS service.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-1.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-1 \
       up
     ```
@@ -902,14 +907,14 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to AWS SQS.
+   to send messages to AWS SQS from second copy of ECS service.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-2.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-1.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
       up
     ```
@@ -1058,7 +1063,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader-1.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-1 \
       service up
     ```
@@ -1075,7 +1080,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader-2.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
       service up
     ```
@@ -1562,7 +1567,14 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-1 \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
       service down
 
     ecs-cli compose \

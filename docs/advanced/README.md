@@ -758,8 +758,7 @@ If using the current public release is required, skip to
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
     ```
 
-1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
-   using the "sshd service".
+1. `ssh` into the container.
    Example:
 
     ```console

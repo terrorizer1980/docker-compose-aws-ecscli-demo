@@ -1078,13 +1078,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader-1
-    ```
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader-2
+      --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
 #### Create Redoer service

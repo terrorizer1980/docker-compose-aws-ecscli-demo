@@ -1055,7 +1055,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision stream-loader service 1.
+   to provision stream-loader service.
    Example:
 
     ```console
@@ -1063,24 +1063,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-1 \
-      service up
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision stream-loader service 2.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
     ```
 
@@ -1416,8 +1399,6 @@ If not desired, proceed to
 
 #### Autoscale Stream loader service
 
-##### Autoscale Stream loader service 1
-
 The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
 
 1. Run
@@ -1429,9 +1410,9 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 45 \
+      --max-capacity 90 \
       --min-capacity 1 \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader-1" \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
@@ -1446,47 +1427,9 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling put-scaling-policy \
-      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader-1" \
+      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
       --policy-type TargetTrackingScaling \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader-1" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=0,ScaleOutCooldown=0,TargetValue=30.0" \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
-    ```
-
-##### Autoscale Stream loader service 2
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
-   to identify the stream loader as a scalable resource.
-   Example:
-
-    ```console
-    aws application-autoscaling register-scalable-target \
-      --max-capacity 45 \
-      --min-capacity 1 \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader-2" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
-   to create a scaling policy.
-   Example:
-
-    ```console
-    aws application-autoscaling put-scaling-policy \
-      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader-2" \
-      --policy-type TargetTrackingScaling \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader-2" \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
@@ -1566,14 +1509,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-1 \
-      service down
-
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader-2 \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service down
 
     ecs-cli compose \

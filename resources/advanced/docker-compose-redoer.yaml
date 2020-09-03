@@ -17,7 +17,7 @@ services:
       options:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
-        awslogs-stream-prefix: advanced-100M
+        awslogs-stream-prefix: advanced
     volumes:
       - senzing-data-version-dir:/opt/senzing/data
       - senzing-etc-dir:/etc/opt/senzing

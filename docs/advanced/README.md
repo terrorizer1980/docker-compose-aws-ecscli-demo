@@ -705,9 +705,8 @@ This "init container" create directories on Elastic File System.
 
 Install Senzing into `/opt/senzing` on the Elastic File System.
 
-:thinking: **Optional:** If a pre-release of Senzing is desired, follow the steps at
+1. :thinking: **Optional:** If a pre-release of Senzing is desired, follow the steps at
 [Run install pre-release Senzing task](#run-install-pre-release-senzing-task).
-
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)

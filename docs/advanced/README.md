@@ -808,7 +808,7 @@ the `docker-compose-stream-producer-N.yaml` file.
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-1.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-2.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
       up
     ```

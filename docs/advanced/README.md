@@ -564,7 +564,7 @@ For production purposes it is not fine.
 
     ```console
     aws sqs create-queue \
-      --attributes MessageRetentionPeriod=1209600 \
+      --attributes MessageRetentionPeriod=1209600,VisibilityTimeout=300 \
       --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
@@ -1322,7 +1322,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=600,ScaleOutCooldown=600,TargetValue=30.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=600,ScaleOutCooldown=300,TargetValue=30.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

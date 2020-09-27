@@ -1,8 +1,6 @@
 version: '3'
 services:
   loader:
-    cap_add:
-      - SYS_PTRACE
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}

@@ -2,20 +2,28 @@
 
 ## Overview
 
-This illustrates a reference implementation of Senzing using
+This demonstration illustrates a reference implementation of Senzing using
 AWS Simple Queue Service (SQS) as the queue and
 AWS Aurora/PostgreSQL Serverless as the underlying database
 on the Amazon Elastic Container Service (ECS) in Fargate mode.
 
-The instructions show how to set up a system that:
+:warning: **Caution:** this demonstration will cost about $100 USD in AWS
+[ECS](https://aws.amazon.com/ecs/),
+[RDS](https://aws.amazon.com/rds/), and
+[SQS](https://aws.amazon.com/sqs/) costs.
 
-1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is AWS SQS.
-1. Reads messages from the queue and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in an AWS Aurora/PostgreSQL Serverless database.
+This demonstration:
+
+1. Reads 10 million JSON lines from a file on the internet.
+1. Sends each JSON line to an SQS message queue.
+1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+Once the prerequisite steps are met,
+
+1. The deployment instructions take about 40 minutes to perform.
+1. Loading 10 million records into the Senzing Model takes about 2 hours.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
 Arrows represent data flow.
@@ -37,6 +45,7 @@ This docker formation brings up the following docker containers:
 ## Contents
 
 1. [Prerequisites](#prerequisites)
+    1. [Obtain Senzing license](#obtain-senzing-license)
     1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
     1. [Clone repository](#clone-repository)
@@ -92,15 +101,23 @@ This docker formation brings up the following docker containers:
 
 ## Prerequisites
 
+### Obtain Senzing license
+
+1. When inserting more than 100K records into Senzing,
+   a custom license will need to be placed on the system.
+   A Senzing license for 10 million or more records is needed for this demonstration.
+   Visit
+   [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
+
 ### Install AWS CLI
 
-To install `aws`, see
-[How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
+1. To install `aws`, see
+   [How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
 
 ### Install ECS CLI
 
-To install `ecs-cli`, see
-[How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
+1. To install `ecs-cli`, see
+   [How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
 
 ### Clone repository
 
@@ -715,8 +732,6 @@ This "init container" create directories on Elastic File System.
 
 Install Senzing into `/opt/senzing` on the Elastic File System.
 
-1. :thinking: **Optional:** If a pre-release of Senzing is desired, follow the steps at
-[Run install pre-release Senzing task](#run-install-pre-release-senzing-task).
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
@@ -968,7 +983,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=60
+    export SENZING_STREAM_LOADER_SCALE=50
     ```
 
 1. Run
@@ -1737,113 +1752,6 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     1. [Using Docker Compose File Syntax](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-parameters.html)
     1. [Using Amazon ECS Parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-ecsparams.html)
 1. [Tutorial: Creating a Cluster with an EC2 Task Using the Amazon ECS CLI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-ec2.html)
-
-### Run install pre-release Senzing task
-
-:thinking: **Optional:** This is a temporary step to install a pre-release of Senzing.
-If using the current public release is required, skip to
-[Run install Senzing task](#run-install-senzing-task).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision `sshd` service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-10M/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-10M/docker-compose-sshd.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-   to view service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-sshd
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP addresses and ports of running services.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
-    ```
-
-1. Extract the host IP address.
-   Example:
-
-    ```console
-    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
-    ```
-
-1. `ssh` into the container.
-   Example:
-
-    ```console
-    ssh root@${SENZING_SSHD_HOST}
-    ```
-
-    1. The default password is `senzingsshdpassword`.
-       However, if the docker image was built locally, it may have been changed during `docker build`.
-       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
-
-1. In docker container, install pre-release of Senzing.
-   *Note:* When installing senzing, there will be 2 prompts to accept End User License Agreement (EULA).
-   Example:
-
-    ```console
-    curl \
-      --output /senzingrepo_1.0.0-1_amd64.deb \
-      https://senzing-staging-apt.s3.amazonaws.com/senzingstagingrepo_1.0.0-1_amd64.deb
-
-    apt -y install \
-      /senzingrepo_1.0.0-1_amd64.deb
-
-    apt update
-
-    apt -y install senzingapi
-
-    mv /opt/senzing/data/1.0.0/* /opt/senzing/data/
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
-   to bring down the sshd service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-10M/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-10M/docker-compose-sshd.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
-      service down
-    ```
-
-1. Skip to
-   [Run create Senzing database schema task](#run-create-senzing-database-schema-task).
 
 ## Troubleshooting
 

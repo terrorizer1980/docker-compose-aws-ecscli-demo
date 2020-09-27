@@ -504,7 +504,7 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
     ```
 
-1. :pencil2: Choose ACUscale-up value.
+1. :pencil2: Choose Aurora Postgres autoscale in [ACU]() units.
    Example:
 
     ```console
@@ -966,7 +966,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=90
+    export SENZING_STREAM_LOADER_SCALE=60
     ```
 
 1. Run

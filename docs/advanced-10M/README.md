@@ -504,7 +504,8 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
     ```
 
-1. :pencil2: Choose Aurora Postgres autoscale in [ACU]() units.
+1. :pencil2: Choose Aurora Postgres autoscale in
+   [ACU](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.architecture)s.
    Example:
 
     ```console
@@ -1346,7 +1347,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
 #### Autoscale Aurora PostreSQL Serverless
 
-1. :pencil2: Choose Aurora Postgres autoscale in [ACU]() units.
+1. :pencil2: Choose Aurora Postgres autoscale in
+   [ACU](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.architecture)s.
    Example:
 
     ```console

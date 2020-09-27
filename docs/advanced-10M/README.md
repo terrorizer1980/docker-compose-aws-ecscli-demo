@@ -1344,6 +1344,29 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 
+#### Autoscale Aurora PostreSQL Serverless
+
+1. :pencil2: Choose Aurora Postgres autoscale in [ACU]() units.
+   Example:
+
+    ```console
+    export AWS_AURORA_MIN_CAPACITY=2
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
+   [modify-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster.html)
+   to modify database cluster scaling configuration.
+   Example:
+
+    ```console
+    aws rds modify-db-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --scaling-configuration MinCapacity=${AWS_AURORA_MIN_CAPACITY},MaxCapacity=${AWS_AURORA_MAX_CAPACITY},SecondsUntilAutoPause=3600,AutoPause=true \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster.json
+    ```
+
 ### Service recap
 
 1. Once the formation is running, hosts and ports for services can be found by running

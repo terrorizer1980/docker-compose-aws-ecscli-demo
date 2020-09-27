@@ -76,6 +76,7 @@ This docker formation brings up the following docker containers:
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
     1. [Autoscale services](#autoscale-services)
         1. [Autoscale Stream loader service](#autoscale-stream-loader-service)
+        1. [Autoscale Aurora PostreSQL Serverless](#autoscale-aurora-postresql-serverless)
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)

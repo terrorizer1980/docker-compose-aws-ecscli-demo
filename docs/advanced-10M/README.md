@@ -1300,6 +1300,14 @@ If not desired, proceed to
 
 The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
 
+1. :pencil2: Choose scale-up value.
+   Example:
+
+    ```console
+    export SENZING_STREAM_LOADER_AUTOSCALE_MIN=1
+    export SENZING_STREAM_LOADER_AUTOSCALE_MAX=${SENZING_STREAM_LOADER_SCALE}
+    ```
+
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
    [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
@@ -1309,8 +1317,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 90 \
-      --min-capacity 1 \
+      --max-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MAX} \
+      --min-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MIN} \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \

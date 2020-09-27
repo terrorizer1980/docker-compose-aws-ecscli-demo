@@ -1298,6 +1298,13 @@ If not desired, proceed to
 
 ### Autoscale services
 
+After the system is running to capacity, autoscaling may be configured.
+
+How to tell if system is running to capacity:
+
+1. The AWS Aurora PostgreSQL Serverless database has a **Write IOPS** rate of 500K/second or more.
+1. The fleet of stream-loaders have a **CPUUtilization** of over 50%.
+
 #### Autoscale Stream loader service
 
 The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.

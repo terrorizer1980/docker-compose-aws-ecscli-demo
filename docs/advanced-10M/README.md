@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-advanced
+# docker-compose-aws-ecscli-demo-advanced-10M
 
 ## Overview
 

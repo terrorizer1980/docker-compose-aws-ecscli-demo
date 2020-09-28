@@ -48,6 +48,7 @@ This docker formation brings up the following docker containers:
     1. [Obtain Senzing license](#obtain-senzing-license)
     1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
+    1. [Prepare for AWS](#prepare-for-aws)
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Authentication](#authentication)
@@ -118,6 +119,11 @@ This docker formation brings up the following docker containers:
 
 1. To install `ecs-cli`, see
    [How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
+
+### Prepare for AWS
+
+1. Identify AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
+1. Identify/Create AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 
 ### Clone repository
 
@@ -983,7 +989,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=50
+    export SENZING_STREAM_LOADER_SCALE=60
     ```
 
 1. Run

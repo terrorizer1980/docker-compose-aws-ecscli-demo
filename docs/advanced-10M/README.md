@@ -124,6 +124,7 @@ This docker formation brings up the following docker containers:
 
 1. Identify AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
 1. Identify/Create AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+1. IAM permissions.  (Currently, do not have specific list)
 
 ### Clone repository
 
@@ -989,7 +990,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=60
+    export SENZING_STREAM_LOADER_SCALE=75
     ```
 
 1. Run

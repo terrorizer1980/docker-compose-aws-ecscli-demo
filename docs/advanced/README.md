@@ -177,7 +177,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export SENZING_AWS_PROJECT=senzing-1
+    export SENZING_AWS_PROJECT=senzing-aws-1
     ```
 
 #### Database credentials
@@ -534,7 +534,7 @@ For production purposes it is not fine.
    Example:
 
     ```console
-    export AWS_AURORA_MIN_CAPACITY=192
+    export AWS_AURORA_MIN_CAPACITY=2
     export AWS_AURORA_MAX_CAPACITY=192
     ```
 
@@ -990,7 +990,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    Example:
 
     ```console
-    export SENZING_STREAM_LOADER_SCALE=75
+    export SENZING_STREAM_LOADER_SCALE=10
     ```
 
 1. Run
@@ -1004,10 +1004,58 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-10M/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-10M/docker-compose-stream-loader.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service scale ${SENZING_STREAM_LOADER_SCALE}
+    ```
+
+#### Autoscale Stream loader service
+
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+
+1. :pencil2: Choose scale-up value.
+   Example:
+
+    ```console
+    export SENZING_STREAM_LOADER_AUTOSCALE_MIN=1
+    export SENZING_STREAM_LOADER_AUTOSCALE_MAX=90
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
+   to identify the stream loader as a scalable resource.
+   Example:
+
+    ```console
+    aws application-autoscaling register-scalable-target \
+      --max-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MAX} \
+      --min-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MIN} \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
+   to create a scaling policy.
+   Example:
+
+    ```console
+    aws application-autoscaling put-scaling-policy \
+      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
+      --policy-type TargetTrackingScaling \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs \
+      --target-tracking-scaling-policy-configuration \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=300,ScaleOutCooldown=300,TargetValue=30.0" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 
 #### Create Redoer service
@@ -1270,8 +1318,6 @@ If not desired, proceed to
 :thinking: **Optional:**
 The Jupyter notebook service hosts Jupyter notebooks with
 examples of the Senzing Java and Python SDK use.
-If not desired, proceed to
-[Autoscale services](#autoscale-services).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1316,87 +1362,6 @@ If not desired, proceed to
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
       | grep jupyter
-    ```
-
-### Autoscale services
-
-After the system is running to capacity, autoscaling may be configured.
-
-How to tell if system is running to capacity:
-
-1. The AWS Aurora PostgreSQL Serverless database has a **Write IOPS** rate of 500K/second or more.
-1. The fleet of stream-loaders have a **CPUUtilization** of over 50%.
-
-#### Autoscale Stream loader service
-
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
-
-1. :pencil2: Choose scale-up value.
-   Example:
-
-    ```console
-    export SENZING_STREAM_LOADER_AUTOSCALE_MIN=1
-    export SENZING_STREAM_LOADER_AUTOSCALE_MAX=${SENZING_STREAM_LOADER_SCALE}
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
-   to identify the stream loader as a scalable resource.
-   Example:
-
-    ```console
-    aws application-autoscaling register-scalable-target \
-      --max-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MAX} \
-      --min-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MIN} \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
-   to create a scaling policy.
-   Example:
-
-    ```console
-    aws application-autoscaling put-scaling-policy \
-      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
-      --policy-type TargetTrackingScaling \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=300,ScaleOutCooldown=300,TargetValue=30.0" \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
-    ```
-
-#### Autoscale Aurora PostreSQL Serverless
-
-1. :pencil2: Choose Aurora Postgres autoscale in
-   [ACU](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.architecture)s.
-   Example:
-
-    ```console
-    export AWS_AURORA_MIN_CAPACITY=2
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [rds](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/index.html)
-   [modify-db-cluster](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/modify-db-cluster.html)
-   to modify database cluster scaling configuration.
-   Example:
-
-    ```console
-    aws rds modify-db-cluster \
-      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
-      --scaling-configuration MinCapacity=${AWS_AURORA_MIN_CAPACITY},MaxCapacity=${AWS_AURORA_MAX_CAPACITY},SecondsUntilAutoPause=3600,AutoPause=true \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster.json
     ```
 
 ### Service recap

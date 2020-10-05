@@ -21,6 +21,7 @@ services:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
         awslogs-stream-prefix: advanced
+    user: ${SENZING_DOCKER_RUNAS_INIT_EFS}
     volumes:
       - senzing-efs-root:/efs
 volumes:

@@ -10,7 +10,7 @@ services:
         awslogs-stream-prefix: advanced
     ports:
       - 22:22
-    user: "0"
+    user: ${SENZING_DOCKER_RUNAS_SSHD:-0}
     volumes:
       - senzing-data-version-dir:/opt/senzing/data
       - senzing-etc-dir:/etc/opt/senzing

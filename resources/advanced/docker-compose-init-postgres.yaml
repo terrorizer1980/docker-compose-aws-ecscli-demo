@@ -11,6 +11,7 @@ services:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
         awslogs-stream-prefix: advanced
+    user: ${SENZING_DOCKER_RUNAS_INIT_POSTGRES_CLIENT}
     volumes:
       - senzing-g2-dir:/opt/senzing/g2
 volumes:

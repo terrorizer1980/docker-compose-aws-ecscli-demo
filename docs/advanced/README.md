@@ -986,41 +986,9 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
-1. :pencil2: Choose scale-up value.
-   Example:
-
-    ```console
-    export SENZING_STREAM_LOADER_SCALE=10
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [scale](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-scale.html)
-   to scale up services.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-loader.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
-      service scale ${SENZING_STREAM_LOADER_SCALE}
-    ```
-
 #### Autoscale Stream loader service
 
 The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
-
-1. :pencil2: Choose scale-up value.
-   Example:
-
-    ```console
-    export SENZING_STREAM_LOADER_AUTOSCALE_MIN=1
-    export SENZING_STREAM_LOADER_AUTOSCALE_MAX=90
-    ```
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -1031,8 +999,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MAX} \
-      --min-capacity ${SENZING_STREAM_LOADER_AUTOSCALE_MIN} \
+      --max-capacity 90 \
+      --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
@@ -1054,7 +1022,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=300,ScaleOutCooldown=300,TargetValue=30.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=600,ScaleOutCooldown=600,TargetValue=20.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

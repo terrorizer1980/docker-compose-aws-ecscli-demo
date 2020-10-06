@@ -534,7 +534,7 @@ For production purposes it is not fine.
    Example:
 
     ```console
-    export AWS_AURORA_MIN_CAPACITY=2
+    export AWS_AURORA_MIN_CAPACITY=32
     export AWS_AURORA_MAX_CAPACITY=192
     ```
 

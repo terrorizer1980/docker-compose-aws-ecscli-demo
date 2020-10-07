@@ -177,7 +177,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    export SENZING_AWS_PROJECT=senzing-aws-1
+    export SENZING_AWS_PROJECT=senzing-1
     ```
 
 #### Database credentials
@@ -534,7 +534,7 @@ For production purposes it is not fine.
    Example:
 
     ```console
-    export AWS_AURORA_MIN_CAPACITY=32
+    export AWS_AURORA_MIN_CAPACITY=2
     export AWS_AURORA_MAX_CAPACITY=192
     ```
 
@@ -1022,7 +1022,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=600,ScaleOutCooldown=600,TargetValue=20.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=600,ScaleOutCooldown=600,TargetValue=30.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

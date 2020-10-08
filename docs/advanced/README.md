@@ -559,7 +559,7 @@ For production purposes it is not fine.
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
-      --scaling-configuration MinCapacity=${AWS_AURORA_MIN_CAPACITY},MaxCapacity=${AWS_AURORA_MAX_CAPACITY},SecondsUntilAutoPause=3600,AutoPause=true \
+      --scaling-configuration MinCapacity=${AWS_AURORA_MIN_CAPACITY},MaxCapacity=${AWS_AURORA_MAX_CAPACITY},SecondsUntilAutoPause=3600,AutoPause=true,TimeoutAction=ForceApplyCapacityChange \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```

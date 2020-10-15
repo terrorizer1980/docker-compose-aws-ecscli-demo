@@ -30,8 +30,8 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
     1. :warning: **Warning:** The demonstration, without modification:
         1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
         1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
-           See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
-        1. Costs around $100 USD in AWS charges
+           See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)".
+        1. Costs about $100 USD in AWS charges.
 
 ## Other demonstrations
 

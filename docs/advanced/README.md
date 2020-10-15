@@ -8,6 +8,14 @@ This demonstration illustrates a reference implementation of Senzing using:
 1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database
 1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform
 
+This demonstration performs the following:
+
+1. Reads 10 million JSON lines from a file on the internet.
+1. Sends each JSON line to an SQS message queue.
+1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
+1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
 :warning: **Warning:** The demonstration, without modification:
 
 1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
@@ -19,14 +27,6 @@ This demonstration illustrates a reference implementation of Senzing using:
    [ECS](https://aws.amazon.com/ecs/),
    [RDS](https://aws.amazon.com/rds/), and
    [SQS](https://aws.amazon.com/sqs/) charges.
-
-This demonstration performs the following:
-
-1. Reads 10 million JSON lines from a file on the internet.
-1. Sends each JSON line to an SQS message queue.
-1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
-1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
-1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
 The following diagram shows the relationship of the docker containers in this docker composition.
 Arrows represent data flow.

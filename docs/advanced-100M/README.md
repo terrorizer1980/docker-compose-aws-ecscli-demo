@@ -570,7 +570,8 @@ For production purposes it is not fine.
 1. :thinking: **Optional:**
    View [Relational Data Service](https://console.aws.amazon.com/rds/home?#databases:)
    in AWS console.
-1. :thinking: **Optional:** References:
+1. :thinking: **Optional:**
+   References:
     1. [Amazon Aurora User Guide for Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-ug.pdf) pdf
 
 #### Provision Simple Queue Service
@@ -724,7 +725,6 @@ This "init container" create directories on Elastic File System.
 
 #### Run install Senzing task
 
-:thinking" **Optional:**
 Install Senzing into `/opt/senzing` on the Elastic File System.
 
 1. Run
@@ -930,7 +930,7 @@ attached AWS Elastic File System (EFS).
    Example:
 
     ```console
-    scp ${SENZING_LICENSE_PATH}  root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
+    scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
     ```
 
    Example:
@@ -1723,8 +1723,6 @@ examples of the Senzing Java and Python SDK use.
     "SENZING_AWS_KEYPAIR=${SENZING_AWS_KEYPAIR}\n"\
     "SENZING_AWS_LOGS_GROUP=${SENZING_AWS_LOGS_GROUP}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
-    "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
-    "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_PROJECT=${SENZING_AWS_PROJECT}\n"\
     "SENZING_AWS_PROJECT_DIR=${SENZING_AWS_PROJECT_DIR}\n"\

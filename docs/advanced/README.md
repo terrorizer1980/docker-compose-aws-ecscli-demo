@@ -1,44 +1,64 @@
 # docker-compose-aws-ecscli-demo-advanced
 
-## Overview
+## Synopsis
 
-This illustrates a reference implementation of Senzing using
-AWS Simple Queue Service (SQS) as the queue and
-AWS Aurora/PostgreSQL as the underlying database
-on the Amazon Elastic Container Service (ECS) in EC2 mode.
+This demonstration illustrates Senzing using:
 
-The instructions show how to set up a system that:
+1. [AWS Simple Queue Service (SQS)](https://aws.amazon.com/sqs/) as the queue.
+1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database.
+1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform.
 
-1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is AWS SQS.
-1. Reads messages from the queue and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in an AWS Aurora/PostgreSQL database.
+This demonstration performs the following:
+
+1. Reads 10 million JSON lines from a file on the internet.
+1. Sends each JSON line to an SQS message queue.
+1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+## Overview
+
+:warning: **Warning:** The demonstration, without modification:
+
+1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
+    1. The deployment instructions take about 40 minutes to perform.
+    1. Loading 10 million records into the Senzing Model takes about 2 hours.
+1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
+   See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
+1. Costs around $100 USD in AWS
+   [ECS](https://aws.amazon.com/ecs/),
+   [RDS](https://aws.amazon.com/rds/), and
+   [SQS](https://aws.amazon.com/sqs/) charges.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
 Arrows represent data flow.
 
-![Image of architecture](architecture.png)
+![Image of architecture](images/architecture.png)
 
-This docker formation brings up the following docker containers:
+This demonstration uses the following docker containers:
 
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
+1. *[senzing/yum](https://github.com/Senzing/docker-yum)*
 
-## Contents
+### Contents
 
+1. [Preamble](#preamble)
+    1. [Legend](#legend)
 1. [Prerequisites](#prerequisites)
+    1. [Obtain Senzing license](#obtain-senzing-license)
     1. [Install AWS CLI](#install-aws-cli)
     1. [Install ECS CLI](#install-ecs-cli)
+    1. [Prepare for AWS](#prepare-for-aws)
     1. [Clone repository](#clone-repository)
 1. [Tutorial](#tutorial)
     1. [Authentication](#authentication)
@@ -66,14 +86,15 @@ This docker formation brings up the following docker containers:
         1. [Run init-container task](#run-init-container-task)
         1. [Run Stream producer task](#run-stream-producer-task)
     1. [Create services](#create-services)
-        1. [Create phpPgAdmin service](#create-phppgadmin-service)
+        1. [Create sshd service](#create-sshd-service)
         1. [Create Stream loader service](#create-stream-loader-service)
+        1. [Autoscale Stream loader service](#autoscale-stream-loader-service)
+        1. [Create Redoer service](#create-redoer-service)
         1. [Create Senzing API server service](#create-senzing-api-server-service)
         1. [Create Senzing Web App service](#create-senzing-web-app-service)
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
+        1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
-    1. [Autoscale services](#autoscale-services)
-        1. [Autoscale Stream loader service](#autoscale-stream-loader-service)
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
@@ -87,17 +108,53 @@ This docker formation brings up the following docker containers:
 1. [References](#references)
 1. [Troubleshooting](#troubleshooting)
 
+## Preamble
+
+At [Senzing](http://senzing.com),
+we strive to create GitHub documentation in a
+"[don't make me think](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/dont-make-me-think.md)" style.
+For the most part, instructions are copy and paste.
+Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
+Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+If the instructions are not clear, please let us know by opening a new
+[Documentation issue](https://github.com/Senzing/docker-compose-aws-ecscli-demo/issues/new?template=documentation_request.md)
+describing where we can improve.   Now on with the show...
+
+### Legend
+
+1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
+   Perhaps there are some choices to be made.
+   Perhaps it's an optional step.
+1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
+1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
+
 ## Prerequisites
+
+### Obtain Senzing license
+
+1. When inserting more than 100K records into Senzing,
+   a custom license will need to be placed on the system.
+   A Senzing license for 10 million or more records is needed for this demonstration.
+   Visit
+   [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
 
 ### Install AWS CLI
 
-To install `aws`, see
-[How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
+1. To install `aws`, see
+   [How to install Amazon Web Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-cli.md).
 
 ### Install ECS CLI
 
-To install `ecs-cli`, see
-[How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
+1. To install `ecs-cli`, see
+   [How to install Amazon Web Service Elastic Compute Service Command Line Interface](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-aws-ecs-cli.md).
+
+### Prepare for AWS
+
+1. Identify AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
+1. Identify/Create AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
+1. IAM permissions.
+    1. Currently, do not have specific list.
+    1. If any of the steps fail, investigate if it is an AWS authorization or permissions issue.
 
 ### Clone repository
 
@@ -144,7 +201,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 #### Identify project
 
-1. :pencil2: Choose a prefix used in AWS object names.
+1. :pencil2: Choose a prefix used in constructing AWS resource names.
    This will also be the name of a directory storing AWS output.
    See [Make AWS project directory](#make-aws-project-directory).
    Example:
@@ -311,7 +368,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 :warning: **Warning:** The following inbound port specifications are **wide open**.
 Meaning they can be accessed from anywhere.
 For demonstration purposes, this is fine.
-For production purposes it is not fine.
+For production purposes, it is **not** fine.
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -502,6 +559,15 @@ For production purposes it is not fine.
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-modify-db-cluster-parameter-group.json
     ```
 
+1. :pencil2: Choose Aurora Postgres autoscale in
+   [ACU](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.architecture)s.
+   Example:
+
+    ```console
+    export AWS_AURORA_MIN_CAPACITY=2
+    export AWS_AURORA_MAX_CAPACITY=192
+    ```
+
 1. :thinking: **Optional:**
    View [RDS > Parameter groups](https://console.aws.amazon.com/rds/home?#parameter-groups:)
 
@@ -523,7 +589,7 @@ For production purposes it is not fine.
       --engine-mode serverless \
       --master-user-password ${POSTGRES_PASSWORD} \
       --master-username ${POSTGRES_USERNAME} \
-      --scaling-configuration MinCapacity=2,MaxCapacity=384,SecondsUntilAutoPause=3600,AutoPause=true \
+      --scaling-configuration MinCapacity=${AWS_AURORA_MIN_CAPACITY},MaxCapacity=${AWS_AURORA_MAX_CAPACITY},SecondsUntilAutoPause=3600,AutoPause=true,TimeoutAction=ForceApplyCapacityChange \
       --vpc-security-group-ids ${SENZING_AWS_EC2_SECURITY_GROUP} \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-create-db-cluster.json
     ```
@@ -557,12 +623,12 @@ For production purposes it is not fine.
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html)
    to create SQS queue.
-   Keep messages for 14 days.
+   `MessageRetentionPeriod` keeps messages for 14 days.
    Example:
 
     ```console
     aws sqs create-queue \
-      --attributes MessageRetentionPeriod=1209600 \
+      --attributes MessageRetentionPeriod=1209600,VisibilityTimeout=300 \
       --queue-name ${SENZING_AWS_PROJECT}-sqs-queue \
       --tags Key=Name,Value=${SENZING_AWS_PROJECT}-sqs-queue \
       > ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json
@@ -699,114 +765,6 @@ This "init container" create directories on Elastic File System.
 
 1. Wait until task has completed and is in the `STOPPED` state.
 
-#### Run install pre-release Senzing task
-
-This is a temporary step to install a pre-release of Senzing.
-If using the current public release is required, skip to
-[Run install Senzing task](#run-install-senzing-task).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision `sshd` service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-sshd.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-   to view service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-sshd
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP addresses and ports of running services.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
-    ```
-
-1. Extract the host IP address.
-   Example:
-
-    ```console
-    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
-    ```
-
-1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
-   using the "sshd service".
-   Example:
-
-    ```console
-    ssh root@${SENZING_SSHD_HOST}
-    ```
-
-    1. The default password is `senzingsshdpassword`.
-       However, if the docker image was built locally, it may have been changed during `docker build`.
-       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
-
-1. In docker container, install pre-release of Senzing.
-   *Note:* When installing senzing, there will be 2 prompts to accept End User License Agreement (EULA).
-   Example:
-
-    ```console
-    curl \
-      --output /senzingrepo_1.0.0-1_amd64.deb \
-      https://senzing-staging-apt.s3.amazonaws.com/senzingstagingrepo_1.0.0-1_amd64.deb
-
-    apt -y install \
-      /senzingrepo_1.0.0-1_amd64.deb
-
-    apt update
-
-    apt -y install senzingapi
-
-    mv /opt/senzing/data/1.0.0/* /opt/senzing/data/
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [down](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-rm.html)
-   to bring down the sshd service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-100M/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-100M/docker-compose-sshd.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
-      service down
-    ```
-
-1. Skip to
-   [Run create Senzing database schema task](#run-create-senzing-database-schema-task).
-
 #### Run install Senzing task
 
 Install Senzing into `/opt/senzing` on the Elastic File System.
@@ -876,23 +834,45 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
 1. Wait until task has completed and is in the `STOPPED` state.
 
-#### Run Stream producer task
+#### Run Stream-producer task
 
 Read JSON lines from a URL-addressable file and send to AWS SQS.
+*Note:*
+Two ECS services each containing one task are deployed because they fill the SQS queue faster
+than one ECS service with two tasks. Don't know why. :shrug:
+Each service has different `SENZING_RECORD_MIN`, `SENZING_RECORD_MAX` values in the
+[docker-compose-stream-producer-N.yaml](../../resources/advanced)
+files.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
-   to send messages to AWS SQS.
+   to send messages to AWS SQS from first copy of ECS service.
    Example:
 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-1.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-1 \
+      up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS from second copy of ECS service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-stream-producer-2.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
       up
     ```
 
@@ -972,19 +952,20 @@ attached AWS Elastic File System (EFS).
     export SENZING_LICENSE_PATH=/path/to/my/local/g2.lic
     ```
 
-1. Copy the Senzing license to the attached AWS Elastic File System (EFS)
+1. Copy file to the attached AWS Elastic File System (EFS)
    using the "sshd service".
+
+    1. The default password is `senzingsshdpassword`.
+       However, if the docker image was built locally, it may have been changed during `docker build`.
+       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
+
    Example:
 
     ```console
     scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
     ```
 
-    1. The default password is `senzingsshdpassword`.
-       However, if the docker image was built locally, it may have been changed during `docker build`.
-       See [Build Docker Image](https://github.com/Senzing/docker-sshd#build-docker-image).
-
-1. Run
+1. To reduce security exposure, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
@@ -1001,113 +982,9 @@ attached AWS Elastic File System (EFS).
       service down
     ```
 
-#### Create Senzing X-Term service
+#### Create Stream-loader service
 
-:thinking: **Optional:**
-The Senzing X-Term service provides console access.
-It can be used to run Senzing command-line tools.
-If not desired, proceed to
-[Create phpPgAdmin service](#create-phppgadmin-service).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision Senzing X-Term service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
-      service up
-    ```
-
-1. :thinking: **Optional:**
-   Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
-   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
-   to view service definition.
-   Example:
-
-    ```console
-    aws ecs describe-services \
-      --cluster ${SENZING_AWS_ECS_CLUSTER} \
-      --services ${SENZING_AWS_PROJECT}-project-name-xterm
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for Senzing X-Term.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      | grep xterm
-    ```
-
-1. :warning::warning:
-   Add `g2.lic`.
-   Remove after debugging:
-
-    ```console
-    curl \
-      --output /etc/opt/senzing/g2.lic \
-      http://example.com/g2.lic
-    ```
-
-#### Create phpPgAdmin service
-
-:thinking: **Optional:**
-[phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
-is a web-based database adminitration tool.
-It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
-If not desired, proceed to
-[Create Stream loader service](#create-stream-loader-service).
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
-   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
-   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
-   to provision phpPgAdmin database client service.
-   Example:
-
-    ```console
-    ecs-cli compose \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
-      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
-      service up
-    ```
-
-1. Run
-   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
-   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
-   to find IP address and port for phpPgAdmin.
-   Example:
-
-    ```console
-    ecs-cli ps \
-      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --desired-status RUNNING \
-      | grep phppgadmin
-    ```
-
-   **Username:** ${POSTGRES_USERNAME}
-   **Password:** ${POSTGRES_PASSWORD}
-
-#### Create Stream loader service
-
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model via the Senzing Engine.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1132,12 +1009,88 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
    [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
    [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
    to view service definition.
-   Example:
+   Examples:
 
     ```console
     aws ecs describe-services \
       --cluster ${SENZING_AWS_ECS_CLUSTER} \
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
+    ```
+
+#### Autoscale Stream-loader service
+
+The stream-loader service was created in a prior step.
+Now configure the stream-loader service to autoscale.
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
+   to identify the stream loader as a scalable resource.
+   Example:
+
+    ```console
+    aws application-autoscaling register-scalable-target \
+      --max-capacity 90 \
+      --min-capacity 1 \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
+    ```
+
+1. Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
+   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
+   to create a scaling policy.
+   Example:
+
+    ```console
+    aws application-autoscaling put-scaling-policy \
+      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
+      --policy-type TargetTrackingScaling \
+      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
+      --scalable-dimension ecs:service:DesiredCount \
+      --service-namespace ecs \
+      --target-tracking-scaling-policy-configuration \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=1200,ScaleOutCooldown=300,TargetValue=30.0" \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
+    ```
+
+#### Create Redoer service
+
+The redoer service reads Senzing Redo records from the Senzing Model and re-does them.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision redoer service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-redoer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-redoer.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-redoer \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-redoer
     ```
 
 #### Create Senzing API server service
@@ -1266,13 +1219,105 @@ The Senzing Web App provides a user interface to Senzing functionality.
       | grep webapp
     ```
 
+#### Create Senzing X-Term service
+
+:thinking: **Optional:**
+The Senzing X-Term service provides console access.
+It can be used to run Senzing command-line tools.
+If not desired, proceed to
+[Create phpPgAdmin service](#create-phppgadmin-service).
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing X-Term service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-xterm.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-xterm
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for Senzing X-Term.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      | grep xterm
+    ```
+
+#### Create phpPgAdmin service
+
+:thinking: **Optional:**
+[phpPgAdmin](http://phppgadmin.sourceforge.net/doku.php)
+is a web-based database adminitration tool.
+It can be used to inspect the AWS Aurora PostgreSQL database holding the Senzing Model.
+If not desired, proceed to
+[Create Jupyter notebook service](#create-jupyter-notebook-service).
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision phpPgAdmin database client service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-phppgadmin.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
+      service up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for phpPgAdmin.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      | grep phppgadmin
+    ```
+
+   **Username:** ${POSTGRES_USERNAME}
+   **Password:** ${POSTGRES_PASSWORD}
+
 #### Create Jupyter notebook service
 
 :thinking: **Optional:**
 The Jupyter notebook service hosts Jupyter notebooks with
 examples of the Senzing Java and Python SDK use.
-If not desired, proceed to
-[Autoscale services](#autoscale-services).
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1317,48 +1362,6 @@ If not desired, proceed to
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
       | grep jupyter
-    ```
-
-### Autoscale services
-
-#### Autoscale Stream loader service
-
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [register-scalable-target](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/register-scalable-target.html)
-   to identify the stream loader as a scalable resource.
-   Example:
-
-    ```console
-    aws application-autoscaling register-scalable-target \
-      --max-capacity 100 \
-      --min-capacity 1 \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-register-scalable-target.json
-    ```
-
-1. Run
-   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
-   [application-autoscaling](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/index.html#cli-aws-application-autoscaling)
-   [put-scaling-policy](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/application-autoscaling/put-scaling-policy.html)
-   to create a scaling policy.
-   Example:
-
-    ```console
-    aws application-autoscaling put-scaling-policy \
-      --policy-name "${SENZING_AWS_PROJECT}-scaling-policy-stream-loader" \
-      --policy-type TargetTrackingScaling \
-      --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
-      --scalable-dimension ecs:service:DesiredCount \
-      --service-namespace ecs \
-      --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=0,ScaleOutCooldown=0,TargetValue=30.0" \
-      > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 
 ### Service recap
@@ -1459,8 +1462,10 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       "jupyter" \
       "phppgadmin" \
       "postgres" \
+      "redoer" \
       "stream-loader" \
-      "stream-producer" \
+      "stream-producer-1" \
+      "stream-producer-2" \
       "webapp" \
       "xterm" \
       "yum" \
@@ -1745,6 +1750,7 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_ECS_CLUSTER_CONFIG=${SENZING_AWS_ECS_CLUSTER_CONFIG}\n"\
     "SENZING_AWS_EFS_FILESYSTEM_ID=${SENZING_AWS_EFS_FILESYSTEM_ID}\n"\
     "SENZING_AWS_KEYPAIR=${SENZING_AWS_KEYPAIR}\n"\
+    "SENZING_AWS_LOGS_GROUP=${SENZING_AWS_LOGS_GROUP}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_1=${SENZING_AWS_MOUNT_TARGET_ID_1}\n"\
     "SENZING_AWS_MOUNT_TARGET_ID_2=${SENZING_AWS_MOUNT_TARGET_ID_2}\n"\
     "SENZING_AWS_PROJECT=${SENZING_AWS_PROJECT}\n"\
@@ -1752,16 +1758,20 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     "SENZING_AWS_SUBNET_ID_1=${SENZING_AWS_SUBNET_ID_1}\n"\
     "SENZING_AWS_SUBNET_ID_2=${SENZING_AWS_SUBNET_ID_2}\n"\
     "SENZING_AWS_VPC_ID=${SENZING_AWS_VPC_ID}\n"\
+    "SENZING_GOVERNOR_PATH=${SENZING_GOVERNOR_PATH}\n"\
     "SENZING_IP_ADDRESS_APISERVER=${SENZING_IP_ADDRESS_APISERVER}\n"\
+    "SENZING_LICENSE_PATH=${SENZING_LICENSE_PATH}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_ARN=${SENZING_SQS_DEAD_LETTER_QUEUE_ARN}\n"\
     "SENZING_SQS_DEAD_LETTER_QUEUE_URL=${SENZING_SQS_DEAD_LETTER_QUEUE_URL}\n"\
     "SENZING_SQS_QUEUE_URL=${SENZING_SQS_QUEUE_URL}\n"\
-    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"
+    "SENZING_SSHD_HOST=${SENZING_SSHD_HOST}\n"\
+    "SENZING_STREAM_LOADER_SCALE=${SENZING_STREAM_LOADER_SCALE}\n"
     ```
 
 ### Set environment variables
 
-1. xxx
+1. To re-establish environment variables from AWS output files,
+   run the following.
    Example:
 
     ```console
@@ -1775,5 +1785,4 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
     export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
-
     ```

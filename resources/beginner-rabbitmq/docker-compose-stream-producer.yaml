@@ -2,7 +2,6 @@ version: '3'
 services:
   producer:
     environment:
-      SENZING_DELAY_IN_SECONDS: 60
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RABBITMQ_HOST: ${SENZING_EC2_HOST}
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}

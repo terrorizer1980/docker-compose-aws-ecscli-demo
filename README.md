@@ -22,11 +22,17 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
     1. AWS [Aurora](https://aws.amazon.com/rds/aurora/) PostgreSQL instead of an internal PostgreSQL.
     1. AWS [Elastic File System (EFS)](https://aws.amazon.com/efs/).
 1. [Advanced](docs/advanced) - In addition to
-   **Advanced**, it features:
+   **Intermediate**, it features:
     1. AWS [Aurora PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) instead of Aurora PostgreSQL for database scale out and scale in.
     1. Senzing stream-loader scale-out and scale in.
     1. Installing Senzing license to allow more than 100K records.
     1. AWS SQS [dead-letter queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html).
+    1. :warning: The demonstration, without modification:
+        1. Takes about 3 hours plus time for pre-requisites and granting access to AWS resources.
+        1. Inserts 10M records
+        1. Requires a Senzing license for 10M+ records.
+           See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
+        1. Costs around $100 USD in AWS charges
 
 ## Other demonstrations
 

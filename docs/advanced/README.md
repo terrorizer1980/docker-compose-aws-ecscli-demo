@@ -2,11 +2,11 @@
 
 ## Synopsis
 
-This demonstration illustrates a reference implementation of Senzing using:
+This demonstration illustrates Senzing using:
 
-1. [AWS Simple Queue Service (SQS)](https://aws.amazon.com/sqs/) as the queue
-1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database
-1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform
+1. [AWS Simple Queue Service (SQS)](https://aws.amazon.com/sqs/) as the queue.
+1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database.
+1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform.
 
 This demonstration performs the following:
 
@@ -117,7 +117,7 @@ For the most part, instructions are copy and paste.
 Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
 Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/template-python/issues/new?template=documentation_request.md)
+[Documentation issue](https://github.com/Senzing/docker-compose-aws-ecscli-demo/issues/new?template=documentation_request.md)
 describing where we can improve.   Now on with the show...
 
 ### Legend
@@ -201,7 +201,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 #### Identify project
 
-1. :pencil2: Choose a prefix used in AWS object names.
+1. :pencil2: Choose a prefix used in constructing AWS resource names.
    This will also be the name of a directory storing AWS output.
    See [Make AWS project directory](#make-aws-project-directory).
    Example:
@@ -368,7 +368,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 :warning: **Warning:** The following inbound port specifications are **wide open**.
 Meaning they can be accessed from anywhere.
 For demonstration purposes, this is fine.
-For production purposes it is not fine.
+For production purposes, it is **not** fine.
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
@@ -623,7 +623,7 @@ For production purposes it is not fine.
    [sqs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/index.html)
    [create-queue](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sqs/create-queue.html)
    to create SQS queue.
-   Keep messages for 14 days.
+   `MessageRetentionPeriod` keeps messages for 14 days.
    Example:
 
     ```console
@@ -840,8 +840,9 @@ Read JSON lines from a URL-addressable file and send to AWS SQS.
 *Note:*
 Two ECS services each containing one task are deployed because they fill the SQS queue faster
 than one ECS service with two tasks. Don't know why. :shrug:
-Each service has different `SENZING_RECORD_MIN`, `SENZING_RECORD_MAX` values in
-the `docker-compose-stream-producer-N.yaml` file.
+Each service has different `SENZING_RECORD_MIN`, `SENZING_RECORD_MAX` values in the
+[docker-compose-stream-producer-N.yaml](../../resources/advanced)
+files.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)

@@ -27,10 +27,9 @@ This repository holds examples of how to bring up Senzing on Amazon Elastic Cont
     1. Senzing stream-loader scale-out and scale in.
     1. Installing Senzing license to allow more than 100K records.
     1. AWS SQS [dead-letter queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html).
-    1. :warning: The demonstration, without modification:
-        1. Takes about 3 hours plus time for pre-requisites and granting access to AWS resources.
-        1. Inserts 10M records
-        1. Requires a Senzing license for 10M+ records.
+    1. :warning: **Warning:** The demonstration, without modification:
+        1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
+        1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
            See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
         1. Costs around $100 USD in AWS charges
 

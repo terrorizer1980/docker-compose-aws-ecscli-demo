@@ -965,7 +965,7 @@ attached AWS Elastic File System (EFS).
     scp ${SENZING_LICENSE_PATH} root@${SENZING_SSHD_HOST}:/etc/opt/senzing/g2.lic
     ```
 
-1. Run
+1. To reduce security exposure, run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
    [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
    [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)

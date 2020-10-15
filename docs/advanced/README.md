@@ -2,17 +2,25 @@
 
 ## Overview
 
-This demonstration illustrates a reference implementation of Senzing using
-AWS Simple Queue Service (SQS) as the queue and
-AWS Aurora/PostgreSQL Serverless as the underlying database
-on the Amazon Elastic Container Service (ECS) in Fargate mode.
+This demonstration illustrates a reference implementation of Senzing using:
 
-:warning: **Caution:** this demonstration will cost about $100 USD in AWS
-[ECS](https://aws.amazon.com/ecs/),
-[RDS](https://aws.amazon.com/rds/), and
-[SQS](https://aws.amazon.com/sqs/) costs.
+1. [AWS Simple Queue Service (SQS)](https://aws.amazon.com/sqs/) as the queue
+1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database
+1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform
 
-This demonstration:
+:warning: **Warning:** The reference implementation, without modification:
+
+1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
+    1. The deployment instructions take about 40 minutes to perform.
+    1. Loading 10 million records into the Senzing Model takes about 2 hours.
+1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
+   See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
+1. Costs around $100 USD in AWS
+   [ECS](https://aws.amazon.com/ecs/),
+   [RDS](https://aws.amazon.com/rds/), and
+   [SQS](https://aws.amazon.com/sqs/) charges.
+
+This reference implementation:
 
 1. Reads 10 million JSON lines from a file on the internet.
 1. Sends each JSON line to an SQS message queue.
@@ -20,27 +28,25 @@ This demonstration:
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
-Once the prerequisite steps are met,
-
-1. The deployment instructions take about 40 minutes to perform.
-1. Loading 10 million records into the Senzing Model takes about 2 hours.
-
 The following diagram shows the relationship of the docker containers in this docker composition.
 Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
-This docker formation brings up the following docker containers:
+This reference implementation uses the following docker containers:
 
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
+1. *[senzing/yum](https://github.com/Senzing/docker-yum)*
 
 ## Contents
 
@@ -104,7 +110,7 @@ This docker formation brings up the following docker containers:
 
 1. When inserting more than 100K records into Senzing,
    a custom license will need to be placed on the system.
-   A Senzing license for 10 million or more records is needed for this demonstration.
+   A Senzing license for 10 million or more records is needed for this reference implementation.
    Visit
    [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
 

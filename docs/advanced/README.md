@@ -834,7 +834,7 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
 
 1. Wait until task has completed and is in the `STOPPED` state.
 
-#### Run Stream producer task
+#### Run Stream-producer task
 
 Read JSON lines from a URL-addressable file and send to AWS SQS.
 *Note:*
@@ -982,9 +982,9 @@ attached AWS Elastic File System (EFS).
       service down
     ```
 
-#### Create Stream loader service
+#### Create Stream-loader service
 
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model via the Senzing Engine.
 
 1. Run
    [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
@@ -1017,9 +1017,10 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
       --services ${SENZING_AWS_PROJECT}-project-name-stream-loader
     ```
 
-#### Autoscale Stream loader service
+#### Autoscale Stream-loader service
 
-The stream loader service reads messages from AWS SQS and inserts them into the Senzing Model.
+The stream-loader service was created in a prior step.
+Now configure the stream-loader service to autoscale.
 
 1. Run
    [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)

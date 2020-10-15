@@ -47,8 +47,7 @@ In addition to [Intermediate](#intermediate), **Advanced** features:
 1. [100M insert - Aurora PostgreSQL Server](docs/advanced-100M)
    Insert 100M records on a server-based Aurora PostgreSQL database.
    (i.e. this is **not** serverless PostgreSQL)
-
-   :warning:
-   This is an expensive demonstration.
-   It will take 24-26 hours to complete.
-   The full run will cost over $1000.
+    1. :warning: **Warning:**
+       This is an expensive demonstration.
+       It will take 24-26 hours to complete.
+       The full run will cost over $1000.

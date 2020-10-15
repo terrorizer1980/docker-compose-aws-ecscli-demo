@@ -8,7 +8,7 @@ This demonstration illustrates a reference implementation of Senzing using:
 1. [AWS Aurora/PostgreSQL Serverless](https://aws.amazon.com/rds/aurora/serverless/) as the underlying database
 1. [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/) in Fargate mode as the platform
 
-:warning: **Warning:** The reference implementation, without modification:
+:warning: **Warning:** The demonstration, without modification:
 
 1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
     1. The deployment instructions take about 40 minutes to perform.
@@ -20,7 +20,7 @@ This demonstration illustrates a reference implementation of Senzing using:
    [RDS](https://aws.amazon.com/rds/), and
    [SQS](https://aws.amazon.com/sqs/) charges.
 
-This reference implementation:
+This demonstration performs the following:
 
 1. Reads 10 million JSON lines from a file on the internet.
 1. Sends each JSON line to an SQS message queue.
@@ -33,7 +33,7 @@ Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
-This reference implementation uses the following docker containers:
+This demonstration uses the following docker containers:
 
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
@@ -110,7 +110,7 @@ This reference implementation uses the following docker containers:
 
 1. When inserting more than 100K records into Senzing,
    a custom license will need to be placed on the system.
-   A Senzing license for 10 million or more records is needed for this reference implementation.
+   A Senzing license for 10 million or more records is needed for this demonstration.
    Visit
    [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
 

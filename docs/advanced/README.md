@@ -33,7 +33,7 @@ This demonstration performs the following:
 The following diagram shows the relationship of the docker containers in this docker composition.
 Arrows represent data flow.
 
-![Image of architecture](architecture.png)
+![Image of architecture](images/architecture.png)
 
 This demonstration uses the following docker containers:
 

@@ -1,6 +1,6 @@
 # docker-compose-aws-ecscli-demo-advanced
 
-## Overview
+## Synopsis
 
 This demonstration illustrates a reference implementation of Senzing using:
 
@@ -15,6 +15,8 @@ This demonstration performs the following:
 1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+
+## Overview
 
 :warning: **Warning:** The demonstration, without modification:
 
@@ -48,8 +50,10 @@ This demonstration uses the following docker containers:
 1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 1. *[senzing/yum](https://github.com/Senzing/docker-yum)*
 
-## Contents
+### Contents
 
+1. [Preamble](#preamble)
+    1. [Legend](#legend)
 1. [Prerequisites](#prerequisites)
     1. [Obtain Senzing license](#obtain-senzing-license)
     1. [Install AWS CLI](#install-aws-cli)
@@ -104,6 +108,26 @@ This demonstration uses the following docker containers:
 1. [References](#references)
 1. [Troubleshooting](#troubleshooting)
 
+## Preamble
+
+At [Senzing](http://senzing.com),
+we strive to create GitHub documentation in a
+"[don't make me think](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/dont-make-me-think.md)" style.
+For the most part, instructions are copy and paste.
+Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
+Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+If the instructions are not clear, please let us know by opening a new
+[Documentation issue](https://github.com/Senzing/template-python/issues/new?template=documentation_request.md)
+describing where we can improve.   Now on with the show...
+
+### Legend
+
+1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
+   Perhaps there are some choices to be made.
+   Perhaps it's an optional step.
+1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
+1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
+
 ## Prerequisites
 
 ### Obtain Senzing license
@@ -128,7 +152,9 @@ This demonstration uses the following docker containers:
 
 1. Identify AWS [region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html).
 1. Identify/Create AWS [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
-1. IAM permissions.  (Currently, do not have specific list)
+1. IAM permissions.
+    1. Currently, do not have specific list.
+    1. If any of the steps fail, investigate if it is an AWS authorization or permissions issue.
 
 ### Clone repository
 

@@ -14,9 +14,9 @@ A very simple deployment.
     1. Minimal security.
     1. Not designed for scaling up AWS ECS Services.
 1. Instructions:
-    1. [beginner-rabbitmq](docs/beginner-rabbitmq) - uses RabbitMQ for queue
-    1. [beginner-aws-sqs](docs/beginner-aws-sqs) - uses AWS SQS for queue
-    1. [beginner-kafka](docs/beginner-kafka) - uses Kafka for queue
+    1. [beginner-rabbitmq](docs/beginner-rabbitmq/README.md) - uses RabbitMQ for queue
+    1. [beginner-aws-sqs](docs/beginner-aws-sqs/README.md) - uses AWS SQS for queue
+    1. [beginner-kafka](docs/beginner-kafka/README.md) - uses Kafka for queue
 
 ## Intermediate
 
@@ -28,7 +28,7 @@ In addition to [Beginner](#beginner), **Intermediate** features:
 1. AWS [Aurora](https://aws.amazon.com/rds/aurora/) PostgreSQL instead of an internal PostgreSQL.
 1. AWS [Elastic File System (EFS)](https://aws.amazon.com/efs/).
 1. Instructions:
-    1. [intermediate](docs/intermediate)
+    1. [intermediate](docs/intermediate/README.md)
 
 ## Advanced
 
@@ -44,7 +44,7 @@ In addition to [Intermediate](#intermediate), **Advanced** features:
        See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)".
     1. Costs about $100 USD in AWS charges.
 1. Instructions:
-    1. [advanced](docs/advanced)
+    1. [advanced](docs/advanced/README.md)
 
 ## Other demonstrations
 

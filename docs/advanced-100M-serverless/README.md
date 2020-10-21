@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-advanced
+# docker-compose-aws-ecscli-demo-advanced-100M-serverless
 
 ## Synopsis
 
@@ -25,7 +25,7 @@ This demonstration performs the following:
     1. Loading 100 million records into the Senzing Model takes about NN hours.
 1. Inserts 100M records, thus requiring a Senzing license for 100M+ records.
    See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
-1. Costs around $100 USD in AWS
+1. Costs around $nnn USD in AWS
    [ECS](https://aws.amazon.com/ecs/),
    [RDS](https://aws.amazon.com/rds/), and
    [SQS](https://aws.amazon.com/sqs/) charges.
@@ -134,7 +134,7 @@ describing where we can improve.   Now on with the show...
 
 1. When inserting more than 100K records into Senzing,
    a custom license will need to be placed on the system.
-   A Senzing license for 10 million or more records is needed for this demonstration.
+   A Senzing license for 100 million or more records is needed for this demonstration.
    Visit
    [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
 

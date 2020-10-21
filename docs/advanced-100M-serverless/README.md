@@ -10,7 +10,7 @@ This demonstration illustrates Senzing using:
 
 This demonstration performs the following:
 
-1. Reads 10 million JSON lines from a file on the internet.
+1. Reads 100 million JSON lines from a file on the internet.
 1. Sends each JSON line to an SQS message queue.
 1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
@@ -20,10 +20,10 @@ This demonstration performs the following:
 
 :warning: **Warning:** The demonstration, without modification:
 
-1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
+1. Takes about NN hours plus additional time for installing pre-requisites and granting access to AWS resources.
     1. The deployment instructions take about 40 minutes to perform.
-    1. Loading 10 million records into the Senzing Model takes about 2 hours.
-1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
+    1. Loading 100 million records into the Senzing Model takes about NN hours.
+1. Inserts 100M records, thus requiring a Senzing license for 100M+ records.
    See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
 1. Costs around $100 USD in AWS
    [ECS](https://aws.amazon.com/ecs/),

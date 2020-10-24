@@ -1063,7 +1063,7 @@ Now configure the stream-loader service to autoscale.
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 200 \
+      --max-capacity 400 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \

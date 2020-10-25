@@ -565,7 +565,7 @@ For production purposes, it is **not** fine.
 
     ```console
     export AWS_AURORA_MIN_CAPACITY=2
-    export AWS_AURORA_MAX_CAPACITY=384
+    export AWS_AURORA_MAX_CAPACITY=192
     ```
 
 1. :thinking: **Optional:**

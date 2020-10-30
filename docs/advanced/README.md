@@ -95,6 +95,8 @@ This demonstration uses the following docker containers:
         1. [Create Senzing X-Term service](#create-senzing-x-term-service)
         1. [Create phpPgAdmin service](#create-phppgadmin-service)
         1. [Create Jupyter notebook service](#create-jupyter-notebook-service)
+        1. [Create Swagger UI service](#create-swagger-ui-service)
+        Create Swagger UI service
     1. [Service recap](#service-recap)
 1. [Cleanup](#cleanup)
     1. [Delete services](#delete-services)
@@ -1364,6 +1366,58 @@ examples of the Senzing Java and Python SDK use.
       | grep jupyter
     ```
 
+#### Create Swagger UI service
+
+:thinking: **Optional:**
+The Swagger UI is a local deployment of
+[Swagger UI](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml) which can access the deployed Senzing API server.
+It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/cors.md) issues.
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [service](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-service-up.html)
+   to provision Senzing Web App service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-swagger-ui.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-swagger-ui.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-swagger-ui \
+      service up
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [aws](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html)
+   [ecs](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/index.html)
+   [describe-services](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/describe-services.html)
+   to view service definition.
+   Example:
+
+    ```console
+    aws ecs describe-services \
+      --cluster ${SENZING_AWS_ECS_CLUSTER} \
+      --services ${SENZING_AWS_PROJECT}-project-name-swagger-ui
+    ```
+
+1. :thinking: **Optional:**
+   Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [ps](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-ps.html)
+   to find IP address and port for Jupyter.
+   Example:
+
+    ```console
+    ecs-cli ps \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --desired-status RUNNING \
+      | grep swagger
+    ```
+
 ### Service recap
 
 1. Once the formation is running, hosts and ports for services can be found by running
@@ -1384,6 +1438,7 @@ examples of the Senzing Java and Python SDK use.
    | 8250 | Senzing API server            |
    | 8251 | Senzing Entity Search Web App |
    | 5000 | Senzing X-Term                |
+   | 8080 | Swagger UI                    |
    | 8888 | Jupyter Notebooks             |
 
 1. When using the [Senzing API in the Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml),
@@ -1404,6 +1459,13 @@ examples of the Senzing Java and Python SDK use.
    Example:
 
     ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-swagger-ui.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced/docker-compose-swagger-ui.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-swagger-ui \
+      service down
+
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced/ecs-params-jupyter.yaml \

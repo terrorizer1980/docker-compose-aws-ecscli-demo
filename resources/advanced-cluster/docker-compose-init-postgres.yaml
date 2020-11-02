@@ -10,7 +10,35 @@ services:
       options:
         awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
         awslogs-region: ${AWS_DEFAULT_REGION}
-        awslogs-stream-prefix: advanced
+        awslogs-stream-prefix: advanced-cluster
+    user: ${SENZING_DOCKER_RUNAS_INIT_POSTGRES_CLIENT}
+    volumes:
+      - senzing-g2-dir:/opt/senzing/g2
+  postgresinitres:
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_RES}:5432/${POSTGRES_DB:-G2_RES}"
+      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-1.0.0}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced-cluster
+    user: ${SENZING_DOCKER_RUNAS_INIT_POSTGRES_CLIENT}
+    volumes:
+      - senzing-g2-dir:/opt/senzing/g2
+  postgresinitlibfeat:
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_LIBFEAT}:5432/${POSTGRES_DB:-G2_LIBFEAT}"
+      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-1.0.0}
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${SENZING_AWS_LOGS_GROUP:-senzing-docker-compose-aws-ecscli-demo}
+        awslogs-region: ${AWS_DEFAULT_REGION}
+        awslogs-stream-prefix: advanced-cluster
     user: ${SENZING_DOCKER_RUNAS_INIT_POSTGRES_CLIENT}
     volumes:
       - senzing-g2-dir:/opt/senzing/g2

@@ -11,15 +11,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_RES}:5432/${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_RES}:5432:${POSTGRES_DB:-G2_RES}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_LIBFEAT}:5432/${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_LIBFEAT}:5432:${POSTGRES_DB:-G2_LIBFEAT}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",

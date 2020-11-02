@@ -615,7 +615,7 @@ To support Senzing database custering, three Aurora PostgreSQL Serverless will b
     ```console
     aws rds create-db-cluster \
       --database-name G2_LIBFEAT \
-      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster-libfeat \
       --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --enable-http-endpoint \
@@ -645,7 +645,7 @@ To support Senzing database custering, three Aurora PostgreSQL Serverless will b
     ```console
     aws rds create-db-cluster \
       --database-name G2_RES \
-      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster-res \
       --db-cluster-parameter-group-name "${SENZING_AWS_PROJECT}-ecs-cluster" \
       --db-subnet-group-name  ${SENZING_AWS_PROJECT}-db-subnet \
       --enable-http-endpoint \

@@ -1,6 +1,8 @@
 version: '3'
 services:
   swaggerui:
+    environment:
+      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     logging:
       driver: awslogs

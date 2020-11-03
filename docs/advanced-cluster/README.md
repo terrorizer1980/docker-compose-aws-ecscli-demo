@@ -413,6 +413,11 @@ For production purposes, it is **not** fine.
     aws ec2 authorize-security-group-ingress \
       --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
       --ip-permissions \
+        IpProtocol=tcp,FromPort=8080,ToPort=8080,IpRanges='[{CidrIp=0.0.0.0/0,Description="Swagger UI"}]'
+
+    aws ec2 authorize-security-group-ingress \
+      --group-id ${SENZING_AWS_EC2_SECURITY_GROUP} \
+      --ip-permissions \
         IpProtocol=tcp,FromPort=8888,ToPort=8888,IpRanges='[{CidrIp=0.0.0.0/0,Description="Senzing Jupyter notebooks"}]'
 
     aws ec2 authorize-security-group-ingress \

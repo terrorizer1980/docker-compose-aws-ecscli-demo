@@ -6,7 +6,34 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432/${POSTGRES_DB:-G2}"
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432:${POSTGRES_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_RES}:5432:${POSTGRES_DB:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST_LIBFEAT}:5432:${POSTGRES_DB:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
       SENZING_EXIT_ON_THREAD_TERMINATION: "true"
       SENZING_GOVERNOR_CHECK_TIME_INTERVAL_IN_SECONDS: 600
       SENZING_GOVERNOR_DATABASE_URLS: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST}:5432/${POSTGRES_DB:-G2}"

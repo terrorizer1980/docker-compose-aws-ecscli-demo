@@ -947,6 +947,38 @@ files.
       up
     ```
 
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS from second copy of ECS service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-3.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-3 \
+      up
+    ```
+
+1. Run
+   [ecs-cli](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI_reference.html)
+   [compose](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html)
+   [up](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose-up.html)
+   to send messages to AWS SQS from second copy of ECS service.
+   Example:
+
+    ```console
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-4.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-4 \
+      up
+    ```
+
 1. :thinking: **Optional:**
    View [Simple Queue Service](https://console.aws.amazon.com/sqs/v2/home?#/queues)
    in AWS console to verify "Messages available".
@@ -1102,7 +1134,7 @@ Now configure the stream-loader service to autoscale.
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 400 \
+      --max-capacity 100 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
@@ -1125,7 +1157,7 @@ Now configure the stream-loader service to autoscale.
       --scalable-dimension ecs:service:DesiredCount \
       --service-namespace ecs \
       --target-tracking-scaling-policy-configuration \
-          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=1200,ScaleOutCooldown=300,TargetValue=50.0" \
+          "PredefinedMetricSpecification={PredefinedMetricType=ECSServiceAverageCPUUtilization},ScaleInCooldown=1200,ScaleOutCooldown=300,TargetValue=30.0" \
       > ${SENZING_AWS_PROJECT_DIR}/aws-application-autoscaling-put-scaling-policy.json
     ```
 

@@ -1643,6 +1643,8 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
       "stream-loader" \
       "stream-producer-1" \
       "stream-producer-2" \
+      "stream-producer-3" \
+      "stream-producer-4" \
       "webapp" \
       "xterm" \
       "yum" \

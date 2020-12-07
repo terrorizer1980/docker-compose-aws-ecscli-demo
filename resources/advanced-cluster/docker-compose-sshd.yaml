@@ -3,7 +3,7 @@ services:
   sshd:
     cap_add:
       - SYS_PTRACE
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.0.1}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.0.2}
     logging:
       driver: awslogs
       options:

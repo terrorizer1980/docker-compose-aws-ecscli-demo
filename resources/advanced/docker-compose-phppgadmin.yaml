@@ -25,7 +25,7 @@ services:
       - PHP_PG_ADMIN_SHOW_SYSTEM=false
       - PHP_PG_ADMIN_THEME=default
       - PHP_PG_ADMIN_USE_XHTML_STRICT=false
-    image: senzing/phppgadmin
+    image: senzing/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_PHPPGADMIN:-1.0.0}
     logging:
       driver: awslogs
       options:

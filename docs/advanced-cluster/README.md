@@ -1834,6 +1834,12 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     ```console
     aws logs delete-log-group \
       --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster/postgresql
+
+    aws logs delete-log-group \
+      --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster-libfeat/postgresql
+
+    aws logs delete-log-group \
+      --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster-res/postgresql
     ```
 
 ### Review cleanup in AWS console

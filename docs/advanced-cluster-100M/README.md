@@ -1,4 +1,4 @@
-# docker-compose-aws-ecscli-demo-advanced-cluster
+# docker-compose-aws-ecscli-demo-advanced-cluster-100M
 
 ## Synopsis
 
@@ -10,7 +10,7 @@ This demonstration illustrates Senzing using:
 
 This demonstration performs the following:
 
-1. Reads 10 million JSON lines from a file on the internet.
+1. Reads 100 million JSON lines from a file on the internet.
 1. Sends each JSON line to an SQS message queue.
 1. Reads messages from the queue and inserts into Senzing Model stored in an AWS Aurora/PostgreSQL Serverless database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
@@ -20,12 +20,12 @@ This demonstration performs the following:
 
 :warning: **Warning:** The demonstration, without modification:
 
-1. Takes about 3 hours plus additional time for installing pre-requisites and granting access to AWS resources.
+1. Takes about NN hours plus additional time for installing pre-requisites and granting access to AWS resources.
     1. The deployment instructions take about 40 minutes to perform.
-    1. Loading 10 million records into the Senzing Model takes about 2 hours.
-1. Inserts 10M records, thus requiring a Senzing license for 10M+ records.
+    1. Loading 100 million records into the Senzing Model takes about NN hours.
+1. Inserts 100M records, thus requiring a Senzing license for 100M+ records.
    See "[How to obtain Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md)"
-1. Costs around $100 USD in AWS
+1. Costs around $nnn USD in AWS
    [ECS](https://aws.amazon.com/ecs/),
    [RDS](https://aws.amazon.com/rds/), and
    [SQS](https://aws.amazon.com/sqs/) charges.
@@ -136,7 +136,7 @@ describing where we can improve.   Now on with the show...
 
 1. When inserting more than 100K records into Senzing,
    a custom license will need to be placed on the system.
-   A Senzing license for 10 million or more records is needed for this demonstration.
+   A Senzing license for 100 million or more records is needed for this demonstration.
    Visit
    [How to obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
 
@@ -827,8 +827,8 @@ This "init container" create directories on Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-init-efs.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-init-efs.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-init-efs.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-init-efs.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-efs \
       up \
         --create-log-groups
@@ -850,8 +850,8 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-yum.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-yum.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-yum.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-yum.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-yum \
       up
     ```
@@ -875,8 +875,8 @@ Install Senzing into `/opt/senzing` on the Elastic File System.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-init-postgres.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-init-postgres.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-init-postgres.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-init-postgres.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-postgres \
       up
     ```
@@ -897,8 +897,8 @@ Configure Senzing in `/etc/opt/senzing` and `/var/opt/senzing` files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-init-container.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-init-container.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-init-container.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-init-container.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-init-container \
       up
     ```
@@ -925,8 +925,8 @@ files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-1.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-producer-1.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-1 \
       up
     ```
@@ -941,8 +941,8 @@ files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-2.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-producer-2.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-2 \
       up
     ```
@@ -957,8 +957,8 @@ files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-3.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-producer-3.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-3 \
       up
     ```
@@ -973,8 +973,8 @@ files.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-producer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-producer-4.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-producer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-producer-4.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-producer-4 \
       up
     ```
@@ -1008,8 +1008,8 @@ attached AWS Elastic File System (EFS).
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-sshd.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-sshd.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
       service up
     ```
@@ -1079,8 +1079,8 @@ attached AWS Elastic File System (EFS).
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-sshd.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-sshd.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
       service down
     ```
@@ -1100,8 +1100,8 @@ The stream loader service reads messages from AWS SQS and inserts them into the 
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-loader.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service up
     ```
@@ -1134,7 +1134,7 @@ Now configure the stream-loader service to autoscale.
 
     ```console
     aws application-autoscaling register-scalable-target \
-      --max-capacity 200 \
+      --max-capacity 400 \
       --min-capacity 1 \
       --resource-id "service/${SENZING_AWS_ECS_CLUSTER}/${SENZING_AWS_PROJECT}-project-name-stream-loader" \
       --scalable-dimension ecs:service:DesiredCount \
@@ -1176,8 +1176,8 @@ The redoer service reads Senzing Redo records from the Senzing Model and re-does
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-redoer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-redoer.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-redoer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-redoer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-redoer \
       service up
     ```
@@ -1212,8 +1212,8 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-apiserver.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-apiserver.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service up
     ```
@@ -1288,8 +1288,8 @@ The Senzing Web App provides a user interface to Senzing functionality.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-webapp.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-webapp.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service up
     ```
@@ -1341,8 +1341,8 @@ If not desired, proceed to
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-xterm.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-xterm.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service up
     ```
@@ -1394,8 +1394,8 @@ If not desired, proceed to
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-phppgadmin.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-phppgadmin.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service up
     ```
@@ -1433,8 +1433,8 @@ examples of the Senzing Java and Python SDK use.
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-jupyter.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-jupyter.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service up
     ```
@@ -1485,8 +1485,8 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-swagger-ui.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-swagger-ui.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-swagger-ui.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-swagger-ui.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-swagger-ui \
       service up
     ```
@@ -1562,64 +1562,64 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     ```console
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-swagger-ui.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-swagger-ui.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-swagger-ui.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-swagger-ui.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-swagger-ui \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-jupyter.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-jupyter.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-jupyter.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-jupyter.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-jupyter \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-xterm.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-xterm.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-xterm.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-xterm.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-xterm \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-webapp.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-webapp.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-webapp.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-webapp.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-webapp \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-apiserver.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-apiserver.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-apiserver.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-apiserver.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-apiserver \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-stream-loader.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-stream-loader.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-stream-loader.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-stream-loader.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-stream-loader \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-redoer.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-redoer.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-redoer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-redoer.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-redoer \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-sshd.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-sshd.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-sshd.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
       service down
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
-      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-phppgadmin.yaml \
-      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-phppgadmin.yaml \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/ecs-params-phppgadmin.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster-100M/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
       service down
     ```

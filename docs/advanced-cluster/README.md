@@ -1604,6 +1604,20 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
 
     ecs-cli compose \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-redoer.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-redoer.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-redoer \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
+      --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-sshd.yaml \
+      --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-sshd.yaml \
+      --project-name ${SENZING_AWS_PROJECT}-project-name-sshd \
+      service down
+
+    ecs-cli compose \
+      --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --ecs-params ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/ecs-params-phppgadmin.yaml \
       --file ${GIT_REPOSITORY_DIR}/resources/advanced-cluster/docker-compose-phppgadmin.yaml \
       --project-name ${SENZING_AWS_PROJECT}-project-name-phppgadmin \
@@ -1629,9 +1643,12 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
       "stream-loader" \
       "stream-producer-1" \
       "stream-producer-2" \
+      "stream-producer-3" \
+      "stream-producer-4" \
       "webapp" \
       "xterm" \
       "yum" \
+      "sshd" \
     )
     ```
 
@@ -1646,12 +1663,14 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     ```console
     for SENZING_ECS_TASK_DEFINITION in ${SENZING_ECS_TASK_DEFINITIONS[@]};\
     do \
-      aws ecs deregister-task-definition \
-        --task-definition $( \
-          aws ecs list-task-definitions \
-            --family-prefix "${SENZING_AWS_PROJECT}-project-name-${SENZING_ECS_TASK_DEFINITION}" \
-          | jq --raw-output .taskDefinitionArns[0] \
-        ) > /dev/null; \
+      RETURNED_SENZING_ECS_TASK_DEFINITIONS=`aws ecs list-task-definitions \
+        --family-prefix "${SENZING_AWS_PROJECT}-project-name-${SENZING_ECS_TASK_DEFINITION}" \
+      | jq --raw-output .taskDefinitionArns[0]`; \
+      if [ $RETURNED_SENZING_ECS_TASK_DEFINITIONS != 'null' ]; then
+        aws ecs deregister-task-definition \
+          --task-definition $RETURNED_SENZING_ECS_TASK_DEFINITIONS \
+        > /dev/null; \
+      fi \
     done
     ```
 
@@ -1709,6 +1728,16 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
       --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster \
       --skip-final-snapshot \
       > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster.json
+
+    aws rds delete-db-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster-libfeat \
+      --skip-final-snapshot \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster-libfeat.json
+
+    aws rds delete-db-cluster \
+      --db-cluster-identifier ${SENZING_AWS_PROJECT}-aurora-cluster-res \
+      --skip-final-snapshot \
+      > ${SENZING_AWS_PROJECT_DIR}/aws-rds-delete-db-cluster-res.json
     ```
 
 1. Run
@@ -1805,6 +1834,12 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     ```console
     aws logs delete-log-group \
       --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster/postgresql
+
+    aws logs delete-log-group \
+      --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster-libfeat/postgresql
+
+    aws logs delete-log-group \
+      --log-group-name /aws/rds/cluster/${SENZING_AWS_PROJECT}-aurora-cluster-res/postgresql
     ```
 
 ### Review cleanup in AWS console
@@ -1949,3 +1984,4 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
     export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
     ```
+

@@ -1242,7 +1242,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
-      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-api-server.txt
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-apiserver.txt
     ```
 
 1. Extract the host IP address.
@@ -1251,7 +1251,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_APISERVER=$(awk '/apiserver/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-api-server.txt | cut -d ':' -f 1)
+    export SENZING_IP_ADDRESS_APISERVER=$(awk '/apiserver/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-apiserver.txt | cut -d ':' -f 1)
     ```
 
 1. :thinking: **Optional:**

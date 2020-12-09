@@ -3,7 +3,7 @@ task_definition:
   task_execution_role: ecsTaskExecutionRole
   ecs_network_mode: awsvpc
   task_size:
-    mem_limit: 16GB
+    mem_limit: 24GB
     cpu_limit: 4096
   efs_volumes:
     - name: senzing-data-version-dir

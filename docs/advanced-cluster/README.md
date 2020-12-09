@@ -1038,14 +1038,14 @@ attached AWS Elastic File System (EFS).
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
-      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-sshd.txt
     ```
 
 1. Extract the host IP address.
    Example:
 
     ```console
-    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
+    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-sshd.txt | cut -d ':' -f 1)
     ```
 
 1. :pencil2: Specify the location of the Senzing license on the local machine.
@@ -1242,7 +1242,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
     ecs-cli ps \
       --cluster-config ${SENZING_AWS_ECS_CLUSTER_CONFIG} \
       --desired-status RUNNING \
-      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt
+      > ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-apiserver.txt
     ```
 
 1. Extract the host IP address.
@@ -1251,7 +1251,7 @@ The Senzing API server communicates with the Senzing Engine to provide an HTTP
    Example:
 
     ```console
-    export SENZING_IP_ADDRESS_APISERVER=$(awk '/apiserver/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
+    export SENZING_IP_ADDRESS_APISERVER=$(awk '/apiserver/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-apiserver.txt | cut -d ':' -f 1)
     ```
 
 1. :thinking: **Optional:**
@@ -1982,6 +1982,6 @@ It can be used to avoid [CORS](https://github.com/Senzing/knowledge-base/blob/ma
     export SENZING_SQS_DEAD_LETTER_QUEUE_ARN=$(jq --raw-output ".Attributes.QueueArn" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-get-queue-attributes.json)
     export SENZING_SQS_DEAD_LETTER_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-dead-letter-queue.json)
     export SENZING_SQS_QUEUE_URL=$(jq --raw-output ".QueueUrl" ${SENZING_AWS_PROJECT_DIR}/aws-sqs-create-queue.json)
-    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps.txt | cut -d ':' -f 1)
+    export SENZING_SSHD_HOST=$(awk '/sshd/{print $3}' ${SENZING_AWS_PROJECT_DIR}/ecs-cli-ps-sshd.txt | cut -d ':' -f 1)
     ```
 

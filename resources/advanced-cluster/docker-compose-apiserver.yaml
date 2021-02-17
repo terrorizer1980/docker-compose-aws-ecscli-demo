@@ -42,7 +42,7 @@ services:
             "LIB_FEAT_HKEY": "C2"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.0}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.2}
     logging:
       driver: awslogs
       options:

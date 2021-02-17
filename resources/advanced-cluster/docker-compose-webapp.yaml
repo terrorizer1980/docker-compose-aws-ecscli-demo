@@ -4,7 +4,7 @@ services:
     environment:
       SENZING_API_SERVER_URL: "http://${SENZING_IP_ADDRESS_APISERVER}:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.1.1}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.1}
     logging:
       driver: awslogs
       options:

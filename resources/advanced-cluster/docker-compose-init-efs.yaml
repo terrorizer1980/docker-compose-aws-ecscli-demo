@@ -7,7 +7,7 @@ services:
       - "&&"
       - mkdir
       - -p
-      - /efs/data/1.0.0
+      - /efs/data/2.0.0
       - "&&"
       - mkdir
       - /efs/etc

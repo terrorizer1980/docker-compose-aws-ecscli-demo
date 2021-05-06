@@ -12,7 +12,7 @@ task_definition:
       root_directory: /data
     - name: senzing-data-version-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
-      root_directory: /data/1.0.0
+      root_directory: /data/2.0.0
     - name: senzing-etc-dir
       filesystem_id: ${SENZING_AWS_EFS_FILESYSTEM_ID}
       root_directory: /etc

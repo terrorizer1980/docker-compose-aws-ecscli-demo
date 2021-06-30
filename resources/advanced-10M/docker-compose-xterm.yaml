@@ -1,7 +1,7 @@
 version: '3'
 services:
   xterm:
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.0.5}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.0}
     logging:
       driver: awslogs
       options:

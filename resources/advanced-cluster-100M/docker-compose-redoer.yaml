@@ -46,7 +46,7 @@ services:
       SENZING_REDO_SLEEP_TIME_IN_SECONDS: 600
       SENZING_SUBCOMMAND: redo
       SENZING_THREADS_PER_PROCESS: 8
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.4}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.7}
     logging:
       driver: awslogs
       options:
